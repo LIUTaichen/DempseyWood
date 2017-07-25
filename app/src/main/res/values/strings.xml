@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Operator Data Collector</string>
+    <string name="prompt_message">Please select schedule items:</string>
+    <string name="button_confirm">Confrim</string>
+</resources>
