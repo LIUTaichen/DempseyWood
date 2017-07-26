@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.dempseywood.operatordatacollector.R;
+
 
 /**
  * Created by musing on 25/07/2017.
@@ -32,7 +34,7 @@ public class ListScheduleItemActivity extends ListActivity {
         // setContentView(R.layout.list_fruit);
 
        // setListAdapter(new ArrayAdapter<String>(this, R.list,scheduleItems));
-
+        setListAdapter(new ArrayAdapter<String>(this, R.layout.activity_main, scheduleItems));
         ListView listView = getListView();
         listView.setTextFilterEnabled(true);
 
