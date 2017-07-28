@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">Operator Data Collector</string>
     <string name="prompt_message">Please select schedule items:</string>
-    <string name="button_confirm">Confrim</string>
+    <string name="button_confirm">Confirm</string>
+        <string-array name="schedule_items_array">
+            <item>Mulching</item>
+            <item>Mulching 2</item>
+            <item>Scraping</item>
+            <item>Scraping 2</item>
+            <item>Transporting</item>
+        </string-array>
+    <string name="loads_message"> load(s) completed</string>
+    <string name="string_loaded">Loaded</string>
+    <string name="drag_up">Drag up to unload</string>
+    <string name="drag_down">Drag down to load</string>
+    <string name="string_unloaded">Unloaded</string>
 </resources>
