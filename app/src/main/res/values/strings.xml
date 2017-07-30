@@ -14,4 +14,8 @@
     <string name="drag_up">Drag up to unload</string>
     <string name="drag_down">Drag down to load</string>
     <string name="string_unloaded">Unloaded</string>
+    <string name="machine_name_label">Machine :</string>
+    <string name="operator_name_label">Operator :</string>
+    <string name="machine_name_text">Scraper S8946L</string>
+    <string name="operator_name_text">John Smith</string>
 </resources>

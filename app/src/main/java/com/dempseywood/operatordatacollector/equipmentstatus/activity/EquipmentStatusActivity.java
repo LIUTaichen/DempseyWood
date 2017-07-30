@@ -1,24 +1,15 @@
-package com.dempseywood.operatordatacollector;
+package com.dempseywood.operatordatacollector.equipmentstatus.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
-import com.dempseywood.operatordatacollector.scheduleitem.ScheduleItem;
-import com.dempseywood.operatordatacollector.status.LoadedButtonEventListener;
-import com.dempseywood.operatordatacollector.status.LoadedButtonOnDragListener;
-import com.dempseywood.operatordatacollector.status.LoadedButtonOnLongClickListener;
-import com.dempseywood.operatordatacollector.status.UnloadedButtonEventListener;
-import com.dempseywood.operatordatacollector.status.UnloadedButtonOnDragListener;
-import com.dempseywood.operatordatacollector.status.UnloadedButtonOnLongClickListener;
-
-import java.util.ArrayList;
+import com.dempseywood.operatordatacollector.R;
+import com.dempseywood.operatordatacollector.equipmentstatus.listener.ButtonOnDragListener;
+import com.dempseywood.operatordatacollector.equipmentstatus.listener.ButtonOnTouchListener;
 
 public class EquipmentStatusActivity extends AppCompatActivity {
 
@@ -27,7 +18,7 @@ public class EquipmentStatusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equipment_status);
 
-        ArrayList<ScheduleItem> allItems = DataHolder.getInstance().getScheduleItemList();
+        //ArrayList<ScheduleItem> allItems = DataHolder.getInstance().getScheduleItemList();
        /* ArrayList<ScheduleItem> activeItems = new  ArrayList<ScheduleItem>();
         for(ScheduleItem item: allItems){
             if(item.isSelected()){
@@ -51,15 +42,10 @@ public class EquipmentStatusActivity extends AppCompatActivity {
 
         buttonLoaded.setClickable(false);
         buttonLoaded.setBackgroundResource(R.drawable.inactive);
-        buttonUnloaded.setOnLongClickListener(new UnloadedButtonOnLongClickListener());
-        buttonLoaded.setOnLongClickListener(new LoadedButtonOnLongClickListener());
-        buttonUnloaded.setOnTouchListener(new UnloadedButtonEventListener());
-        buttonLoaded.setOnTouchListener(new LoadedButtonEventListener());
-
-        buttonUnloaded.setOnDragListener(new UnloadedButtonOnDragListener());
-
-
-        buttonLoaded.setOnDragListener(new LoadedButtonOnDragListener());
+        buttonUnloaded.setOnTouchListener(new ButtonOnTouchListener());
+        buttonLoaded.setOnTouchListener(new ButtonOnTouchListener());
+        buttonUnloaded.setOnDragListener(new ButtonOnDragListener());
+        buttonLoaded.setOnDragListener(new ButtonOnDragListener());
     }
 
     public void incrementLoadCount(){

@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".EquipmentStatusActivity"
+        <activity android:name=".equipmentstatus.activity.EquipmentStatusActivity"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
