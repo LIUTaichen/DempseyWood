@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 import com.dempseywood.operatordatacollector.scheduleitem.ScheduleItem;
+import com.dempseywood.operatordatacollector.status.LoadedButtonEventListener;
 import com.dempseywood.operatordatacollector.status.LoadedButtonOnDragListener;
 import com.dempseywood.operatordatacollector.status.LoadedButtonOnLongClickListener;
+import com.dempseywood.operatordatacollector.status.UnloadedButtonEventListener;
 import com.dempseywood.operatordatacollector.status.UnloadedButtonOnDragListener;
 import com.dempseywood.operatordatacollector.status.UnloadedButtonOnLongClickListener;
 
@@ -51,6 +53,8 @@ public class EquipmentStatusActivity extends AppCompatActivity {
         buttonLoaded.setBackgroundResource(R.drawable.inactive);
         buttonUnloaded.setOnLongClickListener(new UnloadedButtonOnLongClickListener());
         buttonLoaded.setOnLongClickListener(new LoadedButtonOnLongClickListener());
+        buttonUnloaded.setOnTouchListener(new UnloadedButtonEventListener());
+        buttonLoaded.setOnTouchListener(new LoadedButtonEventListener());
 
         buttonUnloaded.setOnDragListener(new UnloadedButtonOnDragListener());
 
