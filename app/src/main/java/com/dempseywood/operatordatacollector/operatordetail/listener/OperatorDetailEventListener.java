@@ -1,4 +1,4 @@
-package com.dempseywood.operatordatacollector.operatordetail;
+package com.dempseywood.operatordatacollector.operatordetail.listener;
 
 import android.content.Intent;
 import android.view.View;
@@ -6,9 +6,10 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.dempseywood.operatordatacollector.DisplayMessageActivity;
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
+import com.dempseywood.operatordatacollector.operatordetail.Machine;
+import com.dempseywood.operatordatacollector.operatordetail.activity.OperatorDetailActivity;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
 /**
@@ -24,10 +25,16 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
         OperatorDetailActivity activity = (OperatorDetailActivity)v.getContext();
 
         EditText operatorName = (EditText)activity.findViewById(R.id.operator_name);
+        if( operatorName.getText().toString().length() == 0 ) {
+            operatorName.setError("Operator name is required!");
+        }else{
+
+
         DataHolder.getInstance().setOperatorName(operatorName.getText().toString());
 
         Intent intent = new Intent(activity, EquipmentStatusActivity.class);
         activity.startActivity(intent);
+        }
     }
 
     @Override

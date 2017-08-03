@@ -1,4 +1,4 @@
-package com.dempseywood.operatordatacollector.operatordetail;
+package com.dempseywood.operatordatacollector.operatordetail.activity;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -12,6 +12,9 @@ import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.database.DataCollectorContract.MachineTO;
 
 import com.dempseywood.operatordatacollector.database.DbHelper;
+import com.dempseywood.operatordatacollector.operatordetail.CustomSpinnerAdapter;
+import com.dempseywood.operatordatacollector.operatordetail.Machine;
+import com.dempseywood.operatordatacollector.operatordetail.listener.OperatorDetailEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +30,7 @@ public class OperatorDetailActivity extends AppCompatActivity {
 
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner2);
-        //prepareData();
+        prepareData();
         //String[] machines = getMachines();
         List<Machine> machines = getMachines();
         //ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, R.layout.spinner_layout,  machines);
@@ -84,6 +87,7 @@ public class OperatorDetailActivity extends AppCompatActivity {
     private void prepareData(){
 
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        db.delete(MachineTO.TABLE_NAME, "", new String[]{});
         insertMachine(db,"KJF981", "Excavator" );
 
 
@@ -100,6 +104,18 @@ public class OperatorDetailActivity extends AppCompatActivity {
         values.put(MachineTO.COLUMN_NAME_DESCRIPTION, desc);
 // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(MachineTO.TABLE_NAME, null, values);
+    }
+
+    private void deleteMachine(String name){
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        db.delete(MachineTO.TABLE_NAME, "", new String[]{});
+    }
+
+    public void deleteRowFromTable(String tableName, String columnName, String keyValue) {
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        String whereClause = columnName + "=?";
+        String[] whereArgs = new String[]{String.valueOf(keyValue)};
+        //yourDatabase.delete(tableName, whereClause, whereArgs);
     }
 
     @Override

@@ -25,14 +25,18 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".equipmentstatus.activity.EquipmentStatusActivity">
+        <activity android:name=".equipmentstatus.activity.EquipmentStatusActivity"
+            android:parentActivityName=".operatordetail.activity.OperatorDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".operatordetail.activity.OperatorDetailActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".operatordetail.OperatorDetailActivity">
+        <activity android:name=".operatordetail.activity.OperatorDetailActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
