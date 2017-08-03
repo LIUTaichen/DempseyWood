@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.equipmentstatus.listener.ButtonOnDragListener;
 import com.dempseywood.operatordatacollector.equipmentstatus.listener.ButtonOnTouchListener;
+import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
 public class EquipmentStatusActivity extends AppCompatActivity {
 
@@ -17,6 +18,11 @@ public class EquipmentStatusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equipment_status);
+
+        TextView operatorName = (TextView)findViewById(R.id.operator_name);
+        operatorName.setText(DataHolder.getInstance().getOperatorName());
+        TextView machinePlateNo = (TextView)findViewById(R.id.machine_name);
+        machinePlateNo.setText(DataHolder.getInstance().getMachine().getPlateNo());
 
         //ArrayList<ScheduleItem> allItems = DataHolder.getInstance().getScheduleItemList();
        /* ArrayList<ScheduleItem> activeItems = new  ArrayList<ScheduleItem>();

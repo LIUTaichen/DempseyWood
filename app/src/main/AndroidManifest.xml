@@ -10,27 +10,32 @@
         android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-        </activity>
-
+        <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".DisplayMessageActivity"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
-            </activity>
-        <activity android:name=".scheduleitem.SelectScheduleItemActivity"
+        </activity>
+        <activity
+            android:name=".scheduleitem.SelectScheduleItemActivity"
             android:parentActivityName=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".equipmentstatus.activity.EquipmentStatusActivity"
-            >
+        <activity android:name=".equipmentstatus.activity.EquipmentStatusActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".operatordetail.OperatorDetailActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

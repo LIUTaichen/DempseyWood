@@ -1,5 +1,7 @@
 package com.dempseywood.operatordatacollector.scheduleitem;
 
+import com.dempseywood.operatordatacollector.operatordetail.Machine;
+
 import java.util.ArrayList;
 
 /**
@@ -11,6 +13,9 @@ public class DataHolder {
 
 
     private ArrayList<ScheduleItem> scheduleItemList;
+    private String operatorName;
+    private Machine machine;
+
 
 
     private static final DataHolder holder = new DataHolder();
@@ -22,5 +27,21 @@ public class DataHolder {
 
     public void setScheduleItemList(ArrayList<ScheduleItem> scheduleItemList) {
         this.scheduleItemList = scheduleItemList;
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
+    public Machine getMachine() {
+        return machine;
+    }
+
+    public void setMachine(Machine machine) {
+        this.machine = machine;
     }
 }

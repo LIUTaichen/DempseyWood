@@ -2,13 +2,13 @@
     <string name="app_name">Operator Data Collector</string>
     <string name="prompt_message">Please select schedule items:</string>
     <string name="button_confirm">Confirm</string>
-        <string-array name="schedule_items_array">
-            <item>Mulching</item>
-            <item>Mulching 2</item>
-            <item>Scraping</item>
-            <item>Scraping 2</item>
-            <item>Transporting</item>
-        </string-array>
+    <string-array name="schedule_items_array">
+        <item>Mulching</item>
+        <item>Mulching 2</item>
+        <item>Scraping</item>
+        <item>Scraping 2</item>
+        <item>Transporting</item>
+    </string-array>
     <string name="loads_message"> load(s) completed</string>
     <string name="string_loaded">Loaded</string>
     <string name="drag_up">Drag over to unload</string>
@@ -18,4 +18,6 @@
     <string name="operator_name_label">Operator :</string>
     <string name="machine_name_text">Scraper S8946L</string>
     <string name="operator_name_text">John Smith</string>
+    <string name="operator_name_input_label">Please enter your name:</string>
+    <string name="machine_input_label">Please select the machine</string>
 </resources>

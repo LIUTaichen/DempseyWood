@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
 import com.dempseywood.operatordatacollector.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +31,8 @@ public class SelectScheduleItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_schedule_item);
+
+
         ArrayList<String> itemList = new ArrayList<String>(Arrays.asList(scheduleItems));
         ArrayList<ScheduleItem> items = new ArrayList<ScheduleItem>();
         for(int i=0; i < scheduleItems.length; i++
