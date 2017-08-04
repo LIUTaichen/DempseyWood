@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
+import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
 
 /**
  * Created by musing on 31/07/2017.
@@ -27,6 +28,7 @@ public class ButtonOnDragListener implements View.OnDragListener {
                 }
             case DragEvent.ACTION_DROP:
                 EquipmentStatusActivity activity = (EquipmentStatusActivity)v.getContext();
+                new HttpRequestTask().execute();
                 //switch to unloaded status if the current button is loaded button, loaded status if the current button is unloaded button
                 if(isLoadedButton){
                     activity.switchToLoaded();
