@@ -18,6 +18,8 @@ public final class DataCollectorContract {
         public static final String COLUMN_NAME_DESCRIPTION = "description";
     }
 
+   // public static class
+
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + MachineTO.TABLE_NAME + " (" +
                     MachineTO.COLUMN_NAME_PLATE_NO + " TEXT," +

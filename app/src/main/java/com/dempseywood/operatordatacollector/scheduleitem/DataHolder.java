@@ -15,6 +15,9 @@ public class DataHolder {
     private ArrayList<ScheduleItem> scheduleItemList;
     private String operatorName;
     private Machine machine;
+    private String status;
+    private Integer[] counts;
+   // private
 
 
 
@@ -43,5 +46,20 @@ public class DataHolder {
 
     public void setMachine(Machine machine) {
         this.machine = machine;
+    }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer[] getCounts() {
+        return counts;
+    }
+
+    public void setCounts(Integer[] counts) {
+        this.counts = counts;
     }
 }

@@ -8,6 +8,11 @@ import android.widget.Button;
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
 import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
+import com.dempseywood.operatordatacollector.rest.status.EquipmentStatus;
+import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by musing on 31/07/2017.
@@ -28,7 +33,6 @@ public class ButtonOnDragListener implements View.OnDragListener {
                 }
             case DragEvent.ACTION_DROP:
                 EquipmentStatusActivity activity = (EquipmentStatusActivity)v.getContext();
-                new HttpRequestTask().execute();
                 //switch to unloaded status if the current button is loaded button, loaded status if the current button is unloaded button
                 if(isLoadedButton){
                     activity.switchToLoaded();
@@ -36,6 +40,14 @@ public class ButtonOnDragListener implements View.OnDragListener {
                 else{
                     activity.switchToUnloaded();
                 }
+                EquipmentStatus status = new EquipmentStatus();
+                //DataHolder.getInstance().get
+                status.setEquipment(DataHolder.getInstance().getMachine().getPlateNo());
+                status.setOperator(DataHolder.getInstance().getOperatorName());
+                status.setStatus(DataHolder.getInstance().getStatus());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                status.setTimestamp( new Date());
+                new HttpRequestTask(status).execute();
                 return true;
             case DragEvent.ACTION_DRAG_ENTERED:
                 if(isLoadedButton){

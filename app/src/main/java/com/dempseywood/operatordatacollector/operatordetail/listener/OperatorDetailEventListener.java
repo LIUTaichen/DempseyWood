@@ -29,7 +29,6 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
         if (operatorName.getText().toString().length() == 0) {
             operatorName.setError("Operator name is required!");
         } else {
-            new HttpRequestTask().execute();
 
             DataHolder.getInstance().setOperatorName(operatorName.getText().toString());
 

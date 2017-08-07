@@ -10,9 +10,14 @@ import android.widget.TextView;
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.equipmentstatus.listener.ButtonOnDragListener;
 import com.dempseywood.operatordatacollector.equipmentstatus.listener.ButtonOnTouchListener;
+import com.dempseywood.operatordatacollector.equipmentstatus.listener.ScheduleItemSpinnerOnItemSelectedListener;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
 public class EquipmentStatusActivity extends AppCompatActivity {
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +38,18 @@ public class EquipmentStatusActivity extends AppCompatActivity {
         }*/
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        ScheduleItemSpinnerOnItemSelectedListener selectedListener  = new ScheduleItemSpinnerOnItemSelectedListener(this);
+        spinner.setOnItemSelectedListener(selectedListener);
 
 // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.schedule_items_array, R.layout.spinner_layout);
-
+        if(DataHolder.getInstance().getCounts() == null) {
+            DataHolder.getInstance().setCounts(new Integer[(getResources().getStringArray(R.array.schedule_items_array).length)]);
+            for (int i = 0; i < DataHolder.getInstance().getCounts().length; i++) {
+                DataHolder.getInstance().getCounts()[i] = 0;
+            }
+        }
 
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.dropdown_layout);
@@ -56,10 +68,13 @@ public class EquipmentStatusActivity extends AppCompatActivity {
 
     public void incrementLoadCount(){
         TextView countView = (TextView)findViewById(R.id.count);
-        String currentCount = countView.getText().toString();
-        int newCount = Integer.parseInt(currentCount);
-        countView.setText(newCount + 1 +"");
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Integer selectedItemPosition = spinner.getSelectedItemPosition();
+        DataHolder.getInstance().getCounts()[selectedItemPosition] = DataHolder.getInstance().getCounts()[selectedItemPosition] + 1;
+
+        countView.setText(DataHolder.getInstance().getCounts()[selectedItemPosition].toString());
     }
+
 
     public void switchToUnloaded(){
         Button buttonUnloaded = (Button) findViewById(R.id.unloadedButton);
@@ -71,7 +86,7 @@ public class EquipmentStatusActivity extends AppCompatActivity {
         TextView instruction = (TextView)findViewById(R.id.instruction);
         instruction.setText(R.string.drag_down);
         incrementLoadCount();
-
+        DataHolder.getInstance().setStatus("Unloaded");
     }
 
     public void switchToLoaded(){
@@ -83,5 +98,8 @@ public class EquipmentStatusActivity extends AppCompatActivity {
         buttonLoaded.setBackgroundResource(R.drawable.active_loaded);
         TextView instruction = (TextView)findViewById(R.id.instruction);
         instruction.setText(R.string.drag_up);
+        DataHolder.getInstance().setStatus("Loaded");
     }
+
+
 }

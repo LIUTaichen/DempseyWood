@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.dempseywood.operatordatacollector.R;
@@ -15,6 +16,7 @@ import com.dempseywood.operatordatacollector.database.DbHelper;
 import com.dempseywood.operatordatacollector.operatordetail.CustomSpinnerAdapter;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.operatordetail.listener.OperatorDetailEventListener;
+import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,11 @@ public class OperatorDetailActivity extends AppCompatActivity {
 
         Button confirmButton = (Button)findViewById(R.id.confirm_button);
         confirmButton.setOnClickListener(listener);
+
+        EditText operatorNameEditText = (EditText)findViewById(R.id.operator_name);
+        operatorNameEditText.setText(DataHolder.getInstance().getOperatorName());
+        spinner.setSelection(machines.indexOf(DataHolder.getInstance().getMachine()));
+
 
 
     }

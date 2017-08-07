@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.dempseywood.operatordatacollector.rest.status.EquipmentStatus;
+import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -26,26 +27,20 @@ import java.util.Date;
 
 public class HttpRequestTask extends AsyncTask<Void, Void, EquipmentStatus> {
 
+    private EquipmentStatus status;
+    public HttpRequestTask(EquipmentStatus status){
+        this.status = status;
+    }
+
     @Override
     protected EquipmentStatus doInBackground(Void... params) {
         try {
             Log.e("HttpRequestTask", "started");
-            final String url = "http://192.168.100.103:8080/status";
+            final String url = "http://192.168.100.66:8080/status";
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-            //JSONObject status = new JSONObject();
-            /*tatus.put("id", "11");
-            status.put("equipment", "ABGCCC");
-            status.put("operator", "kkkoper");
-            status.put("status", "Unloaded");s*/
-            EquipmentStatus status = new EquipmentStatus();
-            status.setEquipment("piece");
-            status.setOperator("Ruse");
-            status.setStatus("Loaded");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-            //status.put("timestamp", sdf.format(new Date()));
             // set headers
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
