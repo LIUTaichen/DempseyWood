@@ -34,6 +34,7 @@ public class OperatorDetailActivity extends AppCompatActivity {
         Spinner spinner = (Spinner) findViewById(R.id.spinner2);
         prepareData();
         //String[] machines = getMachines();
+
         List<Machine> machines = getMachines();
         //ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, R.layout.spinner_layout,  machines);
 
@@ -56,7 +57,16 @@ public class OperatorDetailActivity extends AppCompatActivity {
 
         EditText operatorNameEditText = (EditText)findViewById(R.id.operator_name);
         operatorNameEditText.setText(DataHolder.getInstance().getOperatorName());
-        spinner.setSelection(machines.indexOf(DataHolder.getInstance().getMachine()));
+        Machine selectedMachine = DataHolder.getInstance().getMachine();
+        if(selectedMachine != null) {
+            int position = 0;
+            for (int i = 0; i < machines.size(); i++) {
+                if (machines.get(i).getPlateNo().equals(selectedMachine.getPlateNo())) {
+                    position = i;
+                }
+            }
+            spinner.setSelection(position);
+        }
 
 
 
