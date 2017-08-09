@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
+import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
 /**
@@ -24,6 +25,9 @@ public class ScheduleItemSpinnerOnItemSelectedListener implements AdapterView.On
         TextView countView = (TextView)activity.findViewById(R.id.count);
         Integer count = DataHolder.getInstance().getCounts()[position];
         countView.setText(count.toString());
+
+        String task = (String) parent.getItemAtPosition(position);
+        DataHolder.getInstance().getEquipmentStatus().setTask(task);
 
     }
 

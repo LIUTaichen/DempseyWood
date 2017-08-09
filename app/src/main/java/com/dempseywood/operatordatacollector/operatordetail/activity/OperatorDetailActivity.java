@@ -56,7 +56,7 @@ public class OperatorDetailActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(listener);
 
         EditText operatorNameEditText = (EditText)findViewById(R.id.operator_name);
-        operatorNameEditText.setText(DataHolder.getInstance().getOperatorName());
+        operatorNameEditText.setText(DataHolder.getInstance().getEquipmentStatus().getOperator());
         Machine selectedMachine = DataHolder.getInstance().getMachine();
         if(selectedMachine != null) {
             int position = 0;

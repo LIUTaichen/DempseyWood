@@ -16,6 +16,8 @@ public class EquipmentStatus {
 
     private String status;
 
+    private String task;
+
     private Date timestamp;
 
 
@@ -58,5 +60,13 @@ public class EquipmentStatus {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getTask() {
+        return task;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
     }
 }

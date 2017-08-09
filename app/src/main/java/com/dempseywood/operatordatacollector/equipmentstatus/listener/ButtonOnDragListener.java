@@ -40,12 +40,8 @@ public class ButtonOnDragListener implements View.OnDragListener {
                 else{
                     activity.switchToUnloaded();
                 }
-                EquipmentStatus status = new EquipmentStatus();
-                //DataHolder.getInstance().get
+                EquipmentStatus status = DataHolder.getInstance().getEquipmentStatus();
                 status.setEquipment(DataHolder.getInstance().getMachine().getPlateNo());
-                status.setOperator(DataHolder.getInstance().getOperatorName());
-                status.setStatus(DataHolder.getInstance().getStatus());
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
                 status.setTimestamp( new Date());
                 new HttpRequestTask(status).execute();
                 return true;

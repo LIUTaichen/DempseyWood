@@ -30,7 +30,7 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
             operatorName.setError("Operator name is required!");
         } else {
 
-            DataHolder.getInstance().setOperatorName(operatorName.getText().toString());
+            DataHolder.getInstance().getEquipmentStatus().setOperator(operatorName.getText().toString());
 
             Intent intent = new Intent(activity, EquipmentStatusActivity.class);
             activity.startActivity(intent);

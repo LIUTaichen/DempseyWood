@@ -1,6 +1,7 @@
 package com.dempseywood.operatordatacollector.scheduleitem;
 
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
+import com.dempseywood.operatordatacollector.rest.status.EquipmentStatus;
 
 import java.util.ArrayList;
 
@@ -12,10 +13,10 @@ public class DataHolder {
 
 
 
+
+    private EquipmentStatus equipmentStatus = new EquipmentStatus();
     private ArrayList<ScheduleItem> scheduleItemList;
-    private String operatorName;
     private Machine machine;
-    private String status;
     private Integer[] counts;
    // private
 
@@ -32,13 +33,6 @@ public class DataHolder {
         this.scheduleItemList = scheduleItemList;
     }
 
-    public String getOperatorName() {
-        return operatorName;
-    }
-
-    public void setOperatorName(String operatorName) {
-        this.operatorName = operatorName;
-    }
 
     public Machine getMachine() {
         return machine;
@@ -47,13 +41,6 @@ public class DataHolder {
     public void setMachine(Machine machine) {
         this.machine = machine;
     }
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public Integer[] getCounts() {
         return counts;
@@ -61,5 +48,13 @@ public class DataHolder {
 
     public void setCounts(Integer[] counts) {
         this.counts = counts;
+    }
+
+    public EquipmentStatus getEquipmentStatus() {
+        return equipmentStatus;
+    }
+
+    public void setEquipmentStatus(EquipmentStatus equipmentStatus) {
+        this.equipmentStatus = equipmentStatus;
     }
 }

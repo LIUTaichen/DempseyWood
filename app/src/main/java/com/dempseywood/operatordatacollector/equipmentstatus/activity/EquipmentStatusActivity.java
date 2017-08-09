@@ -25,7 +25,7 @@ public class EquipmentStatusActivity extends AppCompatActivity {
         setContentView(R.layout.activity_equipment_status);
 
         TextView operatorName = (TextView)findViewById(R.id.operator_name);
-        operatorName.setText(DataHolder.getInstance().getOperatorName());
+        operatorName.setText(DataHolder.getInstance().getEquipmentStatus().getOperator());
         TextView machinePlateNo = (TextView)findViewById(R.id.machine_name);
         machinePlateNo.setText(DataHolder.getInstance().getMachine().getPlateNo());
 
@@ -86,7 +86,7 @@ public class EquipmentStatusActivity extends AppCompatActivity {
         TextView instruction = (TextView)findViewById(R.id.instruction);
         instruction.setText(R.string.drag_down);
         incrementLoadCount();
-        DataHolder.getInstance().setStatus("Unloaded");
+        DataHolder.getInstance().getEquipmentStatus().setStatus("Unloaded");
     }
 
     public void switchToLoaded(){
@@ -98,7 +98,7 @@ public class EquipmentStatusActivity extends AppCompatActivity {
         buttonLoaded.setBackgroundResource(R.drawable.active_loaded);
         TextView instruction = (TextView)findViewById(R.id.instruction);
         instruction.setText(R.string.drag_up);
-        DataHolder.getInstance().setStatus("Loaded");
+        DataHolder.getInstance().getEquipmentStatus().setStatus("Loaded");
     }
 
 
