@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.dempseywood.operatordatacollector.R;
+import com.dempseywood.operatordatacollector.database.DbHelper;
+import com.dempseywood.operatordatacollector.database.dao.EquipmentStatusDAO;
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
 import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
 import com.dempseywood.operatordatacollector.rest.status.EquipmentStatus;
@@ -43,7 +45,8 @@ public class ButtonOnDragListener implements View.OnDragListener {
                 EquipmentStatus status = DataHolder.getInstance().getEquipmentStatus();
                 status.setEquipment(DataHolder.getInstance().getMachine().getPlateNo());
                 status.setTimestamp( new Date());
-                new HttpRequestTask(status).execute();
+
+                new HttpRequestTask(v.getContext(),status).execute();
                 return true;
             case DragEvent.ACTION_DRAG_ENTERED:
                 if(isLoadedButton){
@@ -60,4 +63,6 @@ public class ButtonOnDragListener implements View.OnDragListener {
         }
         return true;
     }
+
+
 }

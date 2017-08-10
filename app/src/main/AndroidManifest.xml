@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dempseywood.operatordatacollector">
-    <uses-permission android:name="android.permission.INTERNET"
-        />
-    <uses-permission
-        android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
 
@@ -16,7 +15,7 @@
         android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".DisplayMessageActivity"
             android:parentActivityName=".MainActivity">
@@ -31,11 +30,13 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".equipmentstatus.activity.EquipmentStatusActivity"
+        <activity
+            android:name=".equipmentstatus.activity.EquipmentStatusActivity"
             android:parentActivityName=".operatordetail.activity.OperatorDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".operatordetail.activity.OperatorDetailActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,6 +50,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".jobservice.EquipmentStatusJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
     </application>
 
 </manifest>
