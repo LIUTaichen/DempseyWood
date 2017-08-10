@@ -1,6 +1,5 @@
 package com.dempseywood.operatordatacollector.operatordetail.activity;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -8,7 +7,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.dempseywood.operatordatacollector.R;
-import com.dempseywood.operatordatacollector.database.DataCollectorContract.MachineTO;
 import com.dempseywood.operatordatacollector.database.DbHelper;
 import com.dempseywood.operatordatacollector.database.dao.MachineDAO;
 import com.dempseywood.operatordatacollector.operatordetail.CustomSpinnerAdapter;
@@ -43,7 +41,7 @@ public class OperatorDetailActivity extends AppCompatActivity {
 */
 
 // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(R.layout.dropdown_layout);
+        adapter.setDropDownViewResource(R.layout.task_dropdown_layout);
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 

@@ -52,7 +52,7 @@ public class EquipmentStatusActivity extends AppCompatActivity {
         }
 
 // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(R.layout.dropdown_layout);
+        adapter.setDropDownViewResource(R.layout.task_dropdown_layout);
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         Button buttonUnloaded = (Button) findViewById(R.id.unloadedButton);
