@@ -32,6 +32,8 @@ public class EquipmentStatusDAO {
                 DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_OPERATOR,
                 DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_TASK,
                 DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_STATUS,
+                DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_LATITUDE,
+                DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_LONGITUDE,
                 DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_TIMESTAMP,
         };
 
@@ -51,6 +53,8 @@ public class EquipmentStatusDAO {
             equipmentStatus.setOperator(cursor.getString(cursor.getColumnIndexOrThrow(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_OPERATOR)));
             equipmentStatus.setTask(cursor.getString(cursor.getColumnIndexOrThrow(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_TASK)));
             equipmentStatus.setStatus(cursor.getString(cursor.getColumnIndexOrThrow(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_STATUS)));
+            equipmentStatus.setLatitude(cursor.getDouble(cursor.getColumnIndexOrThrow(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_LATITUDE)));
+            equipmentStatus.setLongitude(cursor.getDouble(cursor.getColumnIndexOrThrow(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_LONGITUDE)));
             Long timeInEpoch = cursor.getLong(cursor.getColumnIndexOrThrow(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_TIMESTAMP));
             Date date = new Date(timeInEpoch);
             equipmentStatus.setTimestamp(date);
@@ -58,6 +62,7 @@ public class EquipmentStatusDAO {
             equipmentStatusList.add(equipmentStatus);
         }
         cursor.close();
+        db.close();
         return equipmentStatusList;
     }
 
@@ -70,9 +75,12 @@ public class EquipmentStatusDAO {
         values.put(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_OPERATOR, equipmentStatus.getOperator());
         values.put(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_TASK, equipmentStatus.getTask());
         values.put(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_STATUS, equipmentStatus.getStatus());
+        values.put(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_LATITUDE, equipmentStatus.getLatitude());
+        values.put(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_LONGITUDE, equipmentStatus.getLongitude());
         values.put(DataCollectorContract.EquipmentStatusTO.COLUMN_NAME_TIMESTAMP, equipmentStatus.getTimestamp().getTime());
 // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(DataCollectorContract.EquipmentStatusTO.TABLE_NAME, null, values);
+        db.close();
         return newRowId;
     }
 
@@ -81,6 +89,7 @@ public class EquipmentStatusDAO {
     public void removeAll(){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete(DataCollectorContract.EquipmentStatusTO.TABLE_NAME, "", new String[]{});
+        db.close();
     }
 
     public void deleteRowFromTable( String columnName, String keyValue) {
@@ -88,6 +97,7 @@ public class EquipmentStatusDAO {
         String whereClause = columnName + "=?";
         String[] whereArgs = new String[]{String.valueOf(keyValue)};
         db.delete(DataCollectorContract.EquipmentStatusTO.TABLE_NAME, whereClause, whereArgs);
+        db.close();
     }
 
 

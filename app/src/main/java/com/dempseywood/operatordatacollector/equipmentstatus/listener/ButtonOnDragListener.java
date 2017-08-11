@@ -45,6 +45,8 @@ public class ButtonOnDragListener implements View.OnDragListener {
                 EquipmentStatus status = DataHolder.getInstance().getEquipmentStatus();
                 status.setEquipment(DataHolder.getInstance().getMachine().getPlateNo());
                 status.setTimestamp( new Date());
+                status.setLongitude(DataHolder.getInstance().getLocation().getLongitude());
+                status.setLatitude(DataHolder.getInstance().getLocation().getLatitude());
 
                 new HttpRequestTask(v.getContext(),status).execute();
                 return true;

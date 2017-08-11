@@ -26,6 +26,8 @@ public final class DataCollectorContract {
         public static final String COLUMN_NAME_OPERATOR = "operator";
         public static final String COLUMN_NAME_STATUS = "status";
         public static final String COLUMN_NAME_TASK = "task";
+        public static final String COLUMN_NAME_LATITUDE = "latitude";
+        public static final String COLUMN_NAME_LONGITUDE = "longitude";
         public static final String COLUMN_NAME_TIMESTAMP = "timestamp";
 
 
@@ -47,6 +49,8 @@ public final class DataCollectorContract {
                     EquipmentStatusTO.COLUMN_NAME_OPERATOR + " TEXT," +
                     EquipmentStatusTO.COLUMN_NAME_STATUS + " TEXT," +
                     EquipmentStatusTO.COLUMN_NAME_TASK + " TEXT," +
+                    EquipmentStatusTO.COLUMN_NAME_LATITUDE + " DOUBLE," +
+                    EquipmentStatusTO.COLUMN_NAME_LONGITUDE + " DOUBLE," +
                     EquipmentStatusTO.COLUMN_NAME_TIMESTAMP + " LONG)";
 
     public static final String SQL_DELETE_MACHINE =

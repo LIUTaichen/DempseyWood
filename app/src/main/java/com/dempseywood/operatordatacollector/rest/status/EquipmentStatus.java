@@ -20,6 +20,10 @@ public class EquipmentStatus {
 
     private Date timestamp;
 
+    private Double latitude;
+
+    private Double longitude;
+
 
     public Integer getId() {
         return id;
@@ -68,5 +72,21 @@ public class EquipmentStatus {
 
     public void setTask(String task) {
         this.task = task;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

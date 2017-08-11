@@ -48,6 +48,7 @@ public class MachineDAO {
             machines.add(machine);
         }
         cursor.close();
+        db.close();
         return machines;
     }
 
@@ -60,18 +61,22 @@ public class MachineDAO {
         values.put(DataCollectorContract.MachineTO.COLUMN_NAME_DESCRIPTION, desc);
 // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(DataCollectorContract.MachineTO.TABLE_NAME, null, values);
+        db.close();
         return newRowId;
+
     }
 
 
     public void deleteMachine(String name){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete(DataCollectorContract.MachineTO.TABLE_NAME, "", new String[]{});
+        db.close();
     }
 
     public void removeAll(){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete(DataCollectorContract.MachineTO.TABLE_NAME, "", new String[]{});
+        db.close();
     }
 
     public void deleteRowFromTable( String columnName, String keyValue) {
@@ -79,5 +84,6 @@ public class MachineDAO {
         String whereClause = columnName + "=?";
         String[] whereArgs = new String[]{String.valueOf(keyValue)};
         db.delete(DataCollectorContract.MachineTO.TABLE_NAME, whereClause, whereArgs);
+        db.close();
     }
 }
