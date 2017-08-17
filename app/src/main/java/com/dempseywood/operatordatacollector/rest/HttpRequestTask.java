@@ -10,7 +10,7 @@ import android.util.Log;
 import com.dempseywood.operatordatacollector.database.DbHelper;
 import com.dempseywood.operatordatacollector.database.dao.EquipmentStatusDAO;
 import com.dempseywood.operatordatacollector.jobservice.EquipmentStatusJobService;
-import com.dempseywood.operatordatacollector.rest.status.EquipmentStatus;
+import com.dempseywood.operatordatacollector.equipmentstatus.EquipmentStatus;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +22,6 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

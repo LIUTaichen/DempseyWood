@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-feature android:name="android.hardware.location.network" />
 
@@ -44,20 +45,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".operatordetail.activity.OperatorDetailActivity"
+        <activity
+            android:name=".operatordetail.activity.OperatorDetailActivity"
             android:windowSoftInputMode="stateVisible">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".jobservice.EquipmentStatusJobService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
+        <activity android:name=".choosemachine.activity.ChooseMachineActivity"></activity>
     </application>
 
 </manifest>

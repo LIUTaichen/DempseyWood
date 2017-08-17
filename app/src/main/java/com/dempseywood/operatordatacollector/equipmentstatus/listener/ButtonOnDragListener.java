@@ -1,19 +1,15 @@
 package com.dempseywood.operatordatacollector.equipmentstatus.listener;
 
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
 
 import com.dempseywood.operatordatacollector.R;
-import com.dempseywood.operatordatacollector.database.DbHelper;
-import com.dempseywood.operatordatacollector.database.dao.EquipmentStatusDAO;
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
 import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
-import com.dempseywood.operatordatacollector.rest.status.EquipmentStatus;
+import com.dempseywood.operatordatacollector.equipmentstatus.EquipmentStatus;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**

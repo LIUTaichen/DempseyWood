@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.dempseywood.operatordatacollector.database.DataCollectorContract;
 import com.dempseywood.operatordatacollector.database.DbHelper;
-import com.dempseywood.operatordatacollector.rest.status.EquipmentStatus;
+import com.dempseywood.operatordatacollector.equipmentstatus.EquipmentStatus;
 
 import java.util.ArrayList;
 import java.util.Date;

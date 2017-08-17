@@ -1,4 +1,4 @@
-package com.dempseywood.operatordatacollector.rest.status;
+package com.dempseywood.operatordatacollector.equipmentstatus;
 
 import java.util.Date;
 
