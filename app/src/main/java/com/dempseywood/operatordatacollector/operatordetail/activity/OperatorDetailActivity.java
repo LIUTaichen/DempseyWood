@@ -24,6 +24,8 @@ import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.operatordetail.listener.OperatorDetailEventListener;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
+import static android.location.LocationManager.*;
+
 public class OperatorDetailActivity extends AppCompatActivity {
     private DbHelper mDbHelper;
     private MachineDAO machineDAO;
@@ -42,8 +44,8 @@ public class OperatorDetailActivity extends AppCompatActivity {
 
         int permissionCheck = PermissionChecker.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         if(permissionCheck == PermissionChecker.PERMISSION_GRANTED){
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 10, locationListener);
-            DataHolder.getInstance().setLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+            locationManager.requestLocationUpdates(GPS_PROVIDER, 60000, 10, locationListener);
+            DataHolder.getInstance().setLocation(locationManager.getLastKnownLocation(GPS_PROVIDER));
         }else{
             Log.e("OperatorDetailActivity", "permission for using location service denied, requesting permission");
             ActivityCompat.requestPermissions(this,
@@ -57,21 +59,7 @@ public class OperatorDetailActivity extends AppCompatActivity {
 
        // Spinner spinner = (Spinner) findViewById(R.id.spinner2);
         prepareData();
-        //String[] machines = getMachines();
 
-        //List<Machine> machines = machineDAO.findAllMachines();
-        //ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, R.layout.spinner_layout,  machines);
-
-        //CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, R.layout.spinner_layout, machines);
-// Create an ArrayAdapter using the string array and a default spinner layout
-      /*  ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.schedule_items_array, R.layout.spinner_layout);
-*/
-
-// Specify the layout to use when the list of choices appears
-        //adapter.setDropDownViewResource(R.layout.task_dropdown_layout);
-// Apply the adapter to the spinner
-        //spinner.setAdapter(adapter);
 
         OperatorDetailEventListener listener = new OperatorDetailEventListener();
         //spinner.setOnItemSelectedListener(listener);
@@ -80,6 +68,7 @@ public class OperatorDetailActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(listener);
 
         EditText operatorNameEditText = (EditText) findViewById(R.id.operator_name);
+
         if(DataHolder.getInstance().getEquipmentStatus().getOperator() != null) {
             operatorNameEditText.append(DataHolder.getInstance().getEquipmentStatus().getOperator());
         }
@@ -100,6 +89,8 @@ public class OperatorDetailActivity extends AppCompatActivity {
         machineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText operatorNameEditText = (EditText) findViewById(R.id.operator_name);
+                DataHolder.getInstance().getEquipmentStatus().setOperator(operatorNameEditText.getText().toString());
                 OperatorDetailActivity activity = (OperatorDetailActivity) v.getContext();
                 Intent intent = new Intent(activity, ChooseMachineActivity.class);
                 activity.startActivity(intent);

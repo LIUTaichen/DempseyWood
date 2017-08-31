@@ -54,7 +54,7 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... params) {
         boolean success = false;
         Log.e("HttpRequestTask", "doInBackground");
-        final String url = "http://192.168.100.66:8080/status";
+        final String url = "http://loadcount-env.k2g4nymf5a.ap-southeast-2.elasticbeanstalk.com/api/status";
         List<EquipmentStatus> statusList = equipmentStatusDAO.findAllEquipmentStatus();
         boolean hasOldRecords = !statusList.isEmpty();
         if (hasOldRecords) {

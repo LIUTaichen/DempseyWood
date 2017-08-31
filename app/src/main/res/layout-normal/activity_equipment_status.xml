@@ -35,7 +35,7 @@
         android:background="@drawable/active_unloaded"
         android:text="@string/string_unloaded"
         android:textAllCaps="false"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/load_count_text" />
@@ -50,7 +50,7 @@
         android:background="@drawable/active_loaded"
         android:text="@string/string_loaded"
         android:textAllCaps="false"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="@+id/unloadedButton"
         app:layout_constraintRight_toRightOf="@+id/unloadedButton"
         app:layout_constraintTop_toBottomOf="@+id/instruction"

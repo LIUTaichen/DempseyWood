@@ -3,6 +3,7 @@ package com.dempseywood.operatordatacollector.operatordetail.listener;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -26,9 +27,16 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
         OperatorDetailActivity activity = (OperatorDetailActivity) v.getContext();
 
         EditText operatorName = (EditText) activity.findViewById(R.id.operator_name);
+        Machine selectedMachine = DataHolder.getInstance().getMachine();
         if (operatorName.getText().toString().length() == 0) {
             operatorName.setError("Operator name is required!");
-        } else {
+        }
+        else if(selectedMachine == null){
+            Button machineButton =  (Button) activity.findViewById(R.id.machine_button);
+            machineButton.setError("Please select a machine");
+
+        }
+        else {
 
             DataHolder.getInstance().getEquipmentStatus().setOperator(operatorName.getText().toString());
 
