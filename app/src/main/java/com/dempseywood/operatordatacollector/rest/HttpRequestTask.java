@@ -54,7 +54,7 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... params) {
         boolean success = false;
         Log.e("HttpRequestTask", "doInBackground");
-        final String url = "http://loadcount-env.k2g4nymf5a.ap-southeast-2.elasticbeanstalk.com/api/status";
+        final String url = "http://loadcount.ap-southeast-2.elasticbeanstalk.com/api/status";
         List<EquipmentStatus> statusList = equipmentStatusDAO.findAllEquipmentStatus();
         boolean hasOldRecords = !statusList.isEmpty();
         if (hasOldRecords) {
@@ -82,15 +82,15 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
                         .exchange(url, HttpMethod.POST, entity, String.class);
                 if (loginResponse.getStatusCode() == HttpStatus.CREATED) {
                     //JSONObject userJson = new JSONObject(loginResponse.getBody());
-                    Log.e("HttpRequestTask", "created");
                     if (hasOldRecords) {
                         equipmentStatusDAO.removeAll();
-                        success =true;
+
                     }
+                    success =true;
                 } else {
                     success =false;
                 }
-                Log.e("HttpRequestTask", "finished");
+                Log.e("HttpRequestTask", "sucessfully finished");
             } catch (Exception e) {
                 Log.e("HttpRequestTask", e.getMessage(), e);
                 success =false;
