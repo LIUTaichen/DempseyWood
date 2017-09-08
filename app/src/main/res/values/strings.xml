@@ -20,4 +20,14 @@
     <string name="operator_name_text">John Smith</string>
     <string name="operator_name_input_label">Please enter your name:</string>
     <string name="machine_input_label">Please select the machine</string>
+    <string name="load">Unloaded</string>
+    <string name="top_soil">Top soil</string>
+    <string name="unload">Loaded</string>
+    <string-array name="material_list">
+        <item>Top soil</item>
+        <item>Clay</item>
+        <item>Unsuitable</item>
+        <item>Cut to fill</item>
+        <item>Other</item>
+    </string-array>
 </resources>

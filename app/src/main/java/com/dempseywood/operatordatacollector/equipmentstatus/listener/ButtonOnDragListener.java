@@ -5,9 +5,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.dempseywood.operatordatacollector.R;
+import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
 import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
-import com.dempseywood.operatordatacollector.equipmentstatus.EquipmentStatus;
+import com.dempseywood.operatordatacollector.equipmentstatus.EquipmentStatusOld;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
 import java.util.Date;

@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by musing on 04/08/2017.
  */
 
-public class EquipmentStatus {
+public class EquipmentStatusOld {
 
     private Integer id;
 

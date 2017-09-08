@@ -2,8 +2,9 @@ package com.dempseywood.operatordatacollector.scheduleitem;
 
 import android.location.Location;
 
+import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
+import com.dempseywood.operatordatacollector.equipmentstatus.EquipmentStatusOld;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
-import com.dempseywood.operatordatacollector.equipmentstatus.EquipmentStatus;
 
 import java.util.ArrayList;
 

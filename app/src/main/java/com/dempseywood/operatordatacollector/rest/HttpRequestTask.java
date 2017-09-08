@@ -8,9 +8,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.dempseywood.operatordatacollector.database.DbHelper;
-import com.dempseywood.operatordatacollector.database.dao.EquipmentStatusDAO;
+import com.dempseywood.operatordatacollector.database.db.DB;
+import com.dempseywood.operatordatacollector.database.db.dao.EquipmentStatusDao;
+import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
 import com.dempseywood.operatordatacollector.jobservice.EquipmentStatusJobService;
-import com.dempseywood.operatordatacollector.equipmentstatus.EquipmentStatus;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,7 +34,7 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
 
     private EquipmentStatus status;
     private Context context;
-    private EquipmentStatusDAO equipmentStatusDAO;
+    private EquipmentStatusDao equipmentStatusDAO;
 
     public HttpRequestTask(Context context, EquipmentStatus status) {
         Log.i("HttpRequestTask", "started");
@@ -44,8 +45,8 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
             Log.i("HttpRequestTask", "status is null, this is called from servicejob");
         }
         this.context = context;
-        DbHelper dbHelper = new DbHelper(context);
-        equipmentStatusDAO = new EquipmentStatusDAO(dbHelper);
+        DB.init(this.context);
+        equipmentStatusDAO = DB.getInstance().equipmentStatusDao();
 
     }
 
@@ -55,7 +56,7 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
         boolean success = false;
         Log.e("HttpRequestTask", "doInBackground");
         final String url = "http://loadcount.ap-southeast-2.elasticbeanstalk.com/api/status";
-        List<EquipmentStatus> statusList = equipmentStatusDAO.findAllEquipmentStatus();
+        List<EquipmentStatus> statusList = equipmentStatusDAO.getAll();
         boolean hasOldRecords = !statusList.isEmpty();
         if (hasOldRecords) {
             Log.e("HttpRequestTask", "doInBackground - no. of entry to send: " + statusList.size());
@@ -83,7 +84,7 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
                 if (loginResponse.getStatusCode() == HttpStatus.CREATED) {
                     //JSONObject userJson = new JSONObject(loginResponse.getBody());
                     if (hasOldRecords) {
-                        equipmentStatusDAO.removeAll();
+                        equipmentStatusDAO.deleteAll();
 
                     }
                     success =true;
@@ -98,7 +99,7 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
         }
         if(!success){
             if(status != null) {
-                equipmentStatusDAO.saveEquipmentStatus(status);
+                equipmentStatusDAO.insertAll(status);
                 Log.i("HttpRequestTask", "saving new status to DB");
             }
         }

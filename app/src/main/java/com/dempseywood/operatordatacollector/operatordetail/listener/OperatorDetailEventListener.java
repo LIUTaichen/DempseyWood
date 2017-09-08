@@ -11,7 +11,6 @@ import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.operatordetail.activity.OperatorDetailActivity;
-import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
 /**

@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
-import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
 /**

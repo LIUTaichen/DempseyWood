@@ -17,21 +17,7 @@
         android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
-        <activity
-            android:name=".DisplayMessageActivity"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
-            android:name=".scheduleitem.SelectScheduleItemActivity"
-            android:parentActivityName=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
-        </activity>
+
         <activity
             android:name=".equipmentstatus.activity.EquipmentStatusActivity"
             android:parentActivityName=".operatordetail.activity.OperatorDetailActivity">
@@ -60,7 +46,12 @@
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <activity android:name=".choosemachine.activity.ChooseMachineActivity"></activity>
+        <activity android:name=".choosemachine.activity.ChooseMachineActivity" />
+        <activity android:name=".CountByTapActivity">  <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
     </application>
 
 </manifest>

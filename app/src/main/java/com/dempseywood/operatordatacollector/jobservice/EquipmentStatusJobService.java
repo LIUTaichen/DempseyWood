@@ -5,7 +5,6 @@ import android.app.job.JobService;
 import android.util.Log;
 
 import com.dempseywood.operatordatacollector.database.DbHelper;
-import com.dempseywood.operatordatacollector.database.dao.EquipmentStatusDAO;
 import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
 
 /**
@@ -14,7 +13,7 @@ import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
 
 public class EquipmentStatusJobService extends JobService {
 
-    public static final Integer EquipmentStatusJobId = 22;
+    public static final Integer EquipmentStatusJobId = 23;
 
     private HttpRequestTask task;
     @Override
