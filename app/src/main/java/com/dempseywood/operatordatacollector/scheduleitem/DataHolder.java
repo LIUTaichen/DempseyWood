@@ -3,7 +3,6 @@ package com.dempseywood.operatordatacollector.scheduleitem;
 import android.location.Location;
 
 import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
-import com.dempseywood.operatordatacollector.equipmentstatus.EquipmentStatusOld;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
 
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ public class DataHolder {
     private ArrayList<ScheduleItem> scheduleItemList;
     private Machine machine;
     private Integer[] counts;
+    private Integer count = 0;
     private Location location;
 
 
@@ -67,5 +67,13 @@ public class DataHolder {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }

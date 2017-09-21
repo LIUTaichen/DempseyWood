@@ -9,6 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
+
 public class ChooseMaterialActivity extends AppCompatActivity {
 
     @Override
@@ -27,8 +29,8 @@ public class ChooseMaterialActivity extends AppCompatActivity {
         Log.d("ChooseMaterialActivity",  "debug");
         String[] materialArray = getResources().getStringArray(R.array.material_list);
         for(int i = 0; i < materialArray.length; i ++){
-            if(materialArray[i].equals(Data.getMaterial())){
-                Log.d("ChooseMaterialActivity", Data.getMaterial() + "  matched");
+            if(materialArray[i].equals(DataHolder.getInstance().getEquipmentStatus().getTask())){
+                Log.d("ChooseMaterialActivity", DataHolder.getInstance().getEquipmentStatus().getTask() + "  matched");
                 listView.setItemChecked(i, true);
             }
         }
@@ -37,7 +39,7 @@ public class ChooseMaterialActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String[] materialArray = getResources().getStringArray(R.array.material_list);
-                Data.setMaterial(materialArray[position]);
+                DataHolder.getInstance().getEquipmentStatus().setTask(materialArray[position]);
                 ChooseMaterialActivity activity = (ChooseMaterialActivity) view.getContext();
                 Intent intent = new Intent(activity, CountByTapActivity.class);
                 activity.startActivity(intent);

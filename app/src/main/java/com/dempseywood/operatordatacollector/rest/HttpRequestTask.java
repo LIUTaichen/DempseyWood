@@ -7,11 +7,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.dempseywood.operatordatacollector.database.DbHelper;
 import com.dempseywood.operatordatacollector.database.db.DB;
 import com.dempseywood.operatordatacollector.database.db.dao.EquipmentStatusDao;
 import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
-import com.dempseywood.operatordatacollector.jobservice.EquipmentStatusJobService;
+import com.dempseywood.operatordatacollector.service.EquipmentStatusJobService;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -55,14 +54,13 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... params) {
         boolean success = false;
         Log.e("HttpRequestTask", "doInBackground");
-        final String url = "http://loadcount.ap-southeast-2.elasticbeanstalk.com/api/status";
-        List<EquipmentStatus> statusList = equipmentStatusDAO.getAll();
+        //final String url = "http://loadcount.ap-southeast-2.elasticbeanstalk.com/api/status";
+        equipmentStatusDAO.insertAll(status);
+        final String url = "http://192.168.100.66:8080/api/status";
+        List<EquipmentStatus> statusList = equipmentStatusDAO.getAllNotSent();
         boolean hasOldRecords = !statusList.isEmpty();
         if (hasOldRecords) {
             Log.e("HttpRequestTask", "doInBackground - no. of entry to send: " + statusList.size());
-        }
-        if(status != null){
-            statusList.add(status);
         }
         //stop if no status to be sent
         if (!statusList.isEmpty()) {
@@ -83,10 +81,11 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
                         .exchange(url, HttpMethod.POST, entity, String.class);
                 if (loginResponse.getStatusCode() == HttpStatus.CREATED) {
                     //JSONObject userJson = new JSONObject(loginResponse.getBody());
-                    if (hasOldRecords) {
-                        equipmentStatusDAO.deleteAll();
-
+                    for(EquipmentStatus status : statusList){
+                        status.setIsSent(true);
                     }
+                    equipmentStatusDAO.updateAll(statusList);
+
                     success =true;
                 } else {
                     success =false;

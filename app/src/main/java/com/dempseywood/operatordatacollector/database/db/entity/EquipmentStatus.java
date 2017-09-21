@@ -27,6 +27,9 @@ public class EquipmentStatus {
 
     private Double longitude;
     private String imei;
+    private boolean isSent;
+
+
 
 
     public Integer getId() {
@@ -100,5 +103,13 @@ public class EquipmentStatus {
 
     public void setImei(String imei) {
         this.imei = imei;
+    }
+
+    public boolean getIsSent() {
+        return isSent;
+    }
+
+    public void setIsSent(boolean sent) {
+        isSent = sent;
     }
 }

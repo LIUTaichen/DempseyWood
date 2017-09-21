@@ -1,10 +1,9 @@
-package com.dempseywood.operatordatacollector.jobservice;
+package com.dempseywood.operatordatacollector.service;
 
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.util.Log;
 
-import com.dempseywood.operatordatacollector.database.DbHelper;
 import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
 
 /**

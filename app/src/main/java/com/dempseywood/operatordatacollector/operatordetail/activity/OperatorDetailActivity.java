@@ -23,6 +23,7 @@ import com.dempseywood.operatordatacollector.location.DwLocationListener;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.operatordetail.listener.OperatorDetailEventListener;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import static android.location.LocationManager.*;
 
@@ -98,6 +99,13 @@ public class OperatorDetailActivity extends AppCompatActivity {
         });
 
 
+        try {
+            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+            Log.d("Firbase id login", "Refreshed token: " + refreshedToken);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -117,5 +125,12 @@ public class OperatorDetailActivity extends AppCompatActivity {
     protected void onDestroy() {
         mDbHelper.close();
         super.onDestroy();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("detail activity", "resuming activity");
     }
 }

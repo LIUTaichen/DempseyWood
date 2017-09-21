@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Operator Data Collector</string>
+    <string name="app_name">DW Client</string>
     <string name="prompt_message">Please select schedule items:</string>
     <string name="button_confirm">Confirm</string>
     <string-array name="schedule_items_array">
@@ -30,4 +30,5 @@
         <item>Cut to fill</item>
         <item>Other</item>
     </string-array>
+    <string name="message_alert_unable_to_change_task">Task can only be changed when unloaded.</string>
 </resources>

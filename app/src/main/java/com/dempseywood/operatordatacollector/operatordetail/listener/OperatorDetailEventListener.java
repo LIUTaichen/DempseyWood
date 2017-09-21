@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.dempseywood.operatordatacollector.CountByTapActivity;
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
@@ -39,7 +40,7 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
 
             DataHolder.getInstance().getEquipmentStatus().setOperator(operatorName.getText().toString());
 
-            Intent intent = new Intent(activity, EquipmentStatusActivity.class);
+            Intent intent = new Intent(activity, CountByTapActivity.class);
             activity.startActivity(intent);
         }
     }

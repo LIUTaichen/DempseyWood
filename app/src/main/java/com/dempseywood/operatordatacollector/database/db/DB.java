@@ -20,7 +20,7 @@ public class DB {
     public static void init(Context context){
         if(instance == null) {
             instance = Room.databaseBuilder(context,
-                    AppDatabase.class, "dw-database").build();
+                    AppDatabase.class, "dw-database").fallbackToDestructiveMigration().build();
         }
     }
 

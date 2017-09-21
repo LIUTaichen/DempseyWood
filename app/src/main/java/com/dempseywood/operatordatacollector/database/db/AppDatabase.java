@@ -13,7 +13,7 @@ import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
  */
 
 
-    @Database(entities = {EquipmentStatus.class}, version = 1)
+    @Database(entities = {EquipmentStatus.class}, version = 2)
     @TypeConverters({Converters.class})
     public abstract class AppDatabase extends RoomDatabase {
         public abstract EquipmentStatusDao equipmentStatusDao();
