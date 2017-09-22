@@ -1,10 +1,17 @@
 package com.dempseywood.operatordatacollector;
 
+import android.*;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.dempseywood.operatordatacollector.database.db.DB;
@@ -12,6 +19,7 @@ import com.dempseywood.operatordatacollector.database.db.dao.EquipmentDao;
 import com.dempseywood.operatordatacollector.database.db.dao.EquipmentStatusDao;
 import com.dempseywood.operatordatacollector.database.db.entity.Equipment;
 import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
+import com.dempseywood.operatordatacollector.location.DwLocationListener;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.operatordetail.activity.OperatorDetailActivity;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
@@ -31,6 +39,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static android.location.LocationManager.GPS_PROVIDER;
+
 public class LauncherActivity extends AppCompatActivity {
     private EquipmentStatusDao equipmentStatusDao;
     private EquipmentDao equipmentDao;
@@ -40,6 +50,43 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new DwLocationListener();
+        // Register the listener with the Location Manager to receive location updates
+
+        int permissionCheck = PermissionChecker.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionCheck == PermissionChecker.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(GPS_PROVIDER, 60000, 10, locationListener);
+            Location newLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
+            DataHolder.getInstance().getEquipmentStatus().setLatitude(newLocation.getLatitude());
+            DataHolder.getInstance().getEquipmentStatus().setLongitude(newLocation.getLongitude());
+        } else {
+            Log.e("LauncherActivity", "permission for using location service denied, requesting permission");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+            locationManager.requestLocationUpdates(GPS_PROVIDER, 60000, 10, locationListener);
+            Location newLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
+            DataHolder.getInstance().getEquipmentStatus().setLatitude(newLocation.getLatitude());
+            DataHolder.getInstance().getEquipmentStatus().setLongitude(newLocation.getLongitude());
+        }
+
+        int permissionCheckPhonestack = PermissionChecker.checkSelfPermission(getApplicationContext(), android.Manifest.permission.READ_PHONE_STATE);
+        if (permissionCheckPhonestack == PermissionChecker.PERMISSION_GRANTED) {
+            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            String imei = telephonyManager.getDeviceId();
+            DataHolder.getInstance().getEquipmentStatus().setImei(imei);
+        } else {
+            Log.e("LauncherActivity", "permission for using phone stack denied, requesting permission");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.READ_PHONE_STATE},
+                    1);
+
+
+        }
+
+
         DB.init(getApplicationContext());
         equipmentStatusDao = DB.getInstance().equipmentStatusDao();
         equipmentDao =  DB.getInstance().equipmentDao();

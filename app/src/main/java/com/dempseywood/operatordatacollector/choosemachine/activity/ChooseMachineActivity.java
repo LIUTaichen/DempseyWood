@@ -10,13 +10,10 @@ import android.widget.SearchView;
 
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.choosemachine.listener.OnQueryTextListener;
-import com.dempseywood.operatordatacollector.database.DbHelper;
-import com.dempseywood.operatordatacollector.database.dao.MachineDAO;
 import com.dempseywood.operatordatacollector.choosemachine.CustomSpinnerAdapter;
 import com.dempseywood.operatordatacollector.database.db.DB;
 import com.dempseywood.operatordatacollector.database.db.dao.EquipmentDao;
 import com.dempseywood.operatordatacollector.database.db.entity.Equipment;
-import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.operatordetail.activity.OperatorDetailActivity;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
@@ -24,7 +21,6 @@ import java.util.List;
 
 public class ChooseMachineActivity extends AppCompatActivity {
 
-    private MachineDAO machineDAO;
 
     private EquipmentDao equipmentDao;
 
@@ -40,7 +36,6 @@ public class ChooseMachineActivity extends AppCompatActivity {
         DB.init(getApplicationContext());
         equipmentDao =  DB.getInstance().equipmentDao();
 
-        machineDAO = new MachineDAO(new DbHelper(this));
 
         SearchView searchView = (SearchView)findViewById(R.id.machine_search);
         searchView.setIconifiedByDefault(false);

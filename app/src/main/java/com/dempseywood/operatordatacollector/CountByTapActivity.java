@@ -8,18 +8,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.PermissionChecker;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -57,40 +53,7 @@ public class CountByTapActivity extends AppCompatActivity {
         DB.init(getApplicationContext());
         equipmentStatusDao = DB.getInstance().equipmentStatusDao();
 
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new DwLocationListener();
-        // Register the listener with the Location Manager to receive location updates
 
-        int permissionCheck = PermissionChecker.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionCheck == PermissionChecker.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(GPS_PROVIDER, 60000, 10, locationListener);
-            Location newLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
-            DataHolder.getInstance().getEquipmentStatus().setLatitude(newLocation.getLatitude());
-            DataHolder.getInstance().getEquipmentStatus().setLongitude(newLocation.getLongitude());
-        } else {
-            Log.e("OperatorDetailActivity", "permission for using location service denied, requesting permission");
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
-            locationManager.requestLocationUpdates(GPS_PROVIDER, 60000, 10, locationListener);
-            Location newLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
-            DataHolder.getInstance().getEquipmentStatus().setLatitude(newLocation.getLatitude());
-            DataHolder.getInstance().getEquipmentStatus().setLongitude(newLocation.getLongitude());
-        }
-
-        int permissionCheckPhonestack = PermissionChecker.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_PHONE_STATE);
-        if (permissionCheckPhonestack == PermissionChecker.PERMISSION_GRANTED) {
-            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            String imei = telephonyManager.getDeviceId();
-            DataHolder.getInstance().getEquipmentStatus().setImei(imei);
-        } else {
-            Log.e("MainActivity", "permission for using phone stack denied, requesting permission");
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_PHONE_STATE},
-                    1);
-
-
-        }
 
         unloadedButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +89,9 @@ public class CountByTapActivity extends AppCompatActivity {
         loadedMaterialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAlert(getString(R.string.message_alert_unable_to_change_task));
+                Snackbar.make(CountByTapActivity.this.findViewById(android.R.id.content),
+                        getString(R.string.message_alert_unable_to_change_task),
+                        Snackbar.LENGTH_LONG).show();
             }
         });
         unloadedMaterialButton.setOnClickListener(new View.OnClickListener() {
@@ -200,10 +165,10 @@ public class CountByTapActivity extends AppCompatActivity {
     }
 
     public void initializeViews() {
-        unloadedButton = (Button) findViewById(R.id.loadButton);
-        unloadedMaterialButton = (Button) findViewById(R.id.loadMaterialButton);
-        loadedButton = (Button) findViewById(R.id.unloadButton);
-        loadedMaterialButton = (Button) findViewById(R.id.unloadMaterialButton);
+        unloadedButton = (Button) findViewById(R.id.unloadedButton);
+        unloadedMaterialButton = (Button) findViewById(R.id.unloadedMaterialButton);
+        loadedButton = (Button) findViewById(R.id.loadedButton);
+        loadedMaterialButton = (Button) findViewById(R.id.loadedMaterialButton);
         countText = (TextView) findViewById(R.id.textView);
         countText.setText(DataHolder.getInstance().getCount() + "");
         if ("Loaded".equals(DataHolder.getInstance().getEquipmentStatus().getStatus())) {
@@ -258,8 +223,14 @@ public class CountByTapActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                Intent intent = new Intent(this, OperatorDetailActivity.class);
-                this.startActivity(intent);
+                if(DataHolder.getInstance().getEquipmentStatus().getStatus().equals("Loaded")){
+                    Snackbar.make(this.findViewById(android.R.id.content),
+                            "Operator details can only be changed when equipment is unloaded",
+                    Snackbar.LENGTH_LONG).show();
+                }else {
+                    Intent intent = new Intent(this, OperatorDetailActivity.class);
+                    this.startActivity(intent);
+                }
 
                 return true;
         }

@@ -33,40 +33,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".operatordetail.activity.OperatorDetailActivity" />
 
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
         <activity
             android:name=".operatordetail.activity.OperatorDetailActivity"
-            android:windowSoftInputMode="stateVisible">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
+            android:windowSoftInputMode="stateHidden"></activity>
 
         <service
             android:name=".service.EquipmentStatusJobService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <activity android:name=".choosemachine.activity.ChooseMachineActivity" />
+        <activity
+            android:name=".choosemachine.activity.ChooseMachineActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".CountByTapActivity"
             android:parentActivityName=".operatordetail.activity.OperatorDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".operatordetail.activity.OperatorDetailActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ChooseMaterialActivity">
             <meta-data

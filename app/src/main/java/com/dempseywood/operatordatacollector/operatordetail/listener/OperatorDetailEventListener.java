@@ -49,8 +49,6 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Equipment machine = (Equipment) parent.getItemAtPosition(position);
-        TextView textView = (TextView) parent.getRootView().findViewById(R.id.text_machine_description);
-        textView.setText(machine.getCategory());
         DataHolder.getInstance().setEquipment(machine);
     }
 
