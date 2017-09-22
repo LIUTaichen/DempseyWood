@@ -39,7 +39,7 @@ public class ButtonOnDragListener implements View.OnDragListener {
                     activity.switchToUnloaded();
                 }
                 EquipmentStatus status = DataHolder.getInstance().getEquipmentStatus();
-                status.setEquipment(DataHolder.getInstance().getMachine().getPlateNo());
+                status.setEquipment(DataHolder.getInstance().getEquipment().getName());
                 status.setTimestamp( new Date());
                 if(DataHolder.getInstance().getLocation() != null) {
                     status.setLongitude(DataHolder.getInstance().getLocation().getLongitude());

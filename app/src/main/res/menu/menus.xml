@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Settings, should always be in the overflow -->
+    <item
+        android:id="@+id/action_settings"
+
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/oprator_details"
+        app:showAsAction="never" />
+</menu>

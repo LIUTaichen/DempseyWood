@@ -8,6 +8,7 @@
 
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-feature android:name="android.hardware.location.network" />
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
@@ -18,14 +19,7 @@
         android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity
-            android:name=".equipmentstatus.activity.EquipmentStatusActivity"
-            android:parentActivityName=".operatordetail.activity.OperatorDetailActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".operatordetail.activity.OperatorDetailActivity" />
-
+        <activity android:name=".LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,13 +27,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".operatordetail.activity.OperatorDetailActivity"
-            android:windowSoftInputMode="stateVisible">
-            <intent-filter>
+            android:name=".equipmentstatus.activity.EquipmentStatusActivity"
+            android:parentActivityName=".operatordetail.activity.OperatorDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".operatordetail.activity.OperatorDetailActivity" />
+
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".operatordetail.activity.OperatorDetailActivity"
+            android:windowSoftInputMode="stateVisible">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
 
         <service
@@ -48,10 +55,13 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity android:name=".choosemachine.activity.ChooseMachineActivity" />
-        <activity android:name=".CountByTapActivity" android:parentActivityName=".operatordetail.activity.OperatorDetailActivity">
+        <activity
+            android:name=".CountByTapActivity"
+            android:parentActivityName=".operatordetail.activity.OperatorDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".operatordetail.activity.OperatorDetailActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,31 +74,32 @@
                 android:value=".CountByTapActivity" />
         </activity>
 
-        <service
-            android:name=".service.MyFirebaseMessagingService">
+        <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".service.MyFirebaseInstanceIDService">
+        <service android:name=".service.MyFirebaseInstanceIDService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-     See README(https://goo.gl/l4GJaQ) for more. -->
+        <!--
+     Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/construction_icon" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
 
     </application>
-
 
 </manifest>

@@ -9,12 +9,18 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.PermissionChecker;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +29,7 @@ import com.dempseywood.operatordatacollector.database.db.DB;
 import com.dempseywood.operatordatacollector.database.db.dao.EquipmentStatusDao;
 import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
 import com.dempseywood.operatordatacollector.location.DwLocationListener;
+import com.dempseywood.operatordatacollector.operatordetail.activity.OperatorDetailActivity;
 import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
 
@@ -44,6 +51,8 @@ public class CountByTapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_count_by_tap);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         initializeViews();
         DB.init(getApplicationContext());
         equipmentStatusDao = DB.getInstance().equipmentStatusDao();
@@ -159,7 +168,7 @@ public class CountByTapActivity extends AppCompatActivity {
         TextView title =  new TextView(this);
         title.setText(message);
         title.setGravity(Gravity.CENTER);
-        title.setTextSize(80);
+        title.setTextSize(40);
         alertDialog.setCustomTitle(title);
         alertDialog.show();
 
@@ -217,7 +226,7 @@ public class CountByTapActivity extends AppCompatActivity {
         equipmentStatus.setTask(DataHolder.getInstance().getEquipmentStatus().getTask());
         equipmentStatus.setTimestamp(new Date());
         equipmentStatus.setOperator(DataHolder.getInstance().getEquipmentStatus().getOperator());
-        equipmentStatus.setEquipment(DataHolder.getInstance().getMachine().getPlateNo());
+        equipmentStatus.setEquipment(DataHolder.getInstance().getEquipment().getName());
         equipmentStatus.setImei(DataHolder.getInstance().getEquipmentStatus().getImei());
         equipmentStatus.setLatitude(DataHolder.getInstance().getEquipmentStatus().getLatitude());
         equipmentStatus.setLongitude(DataHolder.getInstance().getEquipmentStatus().getLongitude());
@@ -237,5 +246,40 @@ public class CountByTapActivity extends AppCompatActivity {
             alertDialog.dismiss();
         }
     }
+
+    @Override
+    protected void onResume() {
+        initializeViews();
+        super.onResume();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                Intent intent = new Intent(this, OperatorDetailActivity.class);
+                this.startActivity(intent);
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+   /* @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menus, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        //respond to menu item selection
+        Intent intent = new Intent(this, OperatorDetailActivity.class);
+        this.startActivity(intent);
+
+        return super.onOptionsItemSelected(item);
+    }*/
 
 }

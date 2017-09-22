@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="web_service">http://192.168.100.66:8080</string>
+    <!--<string name="web_service">http://loadcount.ap-southeast-2.elasticbeanstalk.com</string>-->
+    <string name="api_status">/api/status</string>
+    <string name="api_equipment">api/equipment</string>
+</resources>

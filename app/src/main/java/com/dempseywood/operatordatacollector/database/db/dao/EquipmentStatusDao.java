@@ -10,6 +10,7 @@ import android.arch.persistence.room.Update;
 
 import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,4 +40,9 @@ public interface EquipmentStatusDao {
     @Update
     void updateAll(List<EquipmentStatus> statusList);
 
+    @Query("SELECT * FROM equipmentstatus ORDER BY timestamp DESC LIMIT 1")
+    EquipmentStatus getLatestStatus();
+
+    @Query("SELECT * FROM equipmentstatus WHERE timestamp > (:startTime)")
+    List<EquipmentStatus> loadAllAfter(Date startTime);
 }

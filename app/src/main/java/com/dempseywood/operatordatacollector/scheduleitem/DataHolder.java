@@ -2,10 +2,12 @@ package com.dempseywood.operatordatacollector.scheduleitem;
 
 import android.location.Location;
 
+import com.dempseywood.operatordatacollector.database.db.entity.Equipment;
 import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by musing on 27/07/2017.
@@ -16,10 +18,11 @@ public class DataHolder {
 
     private EquipmentStatus equipmentStatus = new EquipmentStatus();
     private ArrayList<ScheduleItem> scheduleItemList;
-    private Machine machine;
+    private Equipment equipment;
     private Integer[] counts;
     private Integer count = 0;
     private Location location;
+    private List<Equipment> equipments;
 
 
     private static final DataHolder holder = new DataHolder();
@@ -37,12 +40,12 @@ public class DataHolder {
     }
 
 
-    public Machine getMachine() {
-        return machine;
+    public Equipment getEquipment() {
+        return equipment;
     }
 
-    public void setMachine(Machine machine) {
-        this.machine = machine;
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
     }
 
     public Integer[] getCounts() {
@@ -75,5 +78,13 @@ public class DataHolder {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public List<Equipment> getEquipments() {
+        return equipments;
+    }
+
+    public void setEquipments(List<Equipment> equipments) {
+        this.equipments = equipments;
     }
 }

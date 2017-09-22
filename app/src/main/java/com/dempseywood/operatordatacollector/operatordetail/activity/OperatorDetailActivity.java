@@ -19,6 +19,7 @@ import com.dempseywood.operatordatacollector.choosemachine.activity.ChooseMachin
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.database.DbHelper;
 import com.dempseywood.operatordatacollector.database.dao.MachineDAO;
+import com.dempseywood.operatordatacollector.database.db.entity.Equipment;
 import com.dempseywood.operatordatacollector.location.DwLocationListener;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.operatordetail.listener.OperatorDetailEventListener;
@@ -73,17 +74,17 @@ public class OperatorDetailActivity extends AppCompatActivity {
         if(DataHolder.getInstance().getEquipmentStatus().getOperator() != null) {
             operatorNameEditText.append(DataHolder.getInstance().getEquipmentStatus().getOperator());
         }
-        Machine selectedMachine = DataHolder.getInstance().getMachine();
+        Equipment selectedMachine = DataHolder.getInstance().getEquipment();
 
         Button machineButton =  (Button) findViewById(R.id.machine_button);
         if (selectedMachine != null) {
            StringBuilder machineButtonTextStringBuilder = new StringBuilder();
             machineButtonTextStringBuilder.append(getString(R.string.machine_name_label));
             machineButtonTextStringBuilder.append(" ");
-            machineButtonTextStringBuilder.append(selectedMachine.getPlateNo());
+            machineButtonTextStringBuilder.append(selectedMachine.getName());
             machineButton.setText(machineButtonTextStringBuilder.toString());
             TextView textView = (TextView)findViewById(R.id.text_machine_description);
-            textView.setText(selectedMachine.getDesc());
+            textView.setText(selectedMachine.getCategory());
 
         }
 

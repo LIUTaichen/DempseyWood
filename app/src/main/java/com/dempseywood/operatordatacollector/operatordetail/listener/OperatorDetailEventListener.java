@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.dempseywood.operatordatacollector.CountByTapActivity;
 import com.dempseywood.operatordatacollector.R;
+import com.dempseywood.operatordatacollector.database.db.entity.Equipment;
 import com.dempseywood.operatordatacollector.equipmentstatus.activity.EquipmentStatusActivity;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.operatordetail.activity.OperatorDetailActivity;
@@ -27,7 +28,7 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
         OperatorDetailActivity activity = (OperatorDetailActivity) v.getContext();
 
         EditText operatorName = (EditText) activity.findViewById(R.id.operator_name);
-        Machine selectedMachine = DataHolder.getInstance().getMachine();
+        Equipment selectedMachine = DataHolder.getInstance().getEquipment();
         if (operatorName.getText().toString().length() == 0) {
             operatorName.setError("Operator name is required!");
         }
@@ -47,10 +48,10 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Machine machine = (Machine) parent.getItemAtPosition(position);
+        Equipment machine = (Equipment) parent.getItemAtPosition(position);
         TextView textView = (TextView) parent.getRootView().findViewById(R.id.text_machine_description);
-        textView.setText(machine.getDesc());
-        DataHolder.getInstance().setMachine(machine);
+        textView.setText(machine.getCategory());
+        DataHolder.getInstance().setEquipment(machine);
     }
 
     @Override

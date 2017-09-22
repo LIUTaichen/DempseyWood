@@ -6,6 +6,7 @@ import android.widget.SearchView;
 
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.choosemachine.activity.ChooseMachineActivity;
+import com.dempseywood.operatordatacollector.database.db.entity.Equipment;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.operatordetail.activity.OperatorDetailActivity;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
@@ -28,9 +29,9 @@ public class OnQueryTextListener implements SearchView.OnQueryTextListener{
         ChooseMachineActivity activity = (ChooseMachineActivity) context;
         SearchView searchView = (SearchView)activity.findViewById(R.id.machine_search);
         String machineName = searchView.getQuery().toString();
-        Machine machine = new Machine();
-        machine.setPlateNo(machineName);
-        DataHolder.getInstance().setMachine(machine);
+        Equipment machine = new Equipment();
+        machine.setName(machineName);
+        DataHolder.getInstance().setEquipment(machine);
         Intent intent = new Intent(activity, OperatorDetailActivity.class);
         activity.startActivity(intent);
         return false;

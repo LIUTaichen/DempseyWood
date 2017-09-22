@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.database.db.DB;
 import com.dempseywood.operatordatacollector.database.db.dao.EquipmentStatusDao;
 import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
@@ -55,8 +56,10 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
         boolean success = false;
         Log.e("HttpRequestTask", "doInBackground");
         //final String url = "http://loadcount.ap-southeast-2.elasticbeanstalk.com/api/status";
-        equipmentStatusDAO.insertAll(status);
-        final String url = "http://192.168.100.66:8080/api/status";
+        if( status != null) {
+            equipmentStatusDAO.insertAll(status);
+        }
+        final String url = context.getString(R.string.web_service) + context.getString(R.string.api_status);
         List<EquipmentStatus> statusList = equipmentStatusDAO.getAllNotSent();
         boolean hasOldRecords = !statusList.isEmpty();
         if (hasOldRecords) {

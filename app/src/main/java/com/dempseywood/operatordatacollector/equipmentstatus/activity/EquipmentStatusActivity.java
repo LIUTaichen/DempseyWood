@@ -27,7 +27,7 @@ public class EquipmentStatusActivity extends AppCompatActivity {
         TextView operatorName = (TextView)findViewById(R.id.operator_name);
         operatorName.setText(DataHolder.getInstance().getEquipmentStatus().getOperator());
         TextView machinePlateNo = (TextView)findViewById(R.id.machine_name);
-        machinePlateNo.setText(DataHolder.getInstance().getMachine().getPlateNo());
+        machinePlateNo.setText(DataHolder.getInstance().getEquipment().getName());
 
         //ArrayList<ScheduleItem> allItems = DataHolder.getInstance().getScheduleItemList();
        /* ArrayList<ScheduleItem> activeItems = new  ArrayList<ScheduleItem>();

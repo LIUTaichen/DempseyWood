@@ -13,6 +13,9 @@ import com.dempseywood.operatordatacollector.choosemachine.listener.OnQueryTextL
 import com.dempseywood.operatordatacollector.database.DbHelper;
 import com.dempseywood.operatordatacollector.database.dao.MachineDAO;
 import com.dempseywood.operatordatacollector.choosemachine.CustomSpinnerAdapter;
+import com.dempseywood.operatordatacollector.database.db.DB;
+import com.dempseywood.operatordatacollector.database.db.dao.EquipmentDao;
+import com.dempseywood.operatordatacollector.database.db.entity.Equipment;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
 import com.dempseywood.operatordatacollector.operatordetail.activity.OperatorDetailActivity;
 import com.dempseywood.operatordatacollector.scheduleitem.DataHolder;
@@ -23,6 +26,8 @@ public class ChooseMachineActivity extends AppCompatActivity {
 
     private MachineDAO machineDAO;
 
+    private EquipmentDao equipmentDao;
+
 
 
     private CustomSpinnerAdapter adapter;
@@ -31,6 +36,9 @@ public class ChooseMachineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_machine);
+
+        DB.init(getApplicationContext());
+        equipmentDao =  DB.getInstance().equipmentDao();
 
         machineDAO = new MachineDAO(new DbHelper(this));
 
@@ -41,9 +49,9 @@ public class ChooseMachineActivity extends AppCompatActivity {
 
         ListView machineListView = (ListView)findViewById(R.id.machine_result_list);
 
-        List<Machine> machines = machineDAO.findAllMachines();
+        List<Equipment> equipments = DataHolder.getInstance().getEquipments();
 
-        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, R.layout.spinner_layout, machines);
+        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, R.layout.spinner_layout, equipments);
         this.setAdapter(adapter);
         machineListView.setAdapter(adapter);
         machineListView.setTextFilterEnabled(true);
@@ -51,8 +59,8 @@ public class ChooseMachineActivity extends AppCompatActivity {
         machineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Machine machine = (Machine) parent.getItemAtPosition(position);
-                DataHolder.getInstance().setMachine(machine);
+                Equipment equipment = (Equipment) parent.getItemAtPosition(position);
+                DataHolder.getInstance().setEquipment(equipment);
 
                 ChooseMachineActivity activity = (ChooseMachineActivity) view.getContext();
                 Intent intent = new Intent(activity, OperatorDetailActivity.class);
@@ -75,8 +83,8 @@ public class ChooseMachineActivity extends AppCompatActivity {
 
                 ChooseMachineActivity activity = (ChooseMachineActivity) v.getContext();
                 SearchView searchView = (SearchView)findViewById(R.id.machine_search);
-                String machineName = searchView.getQuery().toString();
-                DataHolder.getInstance().getMachine().setPlateNo(machineName);
+                String equipmentName = searchView.getQuery().toString();
+                DataHolder.getInstance().getEquipment().setName(equipmentName);
 
 
                 Intent intent = new Intent(activity, OperatorDetailActivity.class);

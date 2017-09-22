@@ -15,6 +15,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.dempseywood.operatordatacollector.R;
+import com.dempseywood.operatordatacollector.database.db.entity.Equipment;
 import com.dempseywood.operatordatacollector.operatordetail.Machine;
 
 import java.util.ArrayList;
@@ -29,8 +30,8 @@ public class CustomSpinnerAdapter extends BaseAdapter implements Filterable {
 
     private final LayoutInflater mInflater;
     private final Context mContext;
-    private final List<Machine> items;
-    private List<Machine> filteredMachines = new ArrayList<Machine>();
+    private final List<Equipment> items;
+    private List<Equipment> filteredMachines = new ArrayList<Equipment>();
     private final int mResource;
     private Filter myFilter;
 
@@ -45,19 +46,19 @@ public class CustomSpinnerAdapter extends BaseAdapter implements Filterable {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
-                ArrayList<Machine> tempList=new ArrayList<Machine>();
+                ArrayList<Equipment> tempList=new ArrayList<Equipment>();
                 //constraint is the result from text you want to filter against.
                 //objects is your data set you will filter from
                 if(constraint != null && items!=null) {
                     int length=items.size();
                     int i=0;
                     while(i<length){
-                        Machine item=items.get(i);
+                        Equipment item=items.get(i);
                         //do whatever you wanna do here
                         //adding result set output array
-                        if(item.getPlateNo().toLowerCase().contains((constraint.toString().toLowerCase()) )|| item.getDesc().toLowerCase().contains(constraint.toString().toLowerCase()) ){
+                        if(item.getName().toLowerCase().contains((constraint.toString().toLowerCase()) )|| item.getCategory().toLowerCase().contains(constraint.toString().toLowerCase()) ){
                             tempList.add(item);
-                            Log.e("CustomSpinnerAdapter", item.getPlateNo() + " is added to filtered result");
+                            Log.e("CustomSpinnerAdapter", item.getName() + " is added to filtered result");
                         }
                         i++;
                     }
@@ -72,7 +73,7 @@ public class CustomSpinnerAdapter extends BaseAdapter implements Filterable {
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence contraint, FilterResults results) {
-                filteredMachines = (ArrayList<Machine>) results.values;
+                filteredMachines = (ArrayList<Equipment>) results.values;
                 if (results.count > 0) {
                     Log.e("CustomSpinnerAdapter"," notify called");
 
@@ -113,11 +114,11 @@ public class CustomSpinnerAdapter extends BaseAdapter implements Filterable {
     }
 
     private View createItemView(int position, View convertView, ViewGroup parent){
-        Machine machineData = filteredMachines.get(position);
+        Equipment machineData = filteredMachines.get(position);
         if(filteredMachines.contains(machineData)){
             final View view = mInflater.inflate(mResource, parent, false);
             TextView text = (TextView) view.findViewById(R.id.textView);
-            text.setText(machineData.getPlateNo());
+            text.setText(machineData.getName());
             return view;
         }
         return convertView;
