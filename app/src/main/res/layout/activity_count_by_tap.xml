@@ -15,11 +15,11 @@
         <Button
             android:id="@+id/unloadedButton"
             style="@android:style/Widget.Material.Button.Borderless.Colored"
+            android:background="@android:color/holo_blue_bright"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="8dp"
-            android:background="@android:color/holo_blue_bright"
             android:fontFamily="sans-serif"
             android:text="@string/load"
             android:textAllCaps="false"

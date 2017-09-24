@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.List;
 
 import static android.location.LocationManager.GPS_PROVIDER;
+import static android.location.LocationManager.NETWORK_PROVIDER;
 
 public class LauncherActivity extends AppCompatActivity {
     private EquipmentStatusDao equipmentStatusDao;
@@ -57,8 +58,13 @@ public class LauncherActivity extends AppCompatActivity {
 
         int permissionCheck = PermissionChecker.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck == PermissionChecker.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(GPS_PROVIDER, 60000, 10, locationListener);
+            locationManager.requestLocationUpdates(GPS_PROVIDER
+                    , 60000, 10, locationListener);
             Location newLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
+            if(newLocation == null){
+                Log.i(tag, "GPS location not available, requesting network location");
+                newLocation = locationManager.getLastKnownLocation(NETWORK_PROVIDER);
+            }
             DataHolder.getInstance().getEquipmentStatus().setLatitude(newLocation.getLatitude());
             DataHolder.getInstance().getEquipmentStatus().setLongitude(newLocation.getLongitude());
         } else {
@@ -68,6 +74,10 @@ public class LauncherActivity extends AppCompatActivity {
                     1);
             locationManager.requestLocationUpdates(GPS_PROVIDER, 60000, 10, locationListener);
             Location newLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
+            if(newLocation == null){
+                Log.i(tag, "GPS location not available, requesting network location");
+                newLocation = locationManager.getLastKnownLocation(NETWORK_PROVIDER);
+            }
             DataHolder.getInstance().getEquipmentStatus().setLatitude(newLocation.getLatitude());
             DataHolder.getInstance().getEquipmentStatus().setLongitude(newLocation.getLongitude());
         }
@@ -100,15 +110,20 @@ public class LauncherActivity extends AppCompatActivity {
             @Override
             protected Boolean doInBackground(Void... params) {
                 final String url = activity.getString(R.string.web_service) + activity.getString(R.string.api_equipment);
+                try {
 
-                RestTemplate restTemplate = new RestTemplate();
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-                ResponseEntity<Equipment[]> responseEntity = restTemplate.getForEntity(url, Equipment[].class);
-                Log.d(tag, "equipments retrieved");
-                Log.d(tag, responseEntity.getBody().length + " size ");
-                equipmentDao.deleteAll();
-                equipmentDao.insertAll(responseEntity.getBody());
+                    RestTemplate restTemplate = new RestTemplate();
+                    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                    restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+                    ResponseEntity<Equipment[]> responseEntity = restTemplate.getForEntity(url, Equipment[].class);
+                    Log.d(tag, "equipments retrieved");
+                    Log.d(tag, responseEntity.getBody().length + " size ");
+                    equipmentDao.deleteAll();
+                    equipmentDao.insertAll(responseEntity.getBody());
+                }catch(Exception e){
+                    Log.e(tag, "error when communicating with server", e);
+                }
+
 
                 DataHolder.getInstance().setEquipments(equipmentDao.getAll());
 
