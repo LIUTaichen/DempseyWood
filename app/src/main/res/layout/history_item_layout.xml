@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="78dp"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/index"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/menu_item_background_selector"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+        android:text="1"
+        android:textAlignment="textStart"
+        android:textSize="30sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/menu_item_background_selector"
+        android:orientation="vertical"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_item_background_selector"
+            android:text="task"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/load_time_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="72dp"
+                android:text="loadtime"
+                android:textColor="@color/black_overlay" />
+
+            <TextView
+                android:id="@+id/unload_time_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="unload time"
+                android:textColor="@color/black_overlay"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

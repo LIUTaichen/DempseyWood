@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Settings, should always be in the overflow -->
+    <item
+        android:id="@+id/action_operator_details"
+
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/oprator_details"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_history"
+        android:icon="@drawable/ic_action_history"
+        android:title="@string/label_history_action"
+        app:showAsAction="never" />
+</menu>

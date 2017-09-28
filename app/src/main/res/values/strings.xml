@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Operator Data Collector</string>
+    <string name="app_name">DW Client</string>
     <string name="prompt_message">Please select schedule items:</string>
     <string name="button_confirm">Confirm</string>
     <string-array name="schedule_items_array">
@@ -14,10 +14,34 @@
     <string name="drag_up">Drag over to unload</string>
     <string name="drag_down">Drag over to load</string>
     <string name="string_unloaded">Unloaded</string>
-    <string name="machine_name_label">Machine :</string>
-    <string name="operator_name_label">Operator :</string>
+    <string name="label_machine_change">Change</string>
+    <string name="operator_name_label">Operator name</string>
     <string name="machine_name_text">Scraper S8946L</string>
     <string name="operator_name_text">John Smith</string>
     <string name="operator_name_input_label">Please enter your name:</string>
-    <string name="machine_input_label">Please select the machine</string>
+    <string name="machine_input_label">Machine</string>
+    <string name="load">Start load</string>
+    <string name="top_soil">Top soil</string>
+    <string name="unload">Finish load</string>
+    <string-array name="material_list">
+        <item>Top soil</item>
+        <item>Clay</item>
+        <item>Unsuitable</item>
+        <item>Cut to fill</item>
+        <item>Other</item>
+    </string-array>
+    <string name="message_alert_unable_to_change_task">Task can only be changed when unloaded.</string>
+
+    <string name="title_activity_launcher">LauncherActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="action_settings">settings</string>
+    <string name="oprator_details">Operator Details</string>
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
+    <string name="label_history_action">History</string>
+    <string name="label_history_appbar_title">History</string>
+    <string name="label_machine_name">Name</string>
+    <string name="label_machine_fleetId">Fleet id</string>
+    <string name="label_machine_category">Category</string>
 </resources>
