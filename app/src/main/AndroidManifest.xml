@@ -19,7 +19,7 @@
         android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LauncherActivity">
+        <activity android:name=".activities.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,17 +27,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".equipmentstatus.activity.EquipmentStatusActivity"
-            android:parentActivityName=".operatordetail.activity.OperatorDetailActivity">
+            android:name=".activities.EquipmentStatusActivity"
+            android:parentActivityName=".activities.OperatorDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".operatordetail.activity.OperatorDetailActivity" />
-
-
+                android:value=".activities.OperatorDetailActivity" />
         </activity>
         <activity
-            android:name=".operatordetail.activity.OperatorDetailActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:name=".activities.OperatorDetailActivity"
+            android:windowSoftInputMode="stateHidden" />
 
         <service
             android:name=".service.EquipmentStatusJobService"
@@ -45,19 +43,19 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
-            android:name=".choosemachine.activity.ChooseMachineActivity"
+            android:name=".activities.ChooseMachineActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".CountByTapActivity"
-            android:parentActivityName=".operatordetail.activity.OperatorDetailActivity">
+            android:name=".activities.CountByTapActivity"
+            android:parentActivityName=".activities.OperatorDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".operatordetail.activity.OperatorDetailActivity" />
+                android:value=".activities.OperatorDetailActivity" />
         </activity>
-        <activity android:name=".ChooseMaterialActivity">
+        <activity android:name=".activities.ChooseMaterialActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CountByTapActivity" />
+                android:value=".activities.CountByTapActivity" />
         </activity>
 
         <service android:name=".service.MyFirebaseMessagingService">
@@ -85,7 +83,12 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-
+        <activity android:name=".activities.HistoryActivity"
+            android:label="@string/label_history_appbar_title"
+            android:parentActivityName=".activities.CountByTapActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.CountByTapActivity" /></activity>
     </application>
 
 </manifest>

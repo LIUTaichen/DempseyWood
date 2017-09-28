@@ -8,9 +8,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.dempseywood.operatordatacollector.R;
-import com.dempseywood.operatordatacollector.database.db.DB;
-import com.dempseywood.operatordatacollector.database.db.dao.EquipmentStatusDao;
-import com.dempseywood.operatordatacollector.database.db.entity.EquipmentStatus;
+import com.dempseywood.operatordatacollector.data.DB;
+import com.dempseywood.operatordatacollector.data.dao.EquipmentStatusDao;
+import com.dempseywood.operatordatacollector.models.EquipmentStatus;
 import com.dempseywood.operatordatacollector.service.EquipmentStatusJobService;
 
 import org.springframework.http.HttpEntity;
