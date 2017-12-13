@@ -1,17 +1,22 @@
 package com.dempseywood.operatordatacollector.activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
 
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.data.DB;
@@ -28,7 +33,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,66 +44,26 @@ public class LauncherActivity extends AppCompatActivity {
     private EquipmentStatusDao equipmentStatusDao;
     private EquipmentDao equipmentDao;
     private String tag = "Launcher";
+    private static final Integer PERMISSION_REQUEST_CODE = 0;
+    private static final int REQUEST_APP_SETTINGS = 168;
+
+    private View mLayout;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.dempseywood.operatordatacollector.R.layout.activity_launcher);
-
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new DwLocationListener();
-        // Register the listener with the Location Manager to receive location updates
-
-        int permissionCheck = PermissionChecker.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionCheck == PermissionChecker.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(GPS_PROVIDER
-                    , 60000, 10, locationListener);
-            Location newLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
-            if(newLocation == null){
-                Log.i(tag, "GPS location not available, requesting network location");
-                newLocation = locationManager.getLastKnownLocation(NETWORK_PROVIDER);
-            }
-            if(newLocation != null){
-                DataHolder.getInstance().getEquipmentStatus().setLatitude(newLocation.getLatitude());
-                DataHolder.getInstance().getEquipmentStatus().setLongitude(newLocation.getLongitude());
-            }
-
-        } else {
-            Log.e("LauncherActivity", "permission for using location service denied, requesting permission");
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
-            locationManager.requestLocationUpdates(GPS_PROVIDER, 60000, 10, locationListener);
-            Location newLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
-            if(newLocation == null){
-                Log.i(tag, "GPS location not available, requesting network location");
-                newLocation = locationManager.getLastKnownLocation(NETWORK_PROVIDER);
-            }
-            if(newLocation != null){
-                DataHolder.getInstance().getEquipmentStatus().setLatitude(newLocation.getLatitude());
-                DataHolder.getInstance().getEquipmentStatus().setLongitude(newLocation.getLongitude());
-            }
-        }
-
-        int permissionCheckPhonestack = PermissionChecker.checkSelfPermission(getApplicationContext(), android.Manifest.permission.READ_PHONE_STATE);
-        if (permissionCheckPhonestack == PermissionChecker.PERMISSION_GRANTED) {
-            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            String imei = telephonyManager.getDeviceId();
-            DataHolder.getInstance().getEquipmentStatus().setImei(imei);
-        } else {
-            Log.e("LauncherActivity", "permission for using phone stack denied, requesting permission");
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.READ_PHONE_STATE},
-                    1);
-
-
-        }
-
-
+        mLayout = findViewById(R.id.launcher_layout);
         DB.init(getApplicationContext());
         equipmentStatusDao = DB.getInstance().equipmentStatusDao();
         equipmentDao =  DB.getInstance().equipmentDao();
-        loadStateFromDatabase();
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new DwLocationListener();
+
+        getLocationAndIMEI();
     }
 
     public void loadStateFromDatabase(){
@@ -140,17 +105,23 @@ public class LauncherActivity extends AppCompatActivity {
 
                     DataHolder.getInstance().setEquipmentStatus(lastStatus);
                     Equipment machine = equipmentDao.findByName(lastStatus.getEquipment());
-                    DataHolder.getInstance().setEquipment(machine);
-                    Date timeOfStartOfToday = DateTimeHelper.getTimeOfStartOfDay(new Date());
-                    if(!lastStatus.getTimestamp().before(timeOfStartOfToday)){
-                        List<EquipmentStatus> statusList = equipmentStatusDao.loadAllAfter(timeOfStartOfToday);
-                        Integer count = statusList.size() / 2;
-                        DataHolder.getInstance().setCount(count);
-                    }else{
-                        DataHolder.getInstance().setCount(0);
-                        DataHolder.getInstance().getEquipmentStatus().setStatus("Unloaded");
+                    if(machine == null){
+                        isFirstUse = true;
+                        Log.i(tag, "Previously used machine is no longer available, starting operator detail activity");
+                    }else {
+
+                        DataHolder.getInstance().setEquipment(machine);
+                        Date timeOfStartOfToday = DateTimeHelper.getTimeOfStartOfDay(new Date());
+                        if (!lastStatus.getTimestamp().before(timeOfStartOfToday)) {
+                            List<EquipmentStatus> statusList = equipmentStatusDao.loadAllAfter(timeOfStartOfToday);
+                            Integer count = statusList.size() / 2;
+                            DataHolder.getInstance().setCount(count);
+                        } else {
+                            DataHolder.getInstance().setCount(0);
+                            DataHolder.getInstance().getEquipmentStatus().setStatus("Unloaded");
+                        }
+                        Log.i(tag, "This is not first usage, starting counting activity");
                     }
-                    Log.i(tag, "This is not first usage, starting counting activity");
                 }
 
 
@@ -188,11 +159,110 @@ public class LauncherActivity extends AppCompatActivity {
         DataHolder.getInstance().setCount(0);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (grantResults.length > 0 && requestCode == PERMISSION_REQUEST_CODE) {
+            // Permission has been granted.
+            boolean allGranted = false;
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }else{
+                    allGranted= true;
+                }
+            }
+            if (allGranted) {
+                Log.i(tag,"all permissions permitted, loading location and phone state");
+                getLocationAndIMEI();
+            } else {
+                Log.i(tag,"not all permissions permitted, requesting through snackbar");
+                Snackbar snackbar = Snackbar
+                        .make(mLayout, "Please grant all permissions for the app to work.", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("SETTINGS", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
+                                myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
+                                myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(myAppSettings);
+                            }
+                        });
+
+                snackbar.show();
+            }
+        }
+
+    }
+
+    private void getLocationAndIMEI(){
+        boolean hasLocationPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+        boolean hasPhonePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                == PackageManager.PERMISSION_GRANTED;
+        if(hasLocationPermission && hasPhonePermission){
+            locationManager.requestLocationUpdates(GPS_PROVIDER, 60000, 10, locationListener);
+            Location newLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
+            if(newLocation == null){
+                Log.i(tag, "GPS location not available, requesting network location");
+                newLocation = locationManager.getLastKnownLocation(NETWORK_PROVIDER);
+            }
+            if(newLocation != null){
+                DataHolder.getInstance().getEquipmentStatus().setLatitude(newLocation.getLatitude());
+                DataHolder.getInstance().getEquipmentStatus().setLongitude(newLocation.getLongitude());
+            }
+
+            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            String imei = telephonyManager.getDeviceId();
+            DataHolder.getInstance().getEquipmentStatus().setImei(imei);
+
+            loadStateFromDatabase();
+        }
+
+        else  {
+            requestPermissions();
+        }
+
+
+    }
+
+    private void requestPermissions() {
+        Log.e("LauncherActivity", "permission for using location service or phone denied, requesting permission");
+        List<String> permissions = new ArrayList<>();
+        boolean hasLocationPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+        boolean hasPhonePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                == PackageManager.PERMISSION_GRANTED;
+        if(!hasLocationPermission || !hasPhonePermission){
+            if(!hasLocationPermission){
+                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+            if(!hasPhonePermission){
+                permissions.add(Manifest.permission.READ_PHONE_STATE);
+            }
+            String[] permissionRequests = permissions.toArray(new String[2]);
+                    ActivityCompat.requestPermissions(this,
+                            permissionRequests,
+                            PERMISSION_REQUEST_CODE);
+        }
+
+
+    }
 
 
     @Override
     protected void onResume() {
-        loadStateFromDatabase();
+        Log.i(tag, "calling onResume()" );
+
         super.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_APP_SETTINGS) {
+            getLocationAndIMEI();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

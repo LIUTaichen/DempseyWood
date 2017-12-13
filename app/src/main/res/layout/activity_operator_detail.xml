@@ -110,9 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="72dp"
-        android:layout_marginTop="0dp"
         android:textColor="@android:color/black"
-        android:text="TextView"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/machine_name_label_text" />
@@ -134,8 +132,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="72dp"
         android:textColor="@android:color/black"
-        android:layout_marginTop="0dp"
-        android:text="TextView"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/machine_fleetId_label_text" />
@@ -156,9 +152,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="72dp"
-        android:layout_marginTop="0dp"
         android:textColor="@android:color/black"
-        android:text="TextView"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/machine_category_label_text" />
