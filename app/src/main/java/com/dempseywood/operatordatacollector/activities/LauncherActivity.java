@@ -85,16 +85,11 @@ public class LauncherActivity extends AppCompatActivity {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                final String url = activity.getString(R.string.web_service) + activity.getString(R.string.api_equipment);
-
                 DataHolder.getInstance().setEquipments(equipmentDao.getAll());
                 EquipmentStatus lastStatus = equipmentStatusDao.getLatestStatus();
                 boolean isFirstUse = false;
                 //first start up
                 if(lastStatus == null){
-                    //TODO: handle the case when first time using the app
-                    //TODO: fetch equipment and task from server
-
                     isFirstUse = true;
                     Log.i(tag, "This is first usage, starting operator detail activity");
                 }else {
@@ -265,6 +260,8 @@ public class LauncherActivity extends AppCompatActivity {
         final String url = this.getString(R.string.web_service) + this.getString(R.string.api_equipment);
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONArray>() {
+
+
                     @Override
                     public void onResponse(JSONArray response) {
                         Gson gson = new Gson();
@@ -283,8 +280,6 @@ public class LauncherActivity extends AppCompatActivity {
                             protected void onPostExecute(Boolean aBoolean) {
                                 Toast toast = Toast.makeText(LauncherActivity.this, R.string.message_plants_updated,Toast.LENGTH_LONG);
                                 toast.show();
-                                //Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.message_plants_updated, Snackbar.LENGTH_LONG );
-                                //snackbar.show();
                                 super.onPostExecute(aBoolean);
                             }
                         };
