@@ -17,7 +17,15 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.data.DB;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentDao;
@@ -27,7 +35,9 @@ import com.dempseywood.operatordatacollector.models.Equipment;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
 import com.dempseywood.operatordatacollector.listeners.DwLocationListener;
 import com.dempseywood.operatordatacollector.models.DataHolder;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -64,7 +74,10 @@ public class LauncherActivity extends AppCompatActivity {
         locationListener = new DwLocationListener();
 
         getLocationAndIMEI();
+        updatePlants();
     }
+
+
 
     public void loadStateFromDatabase(){
         AsyncTask asyncTask = new AsyncTask<Void, Void, Boolean>(){
@@ -73,26 +86,9 @@ public class LauncherActivity extends AppCompatActivity {
             @Override
             protected Boolean doInBackground(Void... params) {
                 final String url = activity.getString(R.string.web_service) + activity.getString(R.string.api_equipment);
-                try {
-
-                    RestTemplate restTemplate = new RestTemplate();
-                    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                    restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-                    ResponseEntity<Equipment[]> responseEntity = restTemplate.getForEntity(url, Equipment[].class);
-                    Log.d(tag, "equipments retrieved");
-                    Log.d(tag, responseEntity.getBody().length + " size ");
-                    equipmentDao.deleteAll();
-                    equipmentDao.insertAll(responseEntity.getBody());
-                }catch(Exception e){
-                    Log.e(tag, "error when communicating with server", e);
-                }
-
 
                 DataHolder.getInstance().setEquipments(equipmentDao.getAll());
-
                 EquipmentStatus lastStatus = equipmentStatusDao.getLatestStatus();
-
-
                 boolean isFirstUse = false;
                 //first start up
                 if(lastStatus == null){
@@ -123,11 +119,8 @@ public class LauncherActivity extends AppCompatActivity {
                         Log.i(tag, "This is not first usage, starting counting activity");
                     }
                 }
-
-
                 return isFirstUse;
             }
-
             @Override
             protected void onPostExecute(Boolean isFirstUse) {
 
@@ -179,7 +172,7 @@ public class LauncherActivity extends AppCompatActivity {
             } else {
                 Log.i(tag,"not all permissions permitted, requesting through snackbar");
                 Snackbar snackbar = Snackbar
-                        .make(mLayout, "Please grant all permissions for the app to work.", Snackbar.LENGTH_INDEFINITE)
+                        .make(mLayout, R.string.message_require_permissions, Snackbar.LENGTH_INDEFINITE)
                         .setAction("SETTINGS", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -264,5 +257,47 @@ public class LauncherActivity extends AppCompatActivity {
             getLocationAndIMEI();
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    private void updatePlants(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        final String url = this.getString(R.string.web_service) + this.getString(R.string.api_equipment);
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Gson gson = new Gson();
+                        Equipment[] equipments = gson.fromJson(response.toString(), Equipment[].class);
+                        AsyncTask task = new AsyncTask<Equipment, Void, Boolean>() {
+
+                            @Override
+                            protected Boolean doInBackground(Equipment... equipment) {
+                                equipmentDao.deleteAll();
+                                equipmentDao.insertAll(equipment);
+                                Log.d(tag, "plants updated");
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Boolean aBoolean) {
+                                Toast toast = Toast.makeText(LauncherActivity.this, R.string.message_plants_updated,Toast.LENGTH_LONG);
+                                toast.show();
+                                //Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.message_plants_updated, Snackbar.LENGTH_LONG );
+                                //snackbar.show();
+                                super.onPostExecute(aBoolean);
+                            }
+                        };
+                        task.execute(equipments);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //mTextView.setText("That didn't work!");
+                Snackbar snackbar = Snackbar.make(mLayout, R.string.message_plants_update_failure, Snackbar.LENGTH_LONG );
+                snackbar.show();
+            }
+        });
+        queue.add(arrayRequest);
     }
 }

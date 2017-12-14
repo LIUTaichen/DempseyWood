@@ -45,5 +45,8 @@ dependencies {
     compile 'com.android.volley:volley:1.1.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'android.arch.persistence.room:compiler:1.0.0-alpha9'
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+
 }
 apply plugin: 'com.google.gms.google-services'
