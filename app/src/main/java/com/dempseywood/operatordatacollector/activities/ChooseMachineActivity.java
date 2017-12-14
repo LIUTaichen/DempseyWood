@@ -44,6 +44,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private String tag = "ChooseMachineActivity";
     private ListView mListView;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,8 @@ public class ChooseMachineActivity extends AppCompatActivity {
         equipmentDao =  DB.getInstance().equipmentDao();
 
 
-        SearchView searchView = (SearchView)findViewById(R.id.machine_search);
+
+        searchView = (SearchView)findViewById(R.id.machine_search);
         searchView.setIconifiedByDefault(false);
         searchView.setSubmitButtonEnabled(true);
 
@@ -69,9 +71,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
         });
          mListView = (ListView)findViewById(R.id.machine_result_list);
 
-        List<Equipment> equipments = DataHolder.getInstance().getEquipments();
-
-        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, R.layout.spinner_layout, equipments);
+        adapter = new CustomSpinnerAdapter(this, R.layout.spinner_layout, new ArrayList<Equipment>());
         this.setAdapter(adapter);
         mListView.setAdapter(adapter);
         mListView.setTextFilterEnabled(true);
@@ -97,7 +97,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
             }
         });
 
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
+       /* searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -110,13 +110,13 @@ public class ChooseMachineActivity extends AppCompatActivity {
                 Intent intent = new Intent(activity, OperatorDetailActivity.class);
                 activity.startActivity(intent);
             }
-        });
+        });*/
 
 
         searchView.setOnQueryTextListener(new OnQueryTextListener(this)) ;
 
 
-
+        getMachines();
 
     }
 
@@ -136,7 +136,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
                         for(int i = 0; i < equipments.length; i++){
                             equipmentList.add(equipments[i]);
                         }
-                        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(ChooseMachineActivity.this, R.layout.spinner_layout, equipmentList);
+                        adapter = new CustomSpinnerAdapter(ChooseMachineActivity.this, R.layout.spinner_layout, equipmentList);
 
                         mListView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
@@ -175,5 +175,26 @@ public class ChooseMachineActivity extends AppCompatActivity {
 
     public void setAdapter(CustomSpinnerAdapter adapter) {
         this.adapter = adapter;
+    }
+
+    public void getMachines(){
+        AsyncTask task = new AsyncTask<Void, Void, List<Equipment>>() {
+            @Override
+            protected void onPostExecute(List<Equipment> equipments) {
+                adapter = new CustomSpinnerAdapter(ChooseMachineActivity.this, R.layout.spinner_layout, equipments);
+
+                mListView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            protected List<Equipment> doInBackground(Void... params) {
+                Log.i(tag, "doInBackground");
+                return equipmentDao.getAll();
+            }
+
+        }.execute();
+
     }
 }
