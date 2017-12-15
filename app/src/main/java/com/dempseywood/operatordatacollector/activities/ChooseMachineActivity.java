@@ -58,7 +58,6 @@ public class ChooseMachineActivity extends AppCompatActivity {
 
         searchView = (SearchView)findViewById(R.id.machine_search);
         searchView.setIconifiedByDefault(false);
-        searchView.setSubmitButtonEnabled(true);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.choose_machine_swipe_refresh_layout);
 
@@ -88,14 +87,14 @@ public class ChooseMachineActivity extends AppCompatActivity {
             }
         });
 
-        searchView.setOnClickListener(new View.OnClickListener() {
+  /*      searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ChooseMachineActivity activity = (ChooseMachineActivity) v.getContext();
                 Intent intent = new Intent(activity, OperatorDetailActivity.class);
                 activity.startActivity(intent);
             }
-        });
+        });*/
 
        /* searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override

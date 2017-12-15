@@ -25,15 +25,7 @@ public class OnQueryTextListener implements SearchView.OnQueryTextListener{
     @Override
     public boolean onQueryTextSubmit(String query) {
 
-        ChooseMachineActivity activity = (ChooseMachineActivity) context;
-        SearchView searchView = (SearchView)activity.findViewById(R.id.machine_search);
-        String machineName = searchView.getQuery().toString();
-        Equipment machine = new Equipment();
-        machine.setName(machineName);
-        DataHolder.getInstance().setEquipment(machine);
-        Intent intent = new Intent(activity, OperatorDetailActivity.class);
-        activity.startActivity(intent);
-        return false;
+       return false;
     }
 
     @Override
