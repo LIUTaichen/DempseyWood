@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,7 +22,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 public class OperatorDetailActivity extends AppCompatActivity {
     private Button confirmButton;
     private EditText operatorNameEditText;
-    private Button machineButton;
+    private CardView machineCard;
     private TextView machineNameTextView;
     private TextView machineFleetIdTextView;
     private TextView machineCategoryTextView;
@@ -32,7 +33,7 @@ public class OperatorDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_operator_detail);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         machineNameTextView = (TextView) findViewById(R.id.machine_name_text);
         machineFleetIdTextView = (TextView) findViewById(R.id.machine_fleetId_text);
         machineCategoryTextView = (TextView) findViewById(R.id.machine_category_text);
@@ -43,8 +44,8 @@ public class OperatorDetailActivity extends AppCompatActivity {
         confirmButton = (Button) findViewById(R.id.confirm_button);
         confirmButton.setOnClickListener(listener);
         operatorNameEditText = (EditText) findViewById(R.id.operator_name);
-        machineButton = (Button) findViewById(R.id.machine_button);
-        machineButton.setOnClickListener(new View.OnClickListener() {
+        machineCard = (CardView) findViewById(R.id.machine_card);
+        machineCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText operatorNameEditText = (EditText) findViewById(R.id.operator_name);
