@@ -1,11 +1,15 @@
 package com.dempseywood.operatordatacollector.listeners;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.dempseywood.operatordatacollector.activities.ChooseMachineActivity;
 import com.dempseywood.operatordatacollector.activities.CountByTapActivity;
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.models.Equipment;
@@ -22,7 +26,7 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
     public void onClick(View v) {
 
 
-        OperatorDetailActivity activity = (OperatorDetailActivity) v.getContext();
+        OperatorDetailActivity  activity = (OperatorDetailActivity) v.getContext();
 
         EditText operatorName = (EditText) activity.findViewById(R.id.operator_name);
         Equipment selectedMachine = DataHolder.getInstance().getEquipment();
@@ -30,8 +34,18 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
             operatorName.setError("Operator name is required!");
         }
         else if(selectedMachine == null){
-            Button machineButton =  (Button) activity.findViewById(R.id.machine_button);
-            machineButton.setError("Please select a machine");
+            Snackbar snackbar = Snackbar
+                    .make(activity.findViewById(R.id.operator_detail_layout), "Please select a machine", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("SELECT", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(view.getContext(), ChooseMachineActivity.class);
+                            view.getContext().startActivity(intent);
+
+                        }
+                    });
+
+            snackbar.show();
 
         }
         else {
