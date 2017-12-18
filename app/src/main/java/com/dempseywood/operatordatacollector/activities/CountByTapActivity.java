@@ -12,13 +12,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.data.DB;
@@ -37,11 +40,12 @@ public class CountByTapActivity extends AppCompatActivity implements
     private Button unloadedMaterialButton;
     private Button loadedButton;
     private Button loadedMaterialButton;
-    private TextView countText;
+    private TextSwitcher countText;
     private AlertDialog alertDialog;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView mNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +88,25 @@ public class CountByTapActivity extends AppCompatActivity implements
         mDrawerToggle.syncState();
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        unloadedButton = (Button) findViewById(R.id.unloadedButton);
+        unloadedMaterialButton = (Button) findViewById(R.id.unloadedMaterialButton);
+        loadedButton = (Button) findViewById(R.id.loadedButton);
+        loadedMaterialButton = (Button) findViewById(R.id.loadedMaterialButton);
+        countText = (TextSwitcher) findViewById(R.id.textView);
+        int count = countText.getChildCount();
+        countText.setFactory(new ViewSwitcher.ViewFactory() {
 
-        initializeViews();
+            @Override
+            public View makeView() {
+
+                // Create a new TextView
+                TextView t = new TextView(CountByTapActivity.this);
+                t.setTextSize(72f);
+                return t;
+            }
+        });
+        countText.setInAnimation(this, android.R.anim.fade_in);
+        countText.setOutAnimation(this, android.R.anim.fade_out);
         DB.init(getApplicationContext());
         equipmentStatusDao = DB.getInstance().equipmentStatusDao();
 
@@ -201,11 +222,7 @@ public class CountByTapActivity extends AppCompatActivity implements
     }
 
     public void initializeViews() {
-        unloadedButton = (Button) findViewById(R.id.unloadedButton);
-        unloadedMaterialButton = (Button) findViewById(R.id.unloadedMaterialButton);
-        loadedButton = (Button) findViewById(R.id.loadedButton);
-        loadedMaterialButton = (Button) findViewById(R.id.loadedMaterialButton);
-        countText = (TextView) findViewById(R.id.textView);
+
         countText.setText(DataHolder.getInstance().getCount() + "");
         if ("Loaded".equals(DataHolder.getInstance().getEquipmentStatus().getStatus())) {
             changeViewToLoaded();

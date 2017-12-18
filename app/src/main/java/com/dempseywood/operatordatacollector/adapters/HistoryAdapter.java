@@ -71,7 +71,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.statusTextView.setText(haul.getLoadEvent().getTask());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         holder.loadTimeTextView.setText(sdf.format(haul.getLoadEvent().getTimestamp()));
-        holder.unloadTimeTextView.setText(sdf.format(haul.getUnloadEvent().getTimestamp()));
+        String unloadTimeText = "";
+        if(haul.getUnloadEvent() != null) {
+            unloadTimeText = sdf.format(haul.getUnloadEvent().getTimestamp());
+        }
+            holder.unloadTimeTextView.setText(unloadTimeText);
     }
 
     @Override
