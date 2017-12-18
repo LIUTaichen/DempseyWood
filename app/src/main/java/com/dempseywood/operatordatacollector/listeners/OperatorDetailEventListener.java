@@ -40,6 +40,8 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
                     .setAction("SELECT", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            EditText operatorNameEditText = (EditText) view.getRootView().findViewById(R.id.operator_name);
+                            DataHolder.getInstance().getEquipmentStatus().setOperator(operatorNameEditText.getText().toString());
                             Intent intent = new Intent(view.getContext(), ChooseMachineActivity.class);
                             view.getContext().startActivity(intent);
 
