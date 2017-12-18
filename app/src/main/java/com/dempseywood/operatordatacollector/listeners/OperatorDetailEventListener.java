@@ -1,12 +1,11 @@
 package com.dempseywood.operatordatacollector.listeners;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.provider.Settings;
+
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.dempseywood.operatordatacollector.activities.ChooseMachineActivity;
@@ -29,9 +28,11 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
         OperatorDetailActivity  activity = (OperatorDetailActivity) v.getContext();
 
         EditText operatorName = (EditText) activity.findViewById(R.id.operator_name);
+        TextInputLayout inputLayout = (TextInputLayout)activity.findViewById(R.id.operator_name_layout) ;
+
         Equipment selectedMachine = DataHolder.getInstance().getEquipment();
         if (operatorName.getText().toString().length() == 0) {
-            operatorName.setError("Operator name is required!");
+            inputLayout.setError(activity.getString(R.string.message_error_operator_name_required));
         }
         else if(selectedMachine == null){
             Snackbar snackbar = Snackbar

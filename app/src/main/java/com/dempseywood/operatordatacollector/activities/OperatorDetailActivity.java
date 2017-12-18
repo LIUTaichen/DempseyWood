@@ -79,12 +79,7 @@ public class OperatorDetailActivity extends AppCompatActivity {
             operatorNameEditText.append(DataHolder.getInstance().getEquipmentStatus().getOperator());
         }
 
-        if(DataHolder.getInstance().getEquipment() != null){
-            Equipment equipment = DataHolder.getInstance().getEquipment();
-            machineNameTextView.setText(equipment.getName());
-            machineFleetIdTextView.setText(equipment.getFleetId());
-            machineCategoryTextView.setText(equipment.getCategory());
-        }
+
         Equipment selectedMachine = DataHolder.getInstance().getEquipment();
         if (selectedMachine != null) {
 
@@ -92,6 +87,8 @@ public class OperatorDetailActivity extends AppCompatActivity {
             machineFleetIdTextView.setText(selectedMachine.getFleetId());
             machineCategoryTextView.setText(selectedMachine.getCategory());
 
+        }else{
+            machineNameTextView.setText(R.string.message_choose_machine);
         }
 
         super.onResume();

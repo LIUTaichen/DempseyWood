@@ -3,10 +3,13 @@ package com.dempseywood.operatordatacollector.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -50,6 +53,9 @@ public class ChooseMachineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_machine);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         DB.init(getApplicationContext());
         equipmentDao =  DB.getInstance().equipmentDao();
@@ -162,6 +168,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
                 //mTextView.setText("That didn't work!");
                 Snackbar snackbar = Snackbar.make(mSwipeRefreshLayout, R.string.message_plants_update_failure, Snackbar.LENGTH_LONG );
                 snackbar.show();
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
         queue.add(arrayRequest);
@@ -195,5 +202,18 @@ public class ChooseMachineActivity extends AppCompatActivity {
 
         }.execute();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+                
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

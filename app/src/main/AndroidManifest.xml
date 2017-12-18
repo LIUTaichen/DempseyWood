@@ -19,7 +19,9 @@
         android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.LauncherActivity">
+        <activity android:name=".activities.LauncherActivity"
+            android:finishOnTaskLaunch="true"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,19 +34,25 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.OperatorDetailActivity" />
+
         </activity>
         <activity
             android:name=".activities.OperatorDetailActivity"
-            android:windowSoftInputMode="stateHidden" />
-
-        <service
-            android:name=".service.EquipmentStatusJobService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
+            android:parentActivityName=".activities.CountByTapActivity"
+            android:windowSoftInputMode="stateHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.OperatorDetailActivity" />
+        </activity>
         <activity
             android:name=".activities.ChooseMachineActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".activities.OperatorDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.OperatorDetailActivity" />
+
+        </activity>
         <activity
             android:name=".activities.CountByTapActivity"
             android:parentActivityName=".activities.OperatorDetailActivity">
@@ -52,11 +60,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.OperatorDetailActivity" />
         </activity>
-        <activity android:name=".activities.ChooseMaterialActivity">
+        <activity android:name=".activities.ChooseMaterialActivity"
+            android:parentActivityName=".activities.CountByTapActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.CountByTapActivity" />
         </activity>
+
+        <service
+            android:name=".service.EquipmentStatusJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+
 
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>

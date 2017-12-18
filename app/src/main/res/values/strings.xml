@@ -47,4 +47,7 @@
     <string name="message_require_permissions">Please grant all permissions for the app to work.</string>
     <string name="message_plants_updated">New machine list fetched from the server.</string>
     <string name="message_plants_update_failure">Unable to fetch machines list from the server</string>
+    <string name="title_activity_choose_machine">Select machine</string>
+    <string name="message_choose_machine">Please tap here to select a machine.</string>
+    <string name="message_error_operator_name_required">Operator name is required!</string>
 </resources>

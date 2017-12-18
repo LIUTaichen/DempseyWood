@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,7 +29,8 @@ import com.dempseywood.operatordatacollector.models.DataHolder;
 
 import java.util.Date;
 
-public class CountByTapActivity extends AppCompatActivity {
+public class CountByTapActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener {
     private EquipmentStatusDao equipmentStatusDao;
 
     private Button unloadedButton;
@@ -38,6 +41,7 @@ public class CountByTapActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class CountByTapActivity extends AppCompatActivity {
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
                 mDrawerLayout,/* DrawerLayout object */
@@ -77,6 +82,7 @@ public class CountByTapActivity extends AppCompatActivity {
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
+        mNavigationView.setNavigationItemSelectedListener(this);
 
 
         initializeViews();
@@ -249,7 +255,22 @@ public class CountByTapActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case R.id.action_operator_details:
@@ -257,7 +278,7 @@ public class CountByTapActivity extends AppCompatActivity {
                 if(DataHolder.getInstance().getEquipmentStatus().getStatus().equals("Loaded")){
                     Snackbar.make(this.findViewById(android.R.id.content),
                             "Operator details can only be changed when equipment is unloaded",
-                    Snackbar.LENGTH_LONG).show();
+                            Snackbar.LENGTH_LONG).show();
                 }else {
                     Intent intent = new Intent(this, OperatorDetailActivity.class);
                     this.startActivity(intent);
@@ -272,37 +293,4 @@ public class CountByTapActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-   @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menus, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        //respond to menu item selection
-        Intent intent = new Intent(this, OperatorDetailActivity.class);
-        this.startActivity(intent);
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState)
-    {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig)
-    {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
 }
