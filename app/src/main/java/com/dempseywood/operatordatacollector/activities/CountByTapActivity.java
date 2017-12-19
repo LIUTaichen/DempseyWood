@@ -306,7 +306,7 @@ public class CountByTapActivity extends AppCompatActivity implements
             // Respond to the action bar's Up/Home button
             case R.id.action_operator_details:
             case android.R.id.home :
-                if(DataHolder.getInstance().getEquipmentStatus().getStatus().equals("Loaded")){
+                if("Loaded".equals(DataHolder.getInstance().getEquipmentStatus().getStatus())){
                     Snackbar.make(this.findViewById(android.R.id.content),
                             "Operator details can only be changed when equipment is unloaded",
                             Snackbar.LENGTH_LONG).show();
