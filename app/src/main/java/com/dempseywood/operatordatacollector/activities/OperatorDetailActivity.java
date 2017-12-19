@@ -67,12 +67,6 @@ public class OperatorDetailActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-
-    @Override
     protected void onResume() {
         if (DataHolder.getInstance().getEquipmentStatus().getOperator() != null) {
             operatorNameEditText.setText("");

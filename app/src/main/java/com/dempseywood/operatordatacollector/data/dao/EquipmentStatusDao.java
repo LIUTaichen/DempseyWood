@@ -44,4 +44,7 @@ public interface EquipmentStatusDao {
 
     @Query("SELECT * FROM equipmentstatus WHERE timestamp > (:startTime)")
     List<EquipmentStatus> loadAllAfter(Date startTime);
+
+    @Query("SELECT * FROM equipmentstatus WHERE timestamp > (:startTime) ORDER BY timestamp DESC LIMIT 1 ")
+    EquipmentStatus getLastStatusAfter(Date startTime);
 }

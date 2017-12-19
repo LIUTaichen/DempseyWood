@@ -56,8 +56,10 @@ public class OperatorDetailEventListener implements AdapterView.OnItemSelectedLi
             DataHolder.getInstance().getEquipmentStatus().setOperator(operatorName.getText().toString());
 
             Intent intent = new Intent(activity, CountByTapActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             //Intent intent = new Intent(activity, EquipmentStatusActivity.class);
             activity.startActivity(intent);
+            activity.finish();
         }
     }
 

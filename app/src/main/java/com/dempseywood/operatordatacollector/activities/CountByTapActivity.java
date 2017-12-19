@@ -2,6 +2,7 @@ package com.dempseywood.operatordatacollector.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -12,10 +13,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,17 +23,20 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.dempseywood.operatordatacollector.R;
+import com.dempseywood.operatordatacollector.async.CreateEquipmentStatusTask;
 import com.dempseywood.operatordatacollector.data.DB;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentStatusDao;
+import com.dempseywood.operatordatacollector.helpers.DateTimeHelper;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
-import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
 import com.dempseywood.operatordatacollector.models.DataHolder;
 
 import java.util.Date;
+import java.util.List;
 
 public class CountByTapActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
     private EquipmentStatusDao equipmentStatusDao;
+    private String tag = "CountByTap";
 
     private Button unloadedButton;
     private Button unloadedMaterialButton;
@@ -207,10 +209,11 @@ public class CountByTapActivity extends AppCompatActivity implements
     }
 
     public void incrementLoadCount() {
-        DataHolder.getInstance().setCount(DataHolder.getInstance().getCount() + 1);
-        countText.setText(DataHolder.getInstance().getCount() + "");
-
-
+        TextView currentView = (TextView)countText.getCurrentView();
+        CharSequence currentCount = currentView.getText();
+        Integer count = Integer.parseInt(currentCount.toString());
+        Integer newCount = count + 1;
+        countText.setText(newCount.toString());
     }
 
     public void changeViewToUnloaded() {
@@ -223,35 +226,46 @@ public class CountByTapActivity extends AppCompatActivity implements
 
     public void initializeViews() {
 
-        countText.setText(DataHolder.getInstance().getCount() + "");
-        if ("Loaded".equals(DataHolder.getInstance().getEquipmentStatus().getStatus())) {
-            changeViewToLoaded();
-        } else {
+        AsyncTask asyncTask = new AsyncTask<Void, Void, List<EquipmentStatus>>(){
+            CountByTapActivity activity = CountByTapActivity.this;
+
+            @Override
+            protected List<EquipmentStatus> doInBackground(Void... params) {
+                List<EquipmentStatus> statusList = equipmentStatusDao.loadAllAfter(DateTimeHelper.getTimeOfStartOfDay(new Date()));
+                Log.d(tag, "number of status found " + statusList.size());
+                return statusList;
+            }
+
+            @Override
+            protected void onPostExecute(List<EquipmentStatus> statusList) {
+
+                activity.constructUIFromSavedStatus(statusList);
+
+                super.onPostExecute(statusList);
+            }
+        }.execute();
+
+
+    }
+
+    public void constructUIFromSavedStatus(List<EquipmentStatus> statusList){
+        int count = statusList.size() /2;
+        countText.setText(count + "");
+        if(statusList.isEmpty() || "Unloaded".equals(statusList.get(statusList.size() -1).getStatus())){
             changeViewToUnloaded();
+        }else {
+            changeViewToLoaded();
         }
     }
 
 
+
     private void changeStatus(String statusString) {
         DataHolder.getInstance().getEquipmentStatus().setStatus(statusString);
-        final EquipmentStatus equipmentStatus = getEquipmentStatus();
-        new HttpRequestTask(getApplicationContext(), equipmentStatus).execute();
+        new CreateEquipmentStatusTask(this).execute();
     }
 
-    public EquipmentStatus getEquipmentStatus() {
-        EquipmentStatus equipmentStatus = new EquipmentStatus();
-        equipmentStatus.setStatus(DataHolder.getInstance().getEquipmentStatus().getStatus());
-        equipmentStatus.setTask(DataHolder.getInstance().getEquipmentStatus().getTask());
-        equipmentStatus.setTimestamp(new Date());
-        equipmentStatus.setOperator(DataHolder.getInstance().getEquipmentStatus().getOperator());
-        equipmentStatus.setEquipment(DataHolder.getInstance().getEquipment().getName());
-        equipmentStatus.setImei(DataHolder.getInstance().getEquipmentStatus().getImei());
-        equipmentStatus.setLatitude(DataHolder.getInstance().getEquipmentStatus().getLatitude());
-        equipmentStatus.setLongitude(DataHolder.getInstance().getEquipmentStatus().getLongitude());
-        equipmentStatus.setIsSent(false);
-        return equipmentStatus;
 
-    }
 
     @Override
     protected void onDestroy() {
@@ -298,7 +312,9 @@ public class CountByTapActivity extends AppCompatActivity implements
                             Snackbar.LENGTH_LONG).show();
                 }else {
                     Intent intent = new Intent(this, OperatorDetailActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     this.startActivity(intent);
+                    finish();
                 }
                 break;
             case R.id.action_history:
