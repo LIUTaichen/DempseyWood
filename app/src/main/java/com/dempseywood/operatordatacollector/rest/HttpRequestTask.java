@@ -99,12 +99,7 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
                 success =false;
             }
         }
-        if(!success){
-            if(status != null) {
-                equipmentStatusDAO.insertAll(status);
-                Log.i("HttpRequestTask", "saving new status to DB");
-            }
-        }
+
        return success;
 
     }
