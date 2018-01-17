@@ -31,6 +31,7 @@ import com.dempseywood.operatordatacollector.data.DB;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentDao;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentStatusDao;
 import com.dempseywood.operatordatacollector.helpers.DateTimeHelper;
+import com.dempseywood.operatordatacollector.helpers.UrlHelper;
 import com.dempseywood.operatordatacollector.models.Equipment;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
 import com.dempseywood.operatordatacollector.listeners.DwLocationListener;
@@ -257,7 +258,7 @@ public class LauncherActivity extends AppCompatActivity {
 
     private void updatePlants(){
         RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = this.getString(R.string.web_service) + this.getString(R.string.api_equipment);
+        final String url = UrlHelper.getFetchEquipmentUrl();
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONArray>() {
 

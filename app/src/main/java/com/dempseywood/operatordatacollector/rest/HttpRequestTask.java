@@ -10,6 +10,7 @@ import android.util.Log;
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.data.DB;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentStatusDao;
+import com.dempseywood.operatordatacollector.helpers.UrlHelper;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
 import com.dempseywood.operatordatacollector.service.EquipmentStatusJobService;
 
@@ -59,7 +60,7 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
         if( status != null) {
             equipmentStatusDAO.insertAll(status);
         }
-        final String url = context.getString(R.string.web_service) + context.getString(R.string.api_status);
+        final String url = UrlHelper.getStartHaulUrl();
         List<EquipmentStatus> statusList = equipmentStatusDAO.getAllNotSent();
         boolean hasOldRecords = !statusList.isEmpty();
         if (hasOldRecords) {

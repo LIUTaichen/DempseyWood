@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.dempseywood.operatordatacollector.R;
+import com.dempseywood.operatordatacollector.helpers.UrlHelper;
 import com.dempseywood.operatordatacollector.listeners.OnQueryTextListener;
 import com.dempseywood.operatordatacollector.adapters.CustomSpinnerAdapter;
 import com.dempseywood.operatordatacollector.data.DB;
@@ -129,7 +130,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
 
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = this.getString(R.string.web_service) + this.getString(R.string.api_equipment);
+        final String url = UrlHelper.getFetchEquipmentUrl();
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONArray>() {
 
