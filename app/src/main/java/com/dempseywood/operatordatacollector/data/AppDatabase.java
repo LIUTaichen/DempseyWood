@@ -6,8 +6,12 @@ import android.arch.persistence.room.TypeConverters;
 
 import com.dempseywood.operatordatacollector.data.dao.EquipmentDao;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentStatusDao;
+import com.dempseywood.operatordatacollector.data.dao.HaulDao;
+import com.dempseywood.operatordatacollector.data.dao.TaskDao;
 import com.dempseywood.operatordatacollector.models.Equipment;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
+import com.dempseywood.operatordatacollector.models.Haul;
+import com.dempseywood.operatordatacollector.models.Task;
 
 
 /**
@@ -15,10 +19,12 @@ import com.dempseywood.operatordatacollector.models.EquipmentStatus;
  */
 
 
-    @Database(entities = {EquipmentStatus.class, Equipment.class}, version = 3)
+    @Database(entities = {EquipmentStatus.class, Equipment.class, Task.class, Haul.class}, version = 4)
     @TypeConverters({Converters.class})
     public abstract class AppDatabase extends RoomDatabase {
         public abstract EquipmentStatusDao equipmentStatusDao();
         public abstract EquipmentDao equipmentDao();
+        public abstract TaskDao taskDao();
+        public abstract HaulDao haulDao();
     }
 

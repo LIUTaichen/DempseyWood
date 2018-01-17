@@ -37,21 +37,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
     }
 
-    public HistoryAdapter(List<EquipmentStatus> data){
+    public HistoryAdapter(List<Haul> data){
         this.dataset = new ArrayList<Haul>();
-        if(data!= null && !data.isEmpty() ){
-            Haul haul = null;
-           for(int i = 0; i < data.size(); i++){
-               if(i % 2 == 0){
-                   haul = new Haul();
-                   dataset.add(haul);
-                   haul.setLoadEvent(data.get(i));
 
-               }else{
-                   haul.setUnloadEvent(data.get(i));
-               }
-           }
-        }
 
     }
     @Override
@@ -68,12 +56,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public void onBindViewHolder(HistoryAdapter.ViewHolder holder, int position) {
         Haul haul = dataset.get(position);
         holder.indexTextView.setText(position + 1 + "");
-        holder.statusTextView.setText(haul.getLoadEvent().getTask());
+        holder.statusTextView.setText(haul.getTask());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        holder.loadTimeTextView.setText(sdf.format(haul.getLoadEvent().getTimestamp()));
+        holder.loadTimeTextView.setText(sdf.format(haul.getLoadTime()));
         String unloadTimeText = "";
-        if(haul.getUnloadEvent() != null) {
-            unloadTimeText = sdf.format(haul.getUnloadEvent().getTimestamp());
+        if(haul.getUnloadTime() != null) {
+            unloadTimeText = sdf.format(haul.getUnloadTime());
         }
             holder.unloadTimeTextView.setText(unloadTimeText);
     }

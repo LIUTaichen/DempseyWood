@@ -27,6 +27,7 @@ public class EquipmentStatus {
 
     private Double longitude;
     private String imei;
+    private String Uuid;
     private boolean isSent;
 
 
@@ -111,5 +112,30 @@ public class EquipmentStatus {
 
     public void setIsSent(boolean sent) {
         isSent = sent;
+    }
+
+    public String getUuid() {
+        return Uuid;
+    }
+
+    public void setUuid(String uuid) {
+        Uuid = uuid;
+    }
+
+    @Override
+    public String toString() {
+        return "EquipmentStatus{" +
+                "id=" + id +
+                ", equipment='" + equipment + '\'' +
+                ", operator='" + operator + '\'' +
+                ", status='" + status + '\'' +
+                ", task='" + task + '\'' +
+                ", timestamp=" + timestamp +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", imei='" + imei + '\'' +
+                ", Uuid='" + Uuid + '\'' +
+                ", isSent=" + isSent +
+                '}';
     }
 }

@@ -12,10 +12,12 @@ import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.adapters.HistoryAdapter;
 import com.dempseywood.operatordatacollector.data.DB;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentStatusDao;
+import com.dempseywood.operatordatacollector.data.dao.HaulDao;
 import com.dempseywood.operatordatacollector.helpers.DateTimeHelper;
 import com.dempseywood.operatordatacollector.models.DataHolder;
 import com.dempseywood.operatordatacollector.models.Equipment;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
+import com.dempseywood.operatordatacollector.models.Haul;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -27,7 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
-    private EquipmentStatusDao equipmentStatusDao;
+    private HaulDao haulDao;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -46,13 +48,13 @@ public class HistoryActivity extends AppCompatActivity {
         String a = getSupportActionBar().getTitle().toString();
 
         DB.init(getApplicationContext());
-        equipmentStatusDao = DB.getInstance().equipmentStatusDao();
+        haulDao = DB.getInstance().haulDao();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.history_recycler);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new HistoryAdapter(new ArrayList<EquipmentStatus>());
+        mAdapter = new HistoryAdapter(new ArrayList<Haul>());
         mRecyclerView.setAdapter(mAdapter);
         loadStateFromDatabase();
         // specify an adapter (see also next example)
@@ -61,29 +63,29 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     public void loadStateFromDatabase(){
-        AsyncTask asyncTask = new AsyncTask<Void, Void, List<EquipmentStatus>>(){
+        AsyncTask asyncTask = new AsyncTask<Void, Void, List<Haul>>(){
             public HistoryActivity activity = HistoryActivity.this;
 
             @Override
-            protected List<EquipmentStatus> doInBackground(Void... params) {
-                List<EquipmentStatus> statusList = equipmentStatusDao.loadAllAfter(DateTimeHelper.getTimeOfStartOfDay(new Date()));
-                Log.d(tag, "number of status found " + statusList.size());
-                return statusList;
+            protected List<Haul> doInBackground(Void... params) {
+                List<Haul> haulList = haulDao.loadAllAfter(DateTimeHelper.getTimeOfStartOfDay(new Date()));
+                Log.d(tag, "number of status found " + haulList.size());
+                return haulList;
             }
 
             @Override
-            protected void onPostExecute(List<EquipmentStatus> statusList) {
+            protected void onPostExecute(List<Haul> haulList) {
 
-                activity.acceptData(statusList);
+                activity.acceptData(haulList);
 
-                super.onPostExecute(statusList);
+                super.onPostExecute(haulList);
             }
         }.execute();
 
     }
 
-    public void acceptData(List<EquipmentStatus> statusList){
-        mAdapter = new HistoryAdapter(statusList);
+    public void acceptData(List<Haul> haulList){
+        mAdapter = new HistoryAdapter(haulList);
         mRecyclerView.swapAdapter(mAdapter, false);
         Log.d(tag, "new data added");
     }

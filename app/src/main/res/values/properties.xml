@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<string name="web_service">http://192.168.100.18:8090</string>-->
+    <!--<string name="web_service">http://192.168.100.84:8090</string>-->
     <string name="web_service">http://54.153.134.220:8090</string>
     <!--<string name="web_service">http://loadcount.ap-southeast-2.elasticbeanstalk.com</string>-->
     <string name="api_status">/api/status</string>
     <string name="api_equipment">/api/equipment</string>
+    <string name="api_task">/api/task</string>
+    <string name="api_haul">/api/haul</string>
+    <string name="api_haul_start">/api/haul</string>
+    <string name="api_haul_finish">/api/haul/</string>
+
 </resources>
