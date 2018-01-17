@@ -8,9 +8,10 @@ import com.dempseywood.operatordatacollector.data.dao.EquipmentStatusDao;
 import com.dempseywood.operatordatacollector.helpers.DateTimeHelper;
 import com.dempseywood.operatordatacollector.models.DataHolder;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
-import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
+import com.dempseywood.operatordatacollector.rest.SynchronizeWithServerTask;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by Jason.Liu on 19/12/2017.
@@ -28,7 +29,7 @@ public class CreateEquipmentStatusTask extends AsyncTask<Void, Void, EquipmentSt
 
     @Override
     protected void onPostExecute(EquipmentStatus equipmentStatus) {
-        new HttpRequestTask(activity.getApplicationContext(), equipmentStatus).execute();
+        new SynchronizeWithServerTask(activity.getApplicationContext()).execute();
 
         super.onPostExecute(equipmentStatus);
     }
@@ -42,6 +43,7 @@ public class CreateEquipmentStatusTask extends AsyncTask<Void, Void, EquipmentSt
             newStatus.setOperator(latestStatus.getOperator());
             newStatus.setTask(latestStatus.getTask());
         }
+        equipmentStatusDAO.insertAll(newStatus);
         return newStatus;
     }
 
@@ -56,6 +58,7 @@ public class CreateEquipmentStatusTask extends AsyncTask<Void, Void, EquipmentSt
         equipmentStatus.setLatitude(DataHolder.getInstance().getEquipmentStatus().getLatitude());
         equipmentStatus.setLongitude(DataHolder.getInstance().getEquipmentStatus().getLongitude());
         equipmentStatus.setIsSent(false);
+        equipmentStatus.setUuid(UUID.randomUUID().toString());
         return equipmentStatus;
 
     }

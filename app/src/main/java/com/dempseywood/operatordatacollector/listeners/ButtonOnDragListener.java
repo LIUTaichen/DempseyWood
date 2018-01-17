@@ -7,7 +7,7 @@ import android.widget.Button;
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
 import com.dempseywood.operatordatacollector.activities.EquipmentStatusActivity;
-import com.dempseywood.operatordatacollector.rest.HttpRequestTask;
+import com.dempseywood.operatordatacollector.rest.SynchronizeWithServerTask;
 import com.dempseywood.operatordatacollector.models.DataHolder;
 
 import java.util.Date;
@@ -45,7 +45,7 @@ public class ButtonOnDragListener implements View.OnDragListener {
                     status.setLongitude(DataHolder.getInstance().getLocation().getLongitude());
                     status.setLatitude(DataHolder.getInstance().getLocation().getLatitude());
                 }
-                new HttpRequestTask(v.getContext(),status).execute();
+                new SynchronizeWithServerTask(v.getContext()).execute();
                 return true;
             case DragEvent.ACTION_DRAG_ENTERED:
                 if(isLoadedButton){

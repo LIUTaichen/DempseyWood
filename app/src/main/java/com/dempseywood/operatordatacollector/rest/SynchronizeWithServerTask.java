@@ -31,20 +31,13 @@ import java.util.List;
  * Created by musing on 04/08/2017.
  */
 
-public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
+public class SynchronizeWithServerTask extends AsyncTask<Void, Void, Boolean> {
 
-    private EquipmentStatus status;
     private Context context;
     private EquipmentStatusDao equipmentStatusDAO;
 
-    public HttpRequestTask(Context context, EquipmentStatus status) {
-        Log.i("HttpRequestTask", "started");
-        this.status = status;
-        if(status != null) {
-            Log.i("HttpRequestTask", "status is not null, this is called from app");
-        }else {
-            Log.i("HttpRequestTask", "status is null, this is called from servicejob");
-        }
+    public SynchronizeWithServerTask(Context context) {
+        Log.i("SynchronizeWithServer", "started");
         this.context = context;
         DB.init(this.context);
         equipmentStatusDAO = DB.getInstance().equipmentStatusDao();
@@ -55,18 +48,19 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         boolean success = false;
-        Log.e("HttpRequestTask", "doInBackground");
+        Log.e("SynchronizeWithServer", "doInBackground");
         //final String url = "http://loadcount.ap-southeast-2.elasticbeanstalk.com/api/status";
-        if( status != null) {
-            equipmentStatusDAO.insertAll(status);
-        }
         final String url = UrlHelper.getStartHaulUrl();
         List<EquipmentStatus> statusList = equipmentStatusDAO.getAllNotSent();
-        boolean hasOldRecords = !statusList.isEmpty();
-        if (hasOldRecords) {
-            Log.e("HttpRequestTask", "doInBackground - no. of entry to send: " + statusList.size());
+        boolean hasRecordsToBeSent = !statusList.isEmpty();
+        if (hasRecordsToBeSent) {
+            Log.e("SynchronizeWithServer", "doInBackground - no. of entry to send: " + statusList.size());
+        }else{
+            Log.i("SynchronizeWithServer", "doInBackground - all records sent to server.");
+            return true;
         }
         //stop if no status to be sent
+        //TODO: send equipment status according to status
         if (!statusList.isEmpty()) {
             try {
                 RestTemplate restTemplate = new RestTemplate();
@@ -94,9 +88,9 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
                 } else {
                     success =false;
                 }
-                Log.e("HttpRequestTask", "sucessfully finished");
+                Log.e("SynchronizeWithServer", "sucessfully finished");
             } catch (Exception e) {
-                Log.e("HttpRequestTask", e.getMessage(), e);
+                Log.e("SynchronizeWithServer", e.getMessage(), e);
                 success =false;
             }
         }
@@ -108,7 +102,7 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean success) {
         if(!success) {
-            Log.i("HttpRequestTask", "task failed, scheduling  job");
+            Log.i("SynchronizeWithServer", "task failed, scheduling  job");
             JobScheduler jobScheduler =
                     (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
             jobScheduler.schedule(new JobInfo.Builder(EquipmentStatusJobService.EquipmentStatusJobId,
