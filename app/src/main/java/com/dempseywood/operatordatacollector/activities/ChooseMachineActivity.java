@@ -30,6 +30,7 @@ import com.dempseywood.operatordatacollector.data.DB;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentDao;
 import com.dempseywood.operatordatacollector.models.Equipment;
 import com.dempseywood.operatordatacollector.models.DataHolder;
+import com.dempseywood.operatordatacollector.service.RequestService;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -129,7 +130,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
     private void refreshMachines() {
 
 
-        RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue queue = RequestService.getInstance(this).getRequestQueue();
         final String url = UrlHelper.getFetchEquipmentUrl();
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONArray>() {
