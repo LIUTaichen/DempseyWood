@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.dempseywood.operatordatacollector.R;
-import com.dempseywood.operatordatacollector.async.CreateEquipmentStatusTask;
+import com.dempseywood.operatordatacollector.async.CreateLocalEquipmentStatusTask;
 import com.dempseywood.operatordatacollector.data.DB;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentStatusDao;
 import com.dempseywood.operatordatacollector.helpers.DateTimeHelper;
@@ -262,7 +262,7 @@ public class CountByTapActivity extends AppCompatActivity implements
 
     private void changeStatus(String statusString) {
         DataHolder.getInstance().getEquipmentStatus().setStatus(statusString);
-        new CreateEquipmentStatusTask(this).execute();
+        new CreateLocalEquipmentStatusTask(this).execute();
     }
 
 

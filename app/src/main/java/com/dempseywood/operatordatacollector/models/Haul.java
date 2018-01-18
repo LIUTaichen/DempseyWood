@@ -12,7 +12,7 @@ import java.util.Date;
 public class Haul {
     @PrimaryKey
     private String uuid;
-    private String id;
+    private Integer id;
     private String operator;
     private String equipment;
     private String task;
@@ -29,14 +29,14 @@ public class Haul {
     }
 
     public void setUuid(String uuid) {
-        uuid = uuid;
+        this.uuid = uuid;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

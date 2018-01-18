@@ -130,7 +130,6 @@ public class ChooseMachineActivity extends AppCompatActivity {
     private void refreshMachines() {
 
 
-        RequestQueue queue = RequestService.getInstance(this).getRequestQueue();
         final String url = UrlHelper.getFetchEquipmentUrl();
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONArray>() {
@@ -173,7 +172,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-        queue.add(arrayRequest);
+        RequestService.getInstance(this).addToRequestQueue(arrayRequest);
 
     }
 

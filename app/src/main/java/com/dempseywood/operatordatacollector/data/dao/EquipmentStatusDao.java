@@ -47,4 +47,11 @@ public interface EquipmentStatusDao {
 
     @Query("SELECT * FROM equipmentstatus WHERE timestamp > (:startTime) ORDER BY timestamp DESC LIMIT 1 ")
     EquipmentStatus getLastStatusAfter(Date startTime);
+
+    @Query("SELECT * FROM equipmentstatus WHERE status == (:status) AND uuid == (:uuid) ORDER BY timestamp DESC LIMIT 1 ")
+    EquipmentStatus getStatus(String status, String uuid);
+    @Update
+    void update(EquipmentStatus loadStatus);
+    @Query("SELECT distinct uuid FROM equipmentstatus WHERE isSent == 0")
+    List<String> getDistinctFailedUuids();
 }

@@ -33,15 +33,6 @@ public class RequestService {
         return mInstance;
     }
 
-
-    public static RequestService getmInstance() {
-        return mInstance;
-    }
-
-    public static void setmInstance(RequestService mInstance) {
-        RequestService.mInstance = mInstance;
-    }
-
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
             // getApplicationContext() is key, it keeps you from leaking the
