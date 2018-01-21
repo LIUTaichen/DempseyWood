@@ -95,31 +95,6 @@ public class ChooseMachineActivity extends AppCompatActivity {
             }
         });
 
-  /*      searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChooseMachineActivity activity = (ChooseMachineActivity) v.getContext();
-                Intent intent = new Intent(activity, OperatorDetailActivity.class);
-                activity.startActivity(intent);
-            }
-        });*/
-
-       /* searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ChooseMachineActivity activity = (ChooseMachineActivity) v.getContext();
-                SearchView searchView = (SearchView)findViewById(R.id.machine_search);
-                String equipmentName = searchView.getQuery().toString();
-                DataHolder.getInstance().getEquipment().setName(equipmentName);
-
-
-                Intent intent = new Intent(activity, OperatorDetailActivity.class);
-                activity.startActivity(intent);
-            }
-        });*/
-
-
         searchView.setOnQueryTextListener(new OnQueryTextListener(this)) ;
 
 

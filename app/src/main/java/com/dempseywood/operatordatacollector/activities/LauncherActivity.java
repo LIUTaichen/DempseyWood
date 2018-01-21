@@ -30,12 +30,14 @@ import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.data.DB;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentDao;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentStatusDao;
+import com.dempseywood.operatordatacollector.data.dao.TaskDao;
 import com.dempseywood.operatordatacollector.helpers.DateTimeHelper;
 import com.dempseywood.operatordatacollector.helpers.UrlHelper;
 import com.dempseywood.operatordatacollector.models.Equipment;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
 import com.dempseywood.operatordatacollector.listeners.DwLocationListener;
 import com.dempseywood.operatordatacollector.models.DataHolder;
+import com.dempseywood.operatordatacollector.models.Task;
 import com.dempseywood.operatordatacollector.service.RequestService;
 import com.google.gson.Gson;
 
@@ -55,6 +57,7 @@ import static android.location.LocationManager.NETWORK_PROVIDER;
 public class LauncherActivity extends AppCompatActivity {
     private EquipmentStatusDao equipmentStatusDao;
     private EquipmentDao equipmentDao;
+    private TaskDao taskDao;
     private String tag = "Launcher";
     private static final Integer PERMISSION_REQUEST_CODE = 0;
     private static final int REQUEST_APP_SETTINGS = 168;
@@ -71,12 +74,14 @@ public class LauncherActivity extends AppCompatActivity {
         DB.init(getApplicationContext());
         equipmentStatusDao = DB.getInstance().equipmentStatusDao();
         equipmentDao =  DB.getInstance().equipmentDao();
+        taskDao = DB.getInstance().taskDao();
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new DwLocationListener();
 
         getLocationAndIMEI();
         updatePlants();
+        updateTasks();
     }
 
 
@@ -268,7 +273,7 @@ public class LauncherActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         Gson gson = new Gson();
                         Equipment[] equipments = gson.fromJson(response.toString(), Equipment[].class);
-                        AsyncTask task = new AsyncTask<Equipment, Void, Boolean>() {
+                        new AsyncTask<Equipment, Void, Boolean>() {
 
                             @Override
                             protected Boolean doInBackground(Equipment... equipment) {
@@ -284,14 +289,55 @@ public class LauncherActivity extends AppCompatActivity {
                                 toast.show();
                                 super.onPostExecute(aBoolean);
                             }
-                        };
-                        task.execute(equipments);
+                        }.execute(equipments);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //mTextView.setText("That didn't work!");
                 Snackbar snackbar = Snackbar.make(mLayout, R.string.message_plants_update_failure, Snackbar.LENGTH_LONG );
+                snackbar.show();
+            }
+        });
+        queue.add(arrayRequest);
+    }
+
+
+    private void updateTasks() {
+
+        RequestQueue queue = RequestService.getInstance(this).getRequestQueue();
+        final String url = UrlHelper.getFetchTaskUrl();
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONArray>() {
+
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Gson gson = new Gson();
+                        Task[] tasks = gson.fromJson(response.toString(), Task[].class);
+                        new AsyncTask<Task, Void, Boolean>() {
+
+                            @Override
+                            protected Boolean doInBackground(Task... task) {
+                                taskDao.deleteAll();
+                                taskDao.insertAll(task);
+                                Log.d(tag, "tasks updated");
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Boolean aBoolean) {
+                                Toast toast = Toast.makeText(LauncherActivity.this, R.string.message_tasks_updated,Toast.LENGTH_LONG);
+                                toast.show();
+                                super.onPostExecute(aBoolean);
+                            }
+                        }.execute(tasks);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //mTextView.setText("That didn't work!");
+                Snackbar snackbar = Snackbar.make(mLayout, R.string.message_tasks_update_failure, Snackbar.LENGTH_LONG );
                 snackbar.show();
             }
         });
