@@ -19,12 +19,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.dempseywood.operatordatacollector.R;
-import com.dempseywood.operatordatacollector.adapters.CustomSpinnerAdapter;
 import com.dempseywood.operatordatacollector.data.DB;
 import com.dempseywood.operatordatacollector.data.dao.TaskDao;
 import com.dempseywood.operatordatacollector.helpers.UrlHelper;
 import com.dempseywood.operatordatacollector.models.DataHolder;
-import com.dempseywood.operatordatacollector.models.EquipmentStatus;
 import com.dempseywood.operatordatacollector.models.Task;
 import com.dempseywood.operatordatacollector.service.RequestService;
 import com.google.gson.Gson;
@@ -55,7 +53,7 @@ public class ChooseMaterialActivity extends AppCompatActivity {
         progressView = findViewById(R.id.progress);
 
         adapter = new ArrayAdapter<CharSequence>(this,
-                R.layout.list_view_layout, new ArrayList<CharSequence>());
+                R.layout.task_list_item_layout, new ArrayList<CharSequence>());
 
         listView.setAdapter(adapter);
 

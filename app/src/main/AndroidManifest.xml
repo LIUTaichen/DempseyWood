@@ -19,7 +19,8 @@
         android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.LauncherActivity"
+        <activity
+            android:name=".activities.LauncherActivity"
             android:finishOnTaskLaunch="true"
             android:noHistory="true">
             <intent-filter>
@@ -31,19 +32,18 @@
         <activity
             android:name=".activities.OperatorDetailActivity"
             android:parentActivityName=".activities.CountByTapActivity"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.OperatorDetailActivity" />
         </activity>
         <activity
             android:name=".activities.ChooseMachineActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".activities.OperatorDetailActivity">
+            android:parentActivityName=".activities.OperatorDetailActivity"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.OperatorDetailActivity" />
-
         </activity>
         <activity
             android:name=".activities.CountByTapActivity"
@@ -52,7 +52,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.OperatorDetailActivity" />
         </activity>
-        <activity android:name=".activities.ChooseMaterialActivity"
+        <activity
+            android:name=".activities.ChooseMaterialActivity"
             android:parentActivityName=".activities.CountByTapActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -63,9 +64,6 @@
             android:name=".service.EquipmentStatusJobService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
-
-
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -91,12 +89,15 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name=".activities.HistoryActivity"
+        <activity
+            android:name=".activities.HistoryActivity"
             android:label="@string/label_history_appbar_title"
             android:parentActivityName=".activities.CountByTapActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.CountByTapActivity" /></activity>
+                android:value=".activities.CountByTapActivity" />
+        </activity>
+        <activity android:name=".EditHistoryActivity"></activity>
     </application>
 
 </manifest>

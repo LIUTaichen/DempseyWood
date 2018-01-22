@@ -14,14 +14,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.helpers.UrlHelper;
 import com.dempseywood.operatordatacollector.listeners.OnQueryTextListener;
@@ -78,7 +75,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
         });
          mListView = (ListView)findViewById(R.id.machine_result_list);
 
-        adapter = new CustomSpinnerAdapter(this, R.layout.spinner_layout, new ArrayList<Equipment>());
+        adapter = new CustomSpinnerAdapter(this, R.layout.equipment_list_item_layout, new ArrayList<Equipment>());
         this.setAdapter(adapter);
         mListView.setAdapter(adapter);
         mListView.setTextFilterEnabled(true);
@@ -117,7 +114,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
                         for(int i = 0; i < equipments.length; i++){
                             equipmentList.add(equipments[i]);
                         }
-                        adapter = new CustomSpinnerAdapter(ChooseMachineActivity.this, R.layout.spinner_layout, equipmentList);
+                        adapter = new CustomSpinnerAdapter(ChooseMachineActivity.this, R.layout.equipment_list_item_layout, equipmentList);
 
                         mListView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
@@ -162,8 +159,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
         AsyncTask task = new AsyncTask<Void, Void, List<Equipment>>() {
             @Override
             protected void onPostExecute(List<Equipment> equipments) {
-                adapter = new CustomSpinnerAdapter(ChooseMachineActivity.this, R.layout.spinner_layout, equipments);
-
+                adapter = new CustomSpinnerAdapter(ChooseMachineActivity.this, R.layout.equipment_list_item_layout, equipments);
                 mListView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 

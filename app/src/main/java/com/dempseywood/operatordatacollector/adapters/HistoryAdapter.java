@@ -38,7 +38,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     public HistoryAdapter(List<Haul> data){
-        this.dataset = new ArrayList<Haul>();
+        this.dataset = data;
 
 
     }

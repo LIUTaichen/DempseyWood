@@ -63,7 +63,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     public void loadStateFromDatabase(){
-        AsyncTask asyncTask = new AsyncTask<Void, Void, List<Haul>>(){
+        new AsyncTask<Void, Void, List<Haul>>(){
             public HistoryActivity activity = HistoryActivity.this;
 
             @Override
