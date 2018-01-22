@@ -61,19 +61,13 @@ public class ChooseMaterialActivity extends AppCompatActivity {
 
         //highlight current selected material
         Log.d("ChooseMaterialActivity",  "debug");
-        String[] materialArray = getResources().getStringArray(R.array.material_list);
-        for(int i = 0; i < materialArray.length; i ++){
-            if(materialArray[i].equals(DataHolder.getInstance().getEquipmentStatus().getTask())){
-                Log.d("ChooseMaterialActivity", DataHolder.getInstance().getEquipmentStatus().getTask() + "  matched");
-                listView.setItemChecked(i, true);
-            }
-        }
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[] materialArray = getResources().getStringArray(R.array.material_list);
-                DataHolder.getInstance().getEquipmentStatus().setTask(materialArray[position]);
+
+                DataHolder.getInstance().getEquipmentStatus().setTask(adapter.getItem(position).toString());
                 ChooseMaterialActivity activity = (ChooseMaterialActivity) view.getContext();
                 Intent intent = new Intent(activity, CountByTapActivity.class);
                 activity.startActivity(intent);
@@ -98,7 +92,6 @@ public class ChooseMaterialActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         readTasksFromDb();
-
         super.onResume();
     }
 
@@ -133,9 +126,20 @@ public class ChooseMaterialActivity extends AppCompatActivity {
                 adapter.clear();
                 adapter.addAll(taskList);
                 adapter.notifyDataSetChanged();
+                scrollToSelected(taskList);
             }
 
         }.execute();
+    }
+
+    private void scrollToSelected(List<CharSequence> taskList) {
+        for(int i = 0; i < taskList.size(); i ++){
+            if(taskList.get(i).equals(DataHolder.getInstance().getEquipmentStatus().getTask())){
+                Log.d("ChooseMaterialActivity", DataHolder.getInstance().getEquipmentStatus().getTask() + "  matched");
+                listView.setItemChecked(i, true);
+                listView.smoothScrollToPositionFromTop(i, 0);
+            }
+        }
     }
 
     private void updateTasks() {

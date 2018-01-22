@@ -135,8 +135,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
                                 return null;
                             }
 
-                        };
-                        task.execute(equipments);
+                        }.execute(equipments);
                     }
                 }, new Response.ErrorListener() {
             @Override

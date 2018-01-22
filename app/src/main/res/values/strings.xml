@@ -2,13 +2,6 @@
     <string name="app_name">DW Client</string>
     <string name="prompt_message">Please select schedule items:</string>
     <string name="button_confirm">Confirm</string>
-    <string-array name="schedule_items_array">
-        <item>Top soil</item>
-        <item>Clay</item>
-        <item>Unsuitable</item>
-        <item>Cut to fill</item>
-        <item>Other</item>
-    </string-array>
     <string name="loads_message"> load(s) completed</string>
     <string name="string_loaded">Loaded</string>
     <string name="drag_up">Drag over to unload</string>

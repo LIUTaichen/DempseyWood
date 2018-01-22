@@ -5,7 +5,6 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import com.dempseywood.operatordatacollector.models.Equipment;
 import com.dempseywood.operatordatacollector.models.Task;
 
 import java.util.List;
@@ -30,5 +29,5 @@ public interface TaskDao {
     void deleteAll();
 
     @Query("SELECT *  FROM task WHERE NAME= (:name) LIMIT 1")
-    Equipment findByName(String name);
+    Task findByName(String name);
 }
