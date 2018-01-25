@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.adapters.HistoryAdapter;
@@ -32,7 +34,7 @@ public class HistoryActivity extends AppCompatActivity {
     private HaulDao haulDao;
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private HistoryAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private String tag = "History";
 
@@ -88,6 +90,23 @@ public class HistoryActivity extends AppCompatActivity {
         mAdapter = new HistoryAdapter(haulList);
         mRecyclerView.swapAdapter(mAdapter, false);
         Log.d(tag, "new data added");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.history_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.edit_history) {
+            this.mAdapter.startEditing();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

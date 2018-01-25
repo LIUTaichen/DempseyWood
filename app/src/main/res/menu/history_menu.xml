@@ -4,7 +4,7 @@
     <!-- Settings, should always be in the overflow -->
     <item
         android:id="@+id/edit_history"
-        android:icon="@android:drawable/ic_menu_edit"
+
         android:title="@string/title_menu_edit_haul_task"
         app:showAsAction="always" />
 

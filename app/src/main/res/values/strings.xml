@@ -45,5 +45,5 @@
     <string name="title_activity_choose_machine">Select machine</string>
     <string name="message_choose_machine">Please tap here to select a machine.</string>
     <string name="message_error_operator_name_required">Operator name is required!</string>
-    <string name="title_menu_edit_haul_task">Edit task of hauls</string>
+    <string name="title_menu_edit_haul_task">Edit</string>
 </resources>

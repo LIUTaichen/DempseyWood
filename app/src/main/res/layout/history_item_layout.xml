@@ -23,7 +23,8 @@
             android:layout_marginLeft="16dp"
             android:buttonTint="@color/colorPrimary"
             android:checked="false"
-            android:gravity="center" />
+            android:gravity="center"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/index"
@@ -36,7 +37,7 @@
 
             android:text="999"
             android:textSize="16sp"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
     </LinearLayout>
 
 

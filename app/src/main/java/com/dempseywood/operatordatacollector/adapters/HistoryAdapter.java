@@ -1,10 +1,14 @@
 package com.dempseywood.operatordatacollector.adapters;
 
+import android.opengl.Visibility;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.dempseywood.operatordatacollector.R;
@@ -21,6 +25,8 @@ import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
     private List<Haul> dataset;
+    private boolean isEditActivated;
+    private SparseBooleanArray selectionArray;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -28,12 +34,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         public TextView statusTextView;
         public TextView loadTimeTextView;
         public TextView unloadTimeTextView;
+        public RadioButton radioButton;
         public ViewHolder(LinearLayout v) {
             super(v);
             indexTextView = v.findViewById(R.id.index);
             statusTextView = v.findViewById(R.id.status_text);
             loadTimeTextView = v.findViewById(R.id.load_time_text);
             unloadTimeTextView = v.findViewById(R.id.unload_time_text);
+            radioButton = v.findViewById(R.id.radioButton);
         }
     }
 
@@ -56,6 +64,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public void onBindViewHolder(HistoryAdapter.ViewHolder holder, int position) {
         Haul haul = dataset.get(position);
         holder.indexTextView.setText(position + 1 + "");
+        if(isEditActivated){
+            holder.indexTextView.setVisibility(View.GONE);
+            holder.radioButton.setVisibility(View.VISIBLE);
+        }else{
+            holder.indexTextView.setVisibility(View.VISIBLE);
+            holder.radioButton.setVisibility(View.GONE);
+        }
         holder.statusTextView.setText(haul.getTask());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         holder.loadTimeTextView.setText(sdf.format(haul.getLoadTime()));
@@ -69,5 +84,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     @Override
     public int getItemCount() {
         return dataset.size();
+    }
+
+    public void startEditing(){
+        this.isEditActivated = true;
+        this.notifyItemRangeChanged(0, dataset.size());
+    }
+
+    public void stopEditing(){
+        this.isEditActivated = false;
+        this.notifyItemRangeChanged(0, dataset.size());
     }
 }
