@@ -97,7 +97,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.CountByTapActivity" />
         </activity>
-        <activity android:name=".EditHistoryActivity"></activity>
     </application>
 
 </manifest>

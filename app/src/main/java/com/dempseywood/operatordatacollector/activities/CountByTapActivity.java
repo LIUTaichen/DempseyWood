@@ -211,7 +211,18 @@ public class CountByTapActivity extends AppCompatActivity implements
     public void incrementLoadCount() {
         TextView currentView = (TextView)countText.getCurrentView();
         CharSequence currentCount = currentView.getText();
-        Integer count = Integer.parseInt(currentCount.toString());
+        Integer count = null;
+        try{
+            count = Integer.parseInt(currentCount.toString());
+        }
+        catch(Exception e){
+            Log.e(tag, e.getMessage());
+            e.printStackTrace();
+        }
+        if(count == null){
+            count = 0;
+        }
+
         Integer newCount = count + 1;
         countText.setText(newCount.toString());
     }
