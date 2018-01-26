@@ -92,21 +92,29 @@ public class HistoryActivity extends AppCompatActivity {
         Log.d(tag, "new data added");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.history_menu, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.edit_history) {
             this.mAdapter.startEditing();
-            return true;
+            invalidateOptionsMenu();
+        }
+
+        if(id == R.id.cancel_action){
+            this.mAdapter.stopEditing();
+            invalidateOptionsMenu();
         }
 
         return super.onOptionsItemSelected(item);
     }
-
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        if(this.mAdapter.isEditing()){
+            getMenuInflater().inflate(R.menu.history_menu_editing, menu);
+        }else{
+            getMenuInflater().inflate(R.menu.history_menu, menu);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 }

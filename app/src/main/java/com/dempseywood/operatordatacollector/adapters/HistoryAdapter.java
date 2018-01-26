@@ -25,8 +25,8 @@ import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
     private List<Haul> dataset;
-    private boolean isEditActivated;
-    private SparseBooleanArray selectionArray;
+    private  boolean isEditActivated = false;
+    private  SparseBooleanArray selectionArray =  new SparseBooleanArray();;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -43,6 +43,17 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             unloadTimeTextView = v.findViewById(R.id.unload_time_text);
             radioButton = v.findViewById(R.id.radioButton);
         }
+
+
+    }
+
+    private  void onItemClick(View v, Integer position){
+        if(isEditActivated){
+            boolean isSelected = selectionArray.get(position);
+            selectionArray.put(position, !isSelected);
+            this.notifyItemChanged(position);
+        }
+
     }
 
     public HistoryAdapter(List<Haul> data){
@@ -57,16 +68,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                 .inflate(R.layout.history_item_layout, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
+
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(HistoryAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(HistoryAdapter.ViewHolder holder, final int position) {
         Haul haul = dataset.get(position);
         holder.indexTextView.setText(position + 1 + "");
         if(isEditActivated){
             holder.indexTextView.setVisibility(View.GONE);
             holder.radioButton.setVisibility(View.VISIBLE);
+            holder.radioButton.setChecked(selectionArray.get(position));
         }else{
             holder.indexTextView.setVisibility(View.VISIBLE);
             holder.radioButton.setVisibility(View.GONE);
@@ -78,7 +91,19 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         if(haul.getUnloadTime() != null) {
             unloadTimeText = sdf.format(haul.getUnloadTime());
         }
-            holder.unloadTimeTextView.setText(unloadTimeText);
+        holder.unloadTimeTextView.setText(unloadTimeText);
+        holder.radioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick(v,position);
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick(v,position);
+            }
+        });
     }
 
     @Override
@@ -93,6 +118,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     public void stopEditing(){
         this.isEditActivated = false;
+        selectionArray.clear();
         this.notifyItemRangeChanged(0, dataset.size());
+    }
+
+    public boolean isEditing(){
+        return this.isEditActivated;
     }
 }
