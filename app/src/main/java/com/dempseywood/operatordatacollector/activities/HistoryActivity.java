@@ -1,6 +1,7 @@
 package com.dempseywood.operatordatacollector.activities;
 
 import android.os.AsyncTask;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import com.dempseywood.operatordatacollector.R;
 import com.dempseywood.operatordatacollector.adapters.HistoryAdapter;
@@ -37,6 +39,13 @@ public class HistoryActivity extends AppCompatActivity {
     private HistoryAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private String tag = "History";
+    private LinearLayout llBottomSheet;
+
+    // init the bottom sheet behavior
+    private BottomSheetBehavior bottomSheetBehavior;
+
+// change the state of the bottom sheet
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +67,9 @@ public class HistoryActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new HistoryAdapter(new ArrayList<Haul>());
         mRecyclerView.setAdapter(mAdapter);
+        llBottomSheet = (LinearLayout) findViewById(R.id.hitstory_edit_bottome_sheet_layout);
+        bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         loadStateFromDatabase();
         // specify an adapter (see also next example)
 
@@ -98,6 +110,10 @@ public class HistoryActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.edit_history) {
             this.mAdapter.startEditing();
+            Log.i(tag, bottomSheetBehavior.getState() +"");
+            bottomSheetBehavior.getState();
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            Log.i(tag, bottomSheetBehavior.getState() +"");
             invalidateOptionsMenu();
         }
 
