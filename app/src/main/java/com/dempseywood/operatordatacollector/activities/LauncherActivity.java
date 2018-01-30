@@ -130,7 +130,7 @@ public class LauncherActivity extends AppCompatActivity {
 
                 super.onPostExecute(isFirstUse);
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 
@@ -289,7 +289,7 @@ public class LauncherActivity extends AppCompatActivity {
                                 toast.show();
                                 super.onPostExecute(aBoolean);
                             }
-                        }.execute(equipments);
+                        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,equipments);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -331,7 +331,7 @@ public class LauncherActivity extends AppCompatActivity {
                                 toast.show();
                                 super.onPostExecute(aBoolean);
                             }
-                        }.execute(tasks);
+                        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,tasks);
                     }
                 }, new Response.ErrorListener() {
             @Override

@@ -30,6 +30,8 @@ import com.dempseywood.operatordatacollector.helpers.DateTimeHelper;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
 import com.dempseywood.operatordatacollector.models.DataHolder;
 
+import org.springframework.util.StringUtils;
+
 import java.util.Date;
 import java.util.List;
 
@@ -212,14 +214,14 @@ public class CountByTapActivity extends AppCompatActivity implements
         TextView currentView = (TextView)countText.getCurrentView();
         CharSequence currentCount = currentView.getText();
         Integer count = null;
-        try{
-            count = Integer.parseInt(currentCount.toString());
-        }
-        catch(Exception e){
-            Log.e(tag, e.getMessage());
-            e.printStackTrace();
-        }
-        if(count == null){
+        if(StringUtils.hasText(currentCount)){
+            try{
+                count = Integer.parseInt(currentCount.toString());
+            }catch(Exception e){
+                Log.e(tag, e.getMessage());
+                e.printStackTrace();
+            }
+        }else{
             count = 0;
         }
 
@@ -254,7 +256,7 @@ public class CountByTapActivity extends AppCompatActivity implements
 
                 super.onPostExecute(statusList);
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 
     }
@@ -273,7 +275,7 @@ public class CountByTapActivity extends AppCompatActivity implements
 
     private void changeStatus(String statusString) {
         DataHolder.getInstance().getEquipmentStatus().setStatus(statusString);
-        new CreateLocalEquipmentStatusTask(this).execute();
+        new CreateLocalEquipmentStatusTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
     }
 
 

@@ -94,7 +94,7 @@ public class HistoryActivity extends AppCompatActivity {
 
                 super.onPostExecute(haulList);
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 

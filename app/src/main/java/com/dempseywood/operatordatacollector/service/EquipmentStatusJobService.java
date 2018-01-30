@@ -2,6 +2,7 @@ package com.dempseywood.operatordatacollector.service;
 
 import android.app.job.JobParameters;
 import android.app.job.JobService;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.dempseywood.operatordatacollector.rest.SynchronizeWithServerTask;
@@ -29,7 +30,7 @@ public class EquipmentStatusJobService extends JobService {
                 jobFinished(params, !success);
             }
         };
-        task.execute();
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         return true;
     }

@@ -127,7 +127,7 @@ public class ChooseMaterialActivity extends AppCompatActivity {
                 scrollToSelected(taskList);
             }
 
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
     }
 
     private void scrollToSelected(List<CharSequence> taskList) {
@@ -169,7 +169,7 @@ public class ChooseMaterialActivity extends AppCompatActivity {
                                 super.onPostExecute(aBoolean);
 
                             }
-                        }.execute(tasks);
+                        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,tasks);
                     }
                 }, new Response.ErrorListener() {
             @Override

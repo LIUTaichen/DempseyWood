@@ -132,7 +132,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
                                 return null;
                             }
 
-                        }.execute(equipments);
+                        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,equipments);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -171,7 +171,7 @@ public class ChooseMachineActivity extends AppCompatActivity {
                 return equipmentDao.getAll();
             }
 
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
 
     }
 
