@@ -275,7 +275,7 @@ public class CountByTapActivity extends AppCompatActivity implements
 
     private void changeStatus(String statusString) {
         DataHolder.getInstance().getEquipmentStatus().setStatus(statusString);
-        new CreateLocalEquipmentStatusTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+        new CreateLocalEquipmentStatusTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 

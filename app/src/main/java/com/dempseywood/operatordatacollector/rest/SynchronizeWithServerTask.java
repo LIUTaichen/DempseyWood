@@ -134,4 +134,9 @@ public class SynchronizeWithServerTask extends AsyncTask<Void, Void, Boolean> {
         }
     }
 
+    @Override
+    protected void onCancelled() {
+        Log.i("SynchronizeWithServer", "interrupted");
+        super.onCancelled();
+    }
 }

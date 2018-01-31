@@ -1,6 +1,10 @@
 package com.dempseywood.operatordatacollector.async;
 
 import android.app.Activity;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -20,13 +24,16 @@ import com.dempseywood.operatordatacollector.models.FinishHaulRequest;
 import com.dempseywood.operatordatacollector.models.Haul;
 import com.dempseywood.operatordatacollector.models.StartHaulRequest;
 import com.dempseywood.operatordatacollector.rest.SynchronizeWithServerTask;
+import com.dempseywood.operatordatacollector.service.EquipmentStatusJobService;
 import com.dempseywood.operatordatacollector.service.RequestService;
+import com.dempseywood.operatordatacollector.service.SyncDataService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -114,7 +121,8 @@ public class CreateLocalEquipmentStatusTask extends AsyncTask<Void, Void, Haul> 
 
                             Log.e("volley", "request failed");
 
-                            new SynchronizeWithServerTask(activity).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+                            Log.i("volley", "task failed, scheduling  job");
+                            SyncDataService.getInstance(activity).scheduleSyncJob();
                         }
                     });
 
@@ -165,8 +173,8 @@ public class CreateLocalEquipmentStatusTask extends AsyncTask<Void, Void, Haul> 
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.e("volley", "request failed");
-                            new SynchronizeWithServerTask(activity).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+                            Log.e("volley", "request failed, scheduling job to retry later");
+                            SyncDataService.getInstance(activity).scheduleSyncJob();
 
                         }
                     });

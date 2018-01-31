@@ -1,7 +1,11 @@
 package com.dempseywood.operatordatacollector.service;
 
+import android.app.job.JobInfo;
 import android.app.job.JobParameters;
+import android.app.job.JobScheduler;
 import android.app.job.JobService;
+import android.content.ComponentName;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,18 +18,20 @@ import com.dempseywood.operatordatacollector.rest.SynchronizeWithServerTask;
 public class EquipmentStatusJobService extends JobService {
 
     public static final Integer EquipmentStatusJobId = 23;
+    private static final String tag = "EquipmentStatusJob";
 
     private SynchronizeWithServerTask task;
+
     @Override
     public boolean onStartJob(final JobParameters params) {
-        Log.i("EquipmentStatusJob", "starting job");
+        Log.i(tag, "starting job");
         task =  new SynchronizeWithServerTask(this.getApplicationContext()){
             @Override
             protected void onPostExecute(Boolean success){
                 if(success) {
-                    Log.i("EquipmentStatusJob", "task finished");
+                    Log.i(tag, "task finished");
                 }else{
-                    Log.i("EquipmentStatusJob", "task failed, rescheduling  job");
+                    Log.i(tag, "task failed, rescheduling  job");
                 }
                 jobFinished(params, !success);
             }
@@ -37,11 +43,13 @@ public class EquipmentStatusJobService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        Log.i("EquipmentStatusJob", "onStopJob");
+        Log.i(tag, "onStopJob");
         if(task != null){
-            Log.i("EquipmentStatusJob", "cancelling job");
+            Log.i(tag, "cancelling job");
             task.cancel(true);
         }
         return true;
     }
+
+
 }

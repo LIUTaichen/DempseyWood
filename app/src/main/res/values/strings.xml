@@ -47,4 +47,5 @@
     <string name="message_error_operator_name_required">Operator name is required!</string>
     <string name="title_menu_edit_haul_task">Edit</string>
     <string name="title_menu_cancel">Cancel</string>
+    <string name="button_name_change_task">Change task</string>
 </resources>
