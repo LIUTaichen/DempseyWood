@@ -1,15 +1,19 @@
 package com.dempseywood.operatordatacollector.activities;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.dempseywood.operatordatacollector.R;
@@ -40,6 +44,7 @@ public class HistoryActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private String tag = "History";
     private LinearLayout llBottomSheet;
+    private LinearLayout changeButtonLayout;
 
     // init the bottom sheet behavior
     private BottomSheetBehavior bottomSheetBehavior;
@@ -62,14 +67,43 @@ public class HistoryActivity extends AppCompatActivity {
         haulDao = DB.getInstance().haulDao();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.history_recycler);
+        changeButtonLayout = (LinearLayout)findViewById(R.id.history_edit_bottom_layout) ;
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new HistoryAdapter(new ArrayList<Haul>());
+        mAdapter = new HistoryAdapter(new ArrayList<Haul>(), this);
         mRecyclerView.setAdapter(mAdapter);
         llBottomSheet = (LinearLayout) findViewById(R.id.hitstory_edit_bottome_sheet_layout);
         bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                Log.i(tag, "new state is "  + newState);
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+        changeButtonLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SparseBooleanArray selected = mAdapter.getSelectionArray();
+                StringBuilder selectedIndex= new StringBuilder();
+                Log.d(tag, "size:" +  selected.size());
+                for (int i = 0; i <selected.size(); i ++){
+                    int key = selected.keyAt(i);
+                    if(selected.get(key)){
+                        selectedIndex.append(" ");
+                        selectedIndex.append(key);
+                    }
+                }
+                Snackbar snackbar = Snackbar.make(changeButtonLayout, "selected : " + selectedIndex.toString(), Snackbar.LENGTH_LONG );
+                snackbar.show();
+            }
+        });
         loadStateFromDatabase();
         // specify an adapter (see also next example)
 
@@ -99,9 +133,15 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     public void acceptData(List<Haul> haulList){
-        mAdapter = new HistoryAdapter(haulList);
+        mAdapter = new HistoryAdapter(haulList, this);
         mRecyclerView.swapAdapter(mAdapter, false);
         Log.d(tag, "new data added");
+
+        Log.i(tag, bottomSheetBehavior.getState() +"");
+        super.onResume();
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN) ;
+        Log.i(tag, bottomSheetBehavior.getState() +"");
     }
 
 
@@ -112,15 +152,22 @@ public class HistoryActivity extends AppCompatActivity {
             this.mAdapter.startEditing();
             Log.i(tag, bottomSheetBehavior.getState() +"");
             bottomSheetBehavior.getState();
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
             Log.i(tag, bottomSheetBehavior.getState() +"");
             invalidateOptionsMenu();
         }
 
         if(id == R.id.cancel_action){
             this.mAdapter.stopEditing();
+            if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
             invalidateOptionsMenu();
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -132,5 +179,25 @@ public class HistoryActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.history_menu, menu);
         }
         return super.onPrepareOptionsMenu(menu);
+    }
+
+
+    @Override
+    protected void onResume() {
+        Log.i(tag, bottomSheetBehavior.getState() +"");
+        super.onResume();
+
+         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN) ;
+        Log.i(tag, bottomSheetBehavior.getState() +"");
+
+
+    }
+
+    public void showChangeTaskButton(boolean needToShow){
+        if(needToShow){
+            changeButtonLayout.setVisibility(View.VISIBLE);
+        }else{
+            changeButtonLayout.setVisibility(View.GONE);
+        }
     }
 }

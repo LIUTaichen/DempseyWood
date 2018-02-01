@@ -3,6 +3,7 @@ package com.dempseywood.operatordatacollector.adapters;
 import android.opengl.Visibility;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.dempseywood.operatordatacollector.R;
+import com.dempseywood.operatordatacollector.activities.HistoryActivity;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
 import com.dempseywood.operatordatacollector.models.Haul;
 
@@ -26,7 +28,10 @@ import java.util.List;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
     private List<Haul> dataset;
     private  boolean isEditActivated = false;
-    private  SparseBooleanArray selectionArray =  new SparseBooleanArray();;
+    private  SparseBooleanArray selectionArray =  new SparseBooleanArray();
+    private static final String tag = "historyAdapter";
+    private HistoryActivity activity;
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -50,15 +55,26 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private  void onItemClick(View v, Integer position){
         if(isEditActivated){
             boolean isSelected = selectionArray.get(position);
+            Log.d(tag, "old state: " + isSelected + " size: " + selectionArray.size());
             selectionArray.put(position, !isSelected);
+            Log.d(tag, "new  state: " + selectionArray.get(position) + " size: " + selectionArray.size());
             this.notifyItemChanged(position);
+            boolean isAllFalse = true;
+            for (int i = 0; i <selectionArray.size(); i ++){
+                int key = selectionArray.keyAt(i);
+                if(selectionArray.get(key)){
+                    isAllFalse = false;
+                }
+            }
+            activity.showChangeTaskButton(!isAllFalse);
         }
+
 
     }
 
-    public HistoryAdapter(List<Haul> data){
+    public HistoryAdapter(List<Haul> data, HistoryActivity activity){
         this.dataset = data;
-
+        this.activity = activity;
 
     }
     @Override
@@ -95,12 +111,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.radioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i(tag, "radio button event.");
                 onItemClick(v,position);
             }
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i(tag, "view event.");
                 onItemClick(v,position);
             }
         });
@@ -119,10 +137,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public void stopEditing(){
         this.isEditActivated = false;
         selectionArray.clear();
+        activity.showChangeTaskButton(false);
         this.notifyItemRangeChanged(0, dataset.size());
     }
 
     public boolean isEditing(){
         return this.isEditActivated;
+    }
+
+    public SparseBooleanArray getSelectionArray(){
+        return selectionArray;
     }
 }

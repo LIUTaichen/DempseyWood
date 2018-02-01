@@ -49,6 +49,7 @@ public class CountByTapActivity extends AppCompatActivity implements
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView mNavigationView;
+    private int mLongAnimationDuration;
 
 
     @Override
@@ -163,6 +164,9 @@ public class CountByTapActivity extends AppCompatActivity implements
                 activity.startActivity(intent);
             }
         });
+        mLongAnimationDuration = getResources().getInteger(
+                android.R.integer.config_longAnimTime);
+
     }
 
 
