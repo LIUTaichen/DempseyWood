@@ -93,6 +93,10 @@
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>
-
-    <include layout="@layout/history_editing_bottom_sheet" />
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp">
+        <include layout="@layout/history_editing_bottom_sheet" />
+    </android.support.design.widget.CoordinatorLayout>
 </android.support.design.widget.CoordinatorLayout>

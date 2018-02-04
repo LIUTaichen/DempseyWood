@@ -40,6 +40,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         public TextView loadTimeTextView;
         public TextView unloadTimeTextView;
         public RadioButton radioButton;
+        public LinearLayout rightLayout;
         public ViewHolder(LinearLayout v) {
             super(v);
             indexTextView = v.findViewById(R.id.index);
@@ -47,6 +48,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             loadTimeTextView = v.findViewById(R.id.load_time_text);
             unloadTimeTextView = v.findViewById(R.id.unload_time_text);
             radioButton = v.findViewById(R.id.radioButton);
+            rightLayout = v.findViewById(R.id.rightLayout);
         }
 
 
@@ -122,6 +124,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                 onItemClick(v,position);
             }
         });
+
     }
 
     @Override
