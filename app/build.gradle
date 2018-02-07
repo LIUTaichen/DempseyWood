@@ -9,8 +9,8 @@ android {
         applicationId "com.dempseywood.operatordatacollector"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 4
-        versionName "0.3"
+        versionCode 5
+        versionName "0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -43,6 +43,8 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
     compile 'com.google.firebase:firebase-messaging:11.4.0'
     compile 'com.android.volley:volley:1.1.0'
+    compile 'me.zhanghai.android.materialprogressbar:library:1.1.7'
+    compile 'com.facebook.stetho:stetho:1.5.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'android.arch.persistence.room:compiler:1.0.0-alpha9'
     // https://mvnrepository.com/artifact/com.google.code.gson/gson

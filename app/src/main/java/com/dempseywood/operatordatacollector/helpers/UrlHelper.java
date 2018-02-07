@@ -15,6 +15,8 @@ public class UrlHelper {
     public static final String API_HAUL_UPDATE_TASK = "/updateTask";
     public static final String API_HAUL_BATCH_UPDATE_TASK = "/batchUpdateTask";
     public static final String API_HAUL_BATCH = "/batch";
+    public static final String API_VERSION_CHECK = "/api/versionCheck";
+
 
 
 
@@ -43,6 +45,10 @@ public class UrlHelper {
 
     public static String getBatchUpdateTaskUrl(){
         return SERVER_CONTEXT_ROOT + API_HAUL_ROOT + API_HAUL_BATCH_UPDATE_TASK ;
+    }
+
+    public static String getVersionCheckUrl(){
+        return SERVER_CONTEXT_ROOT + API_VERSION_CHECK;
     }
 
 }

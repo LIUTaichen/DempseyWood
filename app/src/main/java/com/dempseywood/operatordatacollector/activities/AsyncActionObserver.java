@@ -9,4 +9,5 @@ public interface AsyncActionObserver {
     void onComplete();
     void onError();
     void onTaskCancelled();
+
 }

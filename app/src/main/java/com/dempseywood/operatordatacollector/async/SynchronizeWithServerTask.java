@@ -1,4 +1,4 @@
-package com.dempseywood.operatordatacollector.rest;
+package com.dempseywood.operatordatacollector.async;
 
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;

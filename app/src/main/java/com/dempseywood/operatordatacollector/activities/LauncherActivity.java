@@ -2,7 +2,9 @@ package com.dempseywood.operatordatacollector.activities;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -12,6 +14,7 @@ import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -24,24 +27,35 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.dempseywood.operatordatacollector.R;
+import com.dempseywood.operatordatacollector.async.VersionCheckCommand;
 import com.dempseywood.operatordatacollector.data.DB;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentDao;
 import com.dempseywood.operatordatacollector.data.dao.EquipmentStatusDao;
 import com.dempseywood.operatordatacollector.data.dao.TaskDao;
 import com.dempseywood.operatordatacollector.helpers.DateTimeHelper;
 import com.dempseywood.operatordatacollector.helpers.UrlHelper;
+import com.dempseywood.operatordatacollector.helpers.VersionHelper;
 import com.dempseywood.operatordatacollector.models.Equipment;
 import com.dempseywood.operatordatacollector.models.EquipmentStatus;
 import com.dempseywood.operatordatacollector.listeners.DwLocationListener;
 import com.dempseywood.operatordatacollector.models.DataHolder;
+import com.dempseywood.operatordatacollector.models.Haul;
 import com.dempseywood.operatordatacollector.models.Task;
 import com.dempseywood.operatordatacollector.service.RequestService;
+import com.dempseywood.operatordatacollector.service.SyncDataService;
+import com.dempseywood.operatordatacollector.service.VariableTimeoutRestTemplate;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -49,12 +63,15 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static android.location.LocationManager.NETWORK_PROVIDER;
 
-public class LauncherActivity extends AppCompatActivity {
+public class LauncherActivity extends AppCompatActivity implements AsyncActionForDataObserver<Boolean> {
     private EquipmentStatusDao equipmentStatusDao;
     private EquipmentDao equipmentDao;
     private TaskDao taskDao;
@@ -65,11 +82,13 @@ public class LauncherActivity extends AppCompatActivity {
     private View mLayout;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private CountDownLatch countDownLatch = new CountDownLatch(3);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.dempseywood.operatordatacollector.R.layout.activity_launcher);
+
         mLayout = findViewById(R.id.launcher_layout);
         DB.init(getApplicationContext());
         equipmentStatusDao = DB.getInstance().equipmentStatusDao();
@@ -82,6 +101,11 @@ public class LauncherActivity extends AppCompatActivity {
         getLocationAndIMEI();
         updatePlants();
         updateTasks();
+        checkVersion();
+    }
+
+    public void checkVersion(){
+        new VersionCheckCommand(this.getApplicationContext(), this).execute();
     }
 
 
@@ -211,7 +235,6 @@ public class LauncherActivity extends AppCompatActivity {
             String imei = telephonyManager.getDeviceId();
             DataHolder.getInstance().setImei(imei);
 
-            loadStateFromDatabase();
         }
 
         else  {
@@ -242,14 +265,6 @@ public class LauncherActivity extends AppCompatActivity {
         }
 
 
-    }
-
-
-    @Override
-    protected void onResume() {
-        Log.i(tag, "calling onResume()" );
-
-        super.onResume();
     }
 
     @Override
@@ -286,6 +301,7 @@ public class LauncherActivity extends AppCompatActivity {
                             protected void onPostExecute(Boolean aBoolean) {
                                 Toast toast = Toast.makeText(LauncherActivity.this, R.string.message_plants_updated,Toast.LENGTH_LONG);
                                 toast.show();
+
                                 super.onPostExecute(aBoolean);
                             }
                         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,equipments);
@@ -341,5 +357,55 @@ public class LauncherActivity extends AppCompatActivity {
             }
         });
         queue.add(arrayRequest);
+    }
+
+
+    @Override
+    public void onPreStart() {
+
+    }
+
+    @Override
+    public void onComplete() {
+
+    }
+
+    @Override
+    public void onError() {
+        loadStateFromDatabase();
+    }
+
+    @Override
+    public void onTaskCancelled() {
+
+    }
+
+    @Override
+    public void receiveData(Boolean isUpdateNeeded) {
+        if(isUpdateNeeded){
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("A New Version is Available. ");
+            builder.setMessage("Please update the app to continue.");
+            builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
+                            ("market://details?id=com.dempseywood.operatordatacollector")));
+                    dialog.dismiss();
+                }
+            });
+
+           /* builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    background.start();
+                }
+            });*/
+
+            builder.setCancelable(false);
+            builder.show();
+        }else{
+            loadStateFromDatabase();
+        }
     }
 }

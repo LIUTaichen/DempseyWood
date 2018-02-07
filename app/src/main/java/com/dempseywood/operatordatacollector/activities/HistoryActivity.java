@@ -2,7 +2,6 @@ package com.dempseywood.operatordatacollector.activities;
 
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -12,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,25 +26,11 @@ import com.dempseywood.operatordatacollector.data.DB;
 import com.dempseywood.operatordatacollector.data.dao.HaulDao;
 import com.dempseywood.operatordatacollector.data.dao.TaskDao;
 import com.dempseywood.operatordatacollector.helpers.DateTimeHelper;
-import com.dempseywood.operatordatacollector.helpers.UpdateTaskRequestBuilder;
-import com.dempseywood.operatordatacollector.helpers.UrlHelper;
 import com.dempseywood.operatordatacollector.models.Haul;
 import com.dempseywood.operatordatacollector.models.Task;
-import com.dempseywood.operatordatacollector.models.UpdateTaskRequest;
-import com.dempseywood.operatordatacollector.rest.ChangeHaulTaskCommand;
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
+import com.dempseywood.operatordatacollector.async.ChangeHaulTaskCommand;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -71,9 +55,6 @@ public class HistoryActivity extends AppCompatActivity implements AsyncActionObs
     private List<Haul> haulsToBeChanged = new ArrayList<>();
     private Task newTask;
 
-// change the state of the bottom sheet
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,13 +63,10 @@ public class HistoryActivity extends AppCompatActivity implements AsyncActionObs
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.label_history_appbar_title);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        String a = getSupportActionBar().getTitle().toString();
 
-        DB.init(getApplicationContext());
-        haulDao = DB.getInstance().haulDao();
-        taskDao = DB.getInstance().taskDao();
+        haulDao = DB.getInstance(getApplicationContext()).haulDao();
+        taskDao = DB.getInstance(getApplicationContext()).taskDao();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.history_recycler);
         changeButtonLayout = (LinearLayout)findViewById(R.id.history_edit_bottom_layout) ;
@@ -103,39 +81,16 @@ public class HistoryActivity extends AppCompatActivity implements AsyncActionObs
         progressBar.setVisibility(View.INVISIBLE);
         bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                Log.i(tag, "new state is "  + newState);
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
         changeButtonLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SparseBooleanArray selected = historyAdapter.getSelectionArray();
-                StringBuilder selectedIndex= new StringBuilder();
-                Log.d(tag, "size:" +  selected.size());
-                for (int i = 0; i <selected.size(); i ++){
-                    int key = selected.keyAt(i);
-                    if(selected.get(key)){
-                        selectedIndex.append(" ");
-                        selectedIndex.append(key);
-                    }
-                }
-                if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }
+            if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
             }
         });
         loadStateFromDatabase();
         loadTasksFromDatabase();
-
-
     }
 
     public void loadStateFromDatabase(){
@@ -302,7 +257,7 @@ public class HistoryActivity extends AppCompatActivity implements AsyncActionObs
     @Override
     public void onComplete() {
         progressBar.setVisibility(View.INVISIBLE);
-        Snackbar snackbar = Snackbar.make(mRecyclerView,"Hauls updated." , Snackbar.LENGTH_LONG );
+        Snackbar snackbar = Snackbar.make(mRecyclerView,"Hauls successfully updated." , Snackbar.LENGTH_LONG );
         snackbar.show();
         invalidateOptionsMenu();
         loadStateFromDatabase();
@@ -311,7 +266,7 @@ public class HistoryActivity extends AppCompatActivity implements AsyncActionObs
     @Override
     public void onError() {
         progressBar.setVisibility(View.INVISIBLE);
-        Snackbar snackbar = Snackbar.make(mRecyclerView,"Update failed." , Snackbar.LENGTH_LONG )
+        Snackbar snackbar = Snackbar.make(mRecyclerView,"Update failed. Please try again." , Snackbar.LENGTH_LONG )
                 .setAction("RETRY", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

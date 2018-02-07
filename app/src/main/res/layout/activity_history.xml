@@ -64,14 +64,7 @@
                 app:mpb_progressStyle="horizontal"
                 app:mpb_useIntrinsicPadding="false"
                 style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
-
-
-
-
         </FrameLayout>
-
-
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/history_recycler"
             android:layout_width="0dp"
