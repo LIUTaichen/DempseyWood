@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/menu_item_background_selector"
     android:elevation="8dp"
+    android:layout_marginTop="56dp"
     android:orientation="vertical"
     android:paddingBottom="8dp"
     android:paddingLeft="16dp"

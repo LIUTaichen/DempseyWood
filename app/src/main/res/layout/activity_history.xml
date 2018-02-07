@@ -40,10 +40,37 @@
                     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                     android:titleTextColor="@color/colorWhite"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                    app:title="@string/label_history_appbar_title" />
+                    app:title="@string/label_history_appbar_title" >
+
+
+                </android.support.v7.widget.Toolbar>
             </android.support.design.widget.CollapsingToolbarLayout>
 
         </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/toolbar_progress_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            app:layout_constraintBottom_toTopOf="@+id/history_recycler"
+
+            app:layout_constraintTop_toBottomOf="@+id/appbar">
+            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/colorAccent"
+                android:indeterminateTintMode="src_in"
+                app:mpb_progressStyle="horizontal"
+                app:mpb_useIntrinsicPadding="false"
+                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
+
+
+
+
+        </FrameLayout>
+
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/history_recycler"
@@ -54,14 +81,13 @@
             app:layout_constraintBottom_toTopOf="@+id/history_edit_bottom_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appbar"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_progress_bar_layout"
             tools:listitem="@layout/history_item_layout" />
 
         <LinearLayout
             android:id="@+id/history_edit_bottom_layout"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-
             android:elevation="100dp"
             android:orientation="horizontal"
             android:paddingBottom="8dp"
@@ -91,12 +117,7 @@
 
 
         </LinearLayout>
-
     </android.support.constraint.ConstraintLayout>
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="56dp">
-        <include layout="@layout/history_editing_bottom_sheet" />
-    </android.support.design.widget.CoordinatorLayout>
+
+    <include layout="@layout/history_editing_bottom_sheet" />
 </android.support.design.widget.CoordinatorLayout>

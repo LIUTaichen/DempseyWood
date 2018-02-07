@@ -23,6 +23,8 @@ import com.dempseywood.operatordatacollector.models.Haul;
 import com.dempseywood.operatordatacollector.models.StartHaulRequest;
 import com.dempseywood.operatordatacollector.service.EquipmentStatusJobService;
 import com.dempseywood.operatordatacollector.service.RequestService;
+import com.dempseywood.operatordatacollector.service.SyncDataService;
+import com.dempseywood.operatordatacollector.service.VariableTimeoutRestTemplate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -76,8 +78,8 @@ public class SynchronizeWithServerTask extends AsyncTask<Void, Void, Boolean> {
             Log.e("SynchronizeWithServer", "doInBackground - no. of entry to send: " + statusList.size());
 
             try {
-                final String url = UrlHelper.getBatchUpdateUrl();
-                RestTemplate restTemplate = new RestTemplate();
+                final String url = UrlHelper.getBatchUrl();
+                RestTemplate restTemplate = new VariableTimeoutRestTemplate(5000);
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
@@ -125,12 +127,10 @@ public class SynchronizeWithServerTask extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(Boolean success) {
         if(!success) {
             Log.i("SynchronizeWithServer", "task failed, scheduling  job");
-            JobScheduler jobScheduler =
-                    (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            jobScheduler.schedule(new JobInfo.Builder(EquipmentStatusJobService.EquipmentStatusJobId,
-                    new ComponentName(context, EquipmentStatusJobService.class))
-                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                    .build());
+            SyncDataService.getInstance(context).scheduleSyncJob(false);
+
+        }else{
+            SyncDataService.getInstance(context).setSyncNeeded(false);
         }
     }
 

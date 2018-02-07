@@ -18,6 +18,7 @@ public class DataHolder {
     private Integer[] counts;
     private Integer count = 0;
     private Location location;
+    private String imei;
     private List<Equipment> equipments;
 
 
@@ -82,5 +83,13 @@ public class DataHolder {
 
     public void setEquipments(List<Equipment> equipments) {
         this.equipments = equipments;
+    }
+
+    public String getImei() {
+        return imei;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei;
     }
 }

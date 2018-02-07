@@ -13,7 +13,9 @@ public class UrlHelper {
     public static final String API_HAUL_ROOT = "/api/haul";
     public static final String API_HAUL_FINISH = "/unload";
     public static final String API_HAUL_UPDATE_TASK = "/updateTask";
-    public static final String API_HAUL_BATCH_UPDATE_TASK = "/batch";
+    public static final String API_HAUL_BATCH_UPDATE_TASK = "/batchUpdateTask";
+    public static final String API_HAUL_BATCH = "/batch";
+
 
 
     public static String getFetchEquipmentUrl(){
@@ -35,9 +37,12 @@ public class UrlHelper {
         return SERVER_CONTEXT_ROOT + API_HAUL_ROOT + haulId + API_HAUL_UPDATE_TASK ;
     }
 
-    public static String getBatchUpdateUrl(){
-        return SERVER_CONTEXT_ROOT + API_HAUL_ROOT + API_HAUL_BATCH_UPDATE_TASK;
+    public static String getBatchUrl(){
+        return SERVER_CONTEXT_ROOT + API_HAUL_ROOT + API_HAUL_BATCH;
     }
 
+    public static String getBatchUpdateTaskUrl(){
+        return SERVER_CONTEXT_ROOT + API_HAUL_ROOT + API_HAUL_BATCH_UPDATE_TASK ;
+    }
 
 }

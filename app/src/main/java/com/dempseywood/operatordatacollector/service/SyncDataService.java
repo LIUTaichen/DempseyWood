@@ -19,6 +19,7 @@ public class SyncDataService {
     public static final int INITIAL_BACKOFF_MILLIS = 30000;
     private static SyncDataService instance;
     private Context context;
+    private boolean syncNeeded = false;
     private static final String tag = "SyncDataService";
 
     private SyncDataService(Context context) {
@@ -37,7 +38,11 @@ public class SyncDataService {
         return instance;
     }
 
-    public void scheduleSyncJob(){
+    public void scheduleSyncJob(boolean immediate){
+        if(!syncNeeded){
+            Log.i(tag, "no record to sync with server");
+            return;
+        }
         Log.i(tag, "trying to schedule new job to sync data to server");
 
         JobScheduler jobScheduler =
@@ -54,7 +59,7 @@ public class SyncDataService {
             }
         }
 
-        if(isJobAlreadyScheduled){
+        if(isJobAlreadyScheduled &&  !immediate){
             Log.i(tag, "no need to schedule job again.");
             return;
         }
@@ -68,4 +73,11 @@ public class SyncDataService {
 
     }
 
+    public boolean getSyncNeeded() {
+        return syncNeeded;
+    }
+
+    public void setSyncNeeded(boolean syncNeeded) {
+        this.syncNeeded = syncNeeded;
+    }
 }

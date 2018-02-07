@@ -192,25 +192,24 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private void getLocationAndIMEI(){
+
         boolean hasLocationPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
         boolean hasPhonePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                 == PackageManager.PERMISSION_GRANTED;
         if(hasLocationPermission && hasPhonePermission){
-            locationManager.requestLocationUpdates(GPS_PROVIDER, 60000, 10, locationListener);
+            locationManager.requestLocationUpdates(GPS_PROVIDER, 60000, 5, locationListener);
             Location newLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
             if(newLocation == null){
                 Log.i(tag, "GPS location not available, requesting network location");
                 newLocation = locationManager.getLastKnownLocation(NETWORK_PROVIDER);
             }
             if(newLocation != null){
-                DataHolder.getInstance().getEquipmentStatus().setLatitude(newLocation.getLatitude());
-                DataHolder.getInstance().getEquipmentStatus().setLongitude(newLocation.getLongitude());
+                DataHolder.getInstance().setLocation(newLocation);
             }
-
             TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
             String imei = telephonyManager.getDeviceId();
-            DataHolder.getInstance().getEquipmentStatus().setImei(imei);
+            DataHolder.getInstance().setImei(imei);
 
             loadStateFromDatabase();
         }

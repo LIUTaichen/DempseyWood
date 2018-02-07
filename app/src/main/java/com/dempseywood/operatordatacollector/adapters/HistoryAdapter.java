@@ -151,4 +151,17 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public SparseBooleanArray getSelectionArray(){
         return selectionArray;
     }
+
+    public List<Haul> getSelectedHauls(){
+        List<Haul> selectedHauls = new ArrayList<>();
+        SparseBooleanArray selected = this.getSelectionArray();
+        Log.d(tag, "size:" +  selected.size());
+        for (int i = 0; i <selected.size(); i ++){
+            int key = selected.keyAt(i);
+            if(selected.get(key)){
+                selectedHauls.add(dataset.get(key));
+            }
+        }
+        return selectedHauls;
+    }
 }

@@ -64,7 +64,7 @@ public class CreateLocalEquipmentStatusTask extends AsyncTask<Void, Void, Haul> 
             startHaulRequest.setEquipment(haul.getEquipment());
             startHaulRequest.setImei(haul.getImei());
             startHaulRequest.setLoadLatitude(haul.getLoadLatitude());
-            startHaulRequest.setLoadLatitude(haul.getLoadLatitude());
+            startHaulRequest.setLoadLongitude(haul.getLoadLongitude());
             startHaulRequest.setLoadTime(haul.getLoadTime());
             startHaulRequest.setOperator(haul.getOperator());
             startHaulRequest.setTask(haul.getTask());
@@ -105,6 +105,7 @@ public class CreateLocalEquipmentStatusTask extends AsyncTask<Void, Void, Haul> 
                                         equipmentStatusDAO.update(loadStatus);
                                     }
                                     Log.i("create haul", "completed");
+                                    SyncDataService.getInstance(activity).scheduleSyncJob(true);
                                     return false;
                                 }
 
@@ -122,7 +123,8 @@ public class CreateLocalEquipmentStatusTask extends AsyncTask<Void, Void, Haul> 
                             Log.e("volley", "request failed");
 
                             Log.i("volley", "task failed, scheduling  job");
-                            SyncDataService.getInstance(activity).scheduleSyncJob();
+                            SyncDataService.getInstance(activity).setSyncNeeded(true);
+                            SyncDataService.getInstance(activity).scheduleSyncJob(false);
                         }
                     });
 
@@ -132,7 +134,7 @@ public class CreateLocalEquipmentStatusTask extends AsyncTask<Void, Void, Haul> 
             Log.i("url for finishing haul", url);
             FinishHaulRequest finishHaulRequestHaulRequest = new FinishHaulRequest();
             finishHaulRequestHaulRequest.setUnloadLatitude(haul.getUnloadLatitude());
-            finishHaulRequestHaulRequest.setUnloadLatitude(haul.getUnloadLatitude());
+            finishHaulRequestHaulRequest.setUnloadLongitude(haul.getUnloadLongitude());
             finishHaulRequestHaulRequest.setUnloadTime(haul.getUnloadTime());
             JSONObject jsonObject = null;
             try {
@@ -167,6 +169,7 @@ public class CreateLocalEquipmentStatusTask extends AsyncTask<Void, Void, Haul> 
                                     return false;
                                 }
                             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,haul);
+                            SyncDataService.getInstance(activity).scheduleSyncJob(true);
                             Log.i("finish haul", "completed");
                         }
                     }, new Response.ErrorListener() {
@@ -174,7 +177,8 @@ public class CreateLocalEquipmentStatusTask extends AsyncTask<Void, Void, Haul> 
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Log.e("volley", "request failed, scheduling job to retry later");
-                            SyncDataService.getInstance(activity).scheduleSyncJob();
+                            SyncDataService.getInstance(activity).setSyncNeeded(true);
+                            SyncDataService.getInstance(activity).scheduleSyncJob(false);
 
                         }
                     });
@@ -218,9 +222,9 @@ public class CreateLocalEquipmentStatusTask extends AsyncTask<Void, Void, Haul> 
         equipmentStatus.setTimestamp(new Date());
         equipmentStatus.setOperator(DataHolder.getInstance().getEquipmentStatus().getOperator());
         equipmentStatus.setEquipment(DataHolder.getInstance().getEquipment().getName());
-        equipmentStatus.setImei(DataHolder.getInstance().getEquipmentStatus().getImei());
-        equipmentStatus.setLatitude(DataHolder.getInstance().getEquipmentStatus().getLatitude());
-        equipmentStatus.setLongitude(DataHolder.getInstance().getEquipmentStatus().getLongitude());
+        equipmentStatus.setImei(DataHolder.getInstance().getImei());
+        equipmentStatus.setLatitude(DataHolder.getInstance().getLocation().getLatitude());
+        equipmentStatus.setLongitude(DataHolder.getInstance().getLocation().getLongitude());
         equipmentStatus.setIsSent(false);
         equipmentStatus.setUuid(UUID.randomUUID().toString());
         return equipmentStatus;

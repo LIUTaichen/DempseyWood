@@ -3,6 +3,8 @@ package com.dempseywood.operatordatacollector.data;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
+import com.dempseywood.operatordatacollector.service.RequestService;
+
 /**
  * Created by musing on 05/09/2017.
  */
@@ -13,6 +15,17 @@ public class DB {
     public static AppDatabase getInstance(){
         if(instance == null){
             throw new IllegalStateException("init() must be called before calling getInstance()");
+        }
+        return instance;
+    }
+
+    public static AppDatabase getInstance(Context context){
+        if(instance == null) {
+            synchronized(AppDatabase.class) {
+                if(instance == null) {
+                    init(context);
+                }
+            }
         }
         return instance;
     }

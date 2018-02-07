@@ -1,4 +1,5 @@
 package com.dempseywood.operatordatacollector.models;
+
 import java.util.Date;
 
 public class FinishHaulRequest {
